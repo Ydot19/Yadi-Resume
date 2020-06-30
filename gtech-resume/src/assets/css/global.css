@@ -1,0 +1,26 @@
+div.left-align{
+    text-align: left;
+}
+
+div.right-align {
+    text-align: right;
+}
+
+
+div.left-align-pad-10{
+    text-align: left;
+    margin-left: 10%;
+}
+
+div.inherit{
+    width: 100%;
+}
+
+br{
+    display: block;
+    margin: 10px 0;
+}
+
+.is-size-6-half{
+    font-size: 0.85rem;
+}

@@ -2,12 +2,12 @@
     <div>
         <div class="columns">
             <div class="column is-narrow">
-                <div class="title is-2">Yaadata</div>
+                <div class="title is-1">Yaadata (Yadi) </div>
             </div>
         </div>
         <div class="columns">
             <div class="column is-narrow">
-                <div class="title is-2">Abdalhalim</div>
+                <span class="title is-1">M. Abdalhalim</span>
             </div>
         </div>
     </div>
