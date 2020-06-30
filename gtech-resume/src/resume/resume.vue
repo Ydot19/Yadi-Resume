@@ -3,10 +3,10 @@
     <resume-banner></resume-banner>
     <div class="container">
       <div class="columns">
-        <div class="column">
+        <div class="column margin-16-left">
           <resume-body-left></resume-body-left>
         </div>
-        <div class="column">
+        <div class="column margin-22-left">
           <resume-body-right></resume-body-right>
         </div>
       </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <br>
-        <div class="container is-fluid">
+        <div>
 <!--            Purpose-->
             <div class="columns is-narrow left-align">
                 <div>
@@ -23,7 +23,7 @@
                     <div class="columns inherit">
                         <div class="column is-7">
                             <p class="is-size-5 has-text-weight-normal">
-                                The Ohio State University
+                                The Ohio State University (2013-2017)
                             </p>
                             <p class="is-size-7 has-text-weight-normal">
                                 Bachelor of Science in Chemical Engineering
@@ -47,7 +47,6 @@
             <div class="columns is-narrow">
                 <div class="inherit left-align">
                     <p class="is-size-2 has-text-weight-bold">
-                        <br>
                         Work Experience
                     </p>
                 </div>
@@ -107,7 +106,10 @@
                         location: "Middletown, VA",
                         start: "May 2019",
                         end: "Jun. 2019",
-                        description: []
+                        description: [
+                            "Interim supervisor overseeing a production team of ~13 individual",
+                            "Production of clinical diagnostic reagents for Siemens and Roche"
+                        ]
                     },
                     {
                         title: "Production Planner",

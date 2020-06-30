@@ -12,6 +12,14 @@ div.left-align-pad-10{
     margin-left: 10%;
 }
 
+div.column.margin-16-left{
+    margin-left: 16px;
+}
+
+div.column.margin-22-left{
+    margin-left: 22px;
+}
+
 div.inherit{
     width: 100%;
 }
