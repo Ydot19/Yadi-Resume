@@ -2,7 +2,7 @@
     <div>
         <div class="columns">
             <div class="column is-8 left-align">
-                <p class="is-size-5">
+                <p class="is-size-5 theme-orange-darker has-text-weight-medium">
                     {{title}}
                 </p>
 
@@ -11,8 +11,10 @@
                 </p>
             </div>
             <div class="column is-4 right-align">
-                <p class="is-size-6">{{start}} - {{end}} </p>
-                <p class="is-size-7">{{location}}</p>
+                <span>
+                    <p class="is-size-6">{{start}} - {{end}} </p>
+                    <p class="is-size-7">{{location}}</p>
+                </span>
             </div>
 
         </div>

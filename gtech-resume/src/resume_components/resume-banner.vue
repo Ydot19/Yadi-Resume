@@ -1,5 +1,5 @@
 <template>
-    <div class="hero is-dark">
+    <div class="hero">
         <div class="hero-body" id="banner">
             <div class="container">
                 <div class="columns">
@@ -44,7 +44,11 @@
     }
 
     div#banner{
-        padding-bottom: 24px;
-        padding-top: 32px;
+        padding-bottom: 8px;
+        padding-top: 18px;
+    }
+
+    div.hero{
+        background-color: rgb(176, 176, 138);
     }
 </style>
