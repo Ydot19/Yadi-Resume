@@ -1,0 +1,101 @@
+{
+  "hash": "83db5d81",
+  "browserHash": "e2e1f86b",
+  "optimized": {
+    "buffer-polyfill": {
+      "src": "../../node_modules/.deno/buffer@6.0.3/node_modules/buffer/index.js",
+      "file": "buffer-polyfill.js",
+      "fileHash": "f28b51a7",
+      "needsInterop": true
+    },
+    "primevue/config": {
+      "src": "../../node_modules/.deno/primevue@3.35.0/node_modules/primevue/config/config.esm.js",
+      "file": "primevue_config.js",
+      "fileHash": "9d8c1787",
+      "needsInterop": false
+    },
+    "primevue/divider": {
+      "src": "../../node_modules/.deno/primevue@3.35.0/node_modules/primevue/divider/divider.esm.js",
+      "file": "primevue_divider.js",
+      "fileHash": "d5e924cf",
+      "needsInterop": false
+    },
+    "vue": {
+      "src": "../../node_modules/.deno/vue@3.3.4/node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "2ae373bf",
+      "needsInterop": false
+    },
+    "qrcode-vue3": {
+      "src": "../../node_modules/.deno/qrcode-vue3@1.6.8/node_modules/qrcode-vue3/dist/index.es.js",
+      "file": "qrcode-vue3.js",
+      "fileHash": "86ad8ec6",
+      "needsInterop": false
+    },
+    "easyqrcodejs": {
+      "src": "../../node_modules/.deno/easyqrcodejs@4.5.0/node_modules/easyqrcodejs/dist/easy.qrcode.min.js",
+      "file": "easyqrcodejs.js",
+      "fileHash": "79a3c289",
+      "needsInterop": true
+    },
+    "primevue/timeline": {
+      "src": "../../node_modules/.deno/primevue@3.35.0/node_modules/primevue/timeline/timeline.esm.js",
+      "file": "primevue_timeline.js",
+      "fileHash": "2b7d51e2",
+      "needsInterop": false
+    },
+    "primevue/button": {
+      "src": "../../node_modules/.deno/primevue@3.35.0/node_modules/primevue/button/button.esm.js",
+      "file": "primevue_button.js",
+      "fileHash": "4fa2e4bc",
+      "needsInterop": false
+    },
+    "@fortawesome/vue-fontawesome": {
+      "src": "../../node_modules/.deno/@fortawesome+vue-fontawesome@3.0.3/node_modules/@fortawesome/vue-fontawesome/index.es.js",
+      "file": "@fortawesome_vue-fontawesome.js",
+      "fileHash": "a5a65be6",
+      "needsInterop": false
+    },
+    "@fortawesome/fontawesome-svg-core": {
+      "src": "../../node_modules/.deno/@fortawesome+fontawesome-svg-core@6.4.2/node_modules/@fortawesome/fontawesome-svg-core/index.mjs",
+      "file": "@fortawesome_fontawesome-svg-core.js",
+      "fileHash": "c479f730",
+      "needsInterop": false
+    },
+    "@fortawesome/free-regular-svg-icons": {
+      "src": "../../node_modules/.deno/@fortawesome+free-regular-svg-icons@6.4.2/node_modules/@fortawesome/free-regular-svg-icons/index.mjs",
+      "file": "@fortawesome_free-regular-svg-icons.js",
+      "fileHash": "e5c8c8b2",
+      "needsInterop": false
+    },
+    "@fortawesome/free-solid-svg-icons": {
+      "src": "../../node_modules/.deno/@fortawesome+free-solid-svg-icons@6.4.2/node_modules/@fortawesome/free-solid-svg-icons/index.mjs",
+      "file": "@fortawesome_free-solid-svg-icons.js",
+      "fileHash": "10bb80e5",
+      "needsInterop": false
+    },
+    "@fortawesome/free-brands-svg-icons": {
+      "src": "../../node_modules/.deno/@fortawesome+free-brands-svg-icons@6.4.2/node_modules/@fortawesome/free-brands-svg-icons/index.mjs",
+      "file": "@fortawesome_free-brands-svg-icons.js",
+      "fileHash": "4670f08c",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-ME2FFI7K": {
+      "file": "chunk-ME2FFI7K.js"
+    },
+    "chunk-EGT5LPPT": {
+      "file": "chunk-EGT5LPPT.js"
+    },
+    "chunk-B5Q7IJNV": {
+      "file": "chunk-B5Q7IJNV.js"
+    },
+    "chunk-Z5HBKH52": {
+      "file": "chunk-Z5HBKH52.js"
+    },
+    "chunk-NFZ6GMSI": {
+      "file": "chunk-NFZ6GMSI.js"
+    }
+  }
+}

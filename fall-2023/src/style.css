@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'JetBrains Mono ExtraLight';
+    src: url('./assets/fonts/JetBrainsMono-ExtraLight.ttf')
+}
+
+@font-face {
+    font-family: 'JetBrains Mono ExtraLightItalic';
+    src: url('./assets/fonts/JetBrainsMono-ExtraLightItalic.ttf')
+}
+
+@font-face {
+    font-family: 'JetBrains Mono Medium';
+    src: url('./assets/fonts/JetBrainsMono-Medium.ttf')
+}
+
+@font-face {
+    font-family: 'JetBrains Mono MediumItalic';
+    src: url('./assets/fonts/JetBrainsMono-MediumItalic.ttf')
+}
+
+.text-style-extra-light {
+    font-family: "JetBrains Mono ExtraLight", monospace;
+}
+
+.text-style-extra-light-italic {
+    font-family: "JetBrains Mono ExtraLightItalic", monospace;
+}
+
+.text-style-medium {
+    font-family: "JetBrains Mono Medium", monospace;
+}
+
+.text-style-medium-italic {
+    font-family: "JetBrains Mono MediumItalic", monospace;
+}
+
+.word-spacing-5px{
+    word-spacing: 1px;
+}
+
+.text-2xs {
+    font-size: 0.625rem;
+}
+
+.text-3xs {
+    font-size: 0.5rem;
+}
+
+.text-4xs {
+    font-size: 0.425rem;
+}
+
+.text-color-grey {
+    color: #6c757d;
+}
+
+.border-right-solid {
+    border-right: solid;
+}
