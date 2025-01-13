@@ -1,68 +1,65 @@
 <template>
   <div class="text-4xs text-style-medium text-left">
     <p class="text-xl mt-2 mb-1">
-      Contact & Info
+      Contact Information
     </p>
+    <br>
+
+    <p><font-awesome-icon icon="fa-map-pin" size="lg" /> Chicago, IL</p>
+    <p><font-awesome-icon icon="passport" size="lg"/> United States Citizen</p>
     <p><font-awesome-icon icon="envelope-open-text" size="lg"/> abdalhalim.yaadata@gmail.com</p>
     <p><font-awesome-icon icon="fa-brands fa-linkedin" size="lg" /> https://www.linkedin.com/in/yaadata-abdalhalim/</p>
     <p><font-awesome-icon icon="fa-brands fa-github" size="lg" /> https://github.com/Ydot19</p>
-    <p><font-awesome-icon icon="fa-mobile-screen" size="lg"/> +1 (614) 632-2473</p>
-    <p><font-awesome-icon icon="fa-map-pin" size="lg" /> Bay Area, California</p>
-    <p><font-awesome-icon icon="passport" size="lg"/> United States Citizen</p>
+    <p><font-awesome-icon icon="fa-solid fa-globe" size="lg" /> https://yadi.io</p>
   </div>
-  <div class="text-style-medium text-3xs mb-0 pb-0">
-    <p class="text-xl mb-1">Professional Technical Skills</p>
-    <p class="text-base mt-0 pt-0  pb-0 mb-1">Languages</p>
+  <br>
+
+  <div class="text-4xs text-style-medium text-left">
+    <p class="text-xl mt-2 mb-1">
+      Conference Talks
+    </p>
+    <ul class="text-style-extra-light text-4xs pl-3">
+      <li class="mt-0 mb-0 pb-0">OWASP Global App Security Conference (Lisbon, Portugal 2024)</li>
+      <p class="mt-1 mb-0 pb-0">Title: Token It Up A Notch: Elevating Payment Security</p>
+      <p class="mt-0 mb-0 pb-0">Summary: Building performant, secure tokenization service for storing and utilizing sensitive payment and member data</p>
+      <p class="mt-0 mb-0 pb-0">Watch: https://tinyurl.com/yadi-owasp-2024</p>
+    </ul>
+  </div>
+
+  <div class="text-style-medium text-3xs mb-0 mt-3 pb-0">
+    <p class="text-xl mb-1">Skills</p>
+    <br>
     <div class="inline text-center">
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Golang</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Python</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Javascript</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Java</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Terraform (HCL)</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">SQL</span></Button>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Architecture Design</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Consensus Building</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Software Design & Testing</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Technical Coaching & Mentoring</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Product Design and Development </span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Platform Development</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Internal Developer Tooling Development</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Platform Operational Tooling</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Event Driven Design</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Change Data Capture (CDC)</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Data Integration with OLAP Systems</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Fault Tolerant / Low-Latency System Design</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Application Security Hardening</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Designing Systems For Storing Sensitive Data</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Observability Tooling Development</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Optimize Usage of OLTP Systems</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">SQL Query Optimization</span></Button><br>
+    </div>
 
-    </div>
-    <p class="text-base mt-0 pt-0 pb-0 mb-1">Platforms</p>
-    <div class="inline text-left pt-0 mt-0">
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">AWS</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Linux</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Docker (OCI Compliant Containers)</span></Button>
-    </div>
-    <p class="text-base mt-0 pt-0 pb-0 mb-0">Other</p>
-    <div class="inline text-left pt-0 mt-0">
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Git (Version Control)</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>ArgoCD</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Event Driven Design</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Transactional Outbox</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Event Sourcing </span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Saga Design</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Kubernetes</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Protobuf</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Twirp Protocol & Services</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Performance Testing (JMeter)</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>CI / CD (Jenkins / Github Actions / CircleCI)</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Payment Systems</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >PostGreSQL</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Dynamodb</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >MongoDB</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Testing (Unit/BDD/TDD/Contract/E2E)</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Pact Contract Testing</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Nodejs + Deno</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >AWS OpenSearch / ElasticSearch</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >OpenID Connect (OIDC) + Okta</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Cryptography (Symmetric/Asymmetric, Public/Private, Elliptic Curve) </span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Canary Deployments</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Blue / Green Deployments</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >PKCE authentication</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >OpenTelemetry + Distributed Tracing (DataDog)</span></Button>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span >Monitoring (DataDog / Splunk)</span></Button>
-    </div>
-    <p class="text-xl mb-1">Soft-Skills</p>
-    <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Consensus Building</span></Button>
-    <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Adaptability</span></Button>
-    <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Communication</span></Button>
-    <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span>Teamwork</span></Button>
-
+  </div>
+  <br>
+  
+  <div class="text-4xs text-style-medium text-left">
+    <p class="text-xl mt-2 mb-1">
+      Education
+    </p>
+    <p class="mt-1 mb-0 pb-0">Chemical & Biomolecular Engineering, BS</p>
+    <p class="mt-0 mb-0 pb-0">Summa Cum Laude</p>
+    <p class="mt-0 mb-0 pb-0">Ohio State University</p>
+    <p class="mt-0 mb-0 pb-0">Class of Dec. 2017</p>
   </div>
 </template>
 <script setup>

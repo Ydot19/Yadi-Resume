@@ -5,7 +5,7 @@ import './style.css'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faLinkedin, faGithub, faAws } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelopeOpenText, faPassport, faMapPin, faMobileScreen } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelopeOpenText, faPassport, faMapPin, faMobileScreen, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
 
@@ -17,6 +17,7 @@ library.add(faMobileScreen);
 library.add(faLinkedin);
 library.add(faGithub);
 library.add(faAws);
+library.add(faGlobe);
 
 
 createApp(App)

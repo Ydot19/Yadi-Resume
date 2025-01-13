@@ -13,11 +13,11 @@ import Divider from 'primevue/divider';
     <top />
   </div>
   <div class="grid">
-    <div class="col-8 pr-2">
+    <div class="col-8 pr-1">
       <left/>
     </div>
     <Divider layout="vertical mt-3"></Divider>
-    <div class="col pl-2">
+    <div class="col pl-1">
       <right/>
     </div>
   </div>

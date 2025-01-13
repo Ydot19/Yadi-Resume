@@ -1,9 +1,6 @@
 <template>
     <div class="grid">
       <div class="col-2 pl-0 ml-0">
-        <div class="flex ml-3 justify-content-left">
-        <div ref="githubQRCode" class="ml-0 pl-0"></div>
-        </div>
       </div>
       <div class="col-8 text-style-extra-light">
         <div class="flex text-center justify-content-center">
@@ -15,23 +12,13 @@
               Backend Software Engineer
             </p>
             <Divider layout="vertical" class="height-20px mb-0 pb-1"/>
-            <p class="text-color-grey margin-bottom-3px mt-1">
-              Distributed Systems
-            </p>
-            <Divider layout="vertical" class="height-20px mb-0 pb-1"/>
-            <p class="text-color-grey margin-bottom-3px mt-1">
-              Full Stack Engineering
+            <p class="margin-bottom-3px mt-1">
+              Distributed Systems Engineer
             </p>
           </div>
         </div>
       </div>
-      <div class="col-2">
-        <div class="flex justify-content-end">
-          <div ref="linkedinQRCode" class="mr-1"></div>
-        </div>
-      </div>
     </div>
-    <Divider class="mt-0 mb-1"/>
 </template>
 
 <style scoped>
