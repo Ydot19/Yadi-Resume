@@ -1,6 +1,6 @@
 <template>
   <div class="text-4xs text-style-medium text-left">
-    <p class="text-xl mt-2 mb-1">
+    <p class="text-xl mt-0 mb-1">
       Contact Information
     </p>
     <br>
@@ -43,7 +43,7 @@
       <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Data Integration with OLAP Systems</span></Button><br>
       <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Fault Tolerant / Low-Latency System Design</span></Button><br>
       <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Application Security Hardening</span></Button><br>
-      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Designing Systems For Storing Sensitive Data</span></Button><br>
+      <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Designing Encrypted Storage Systems</span></Button><br>
       <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Observability Tooling Development</span></Button><br>
       <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">Optimize Usage of OLTP Systems</span></Button><br>
       <Button class="text-4xs ml-1 mt-0 mb-1 pt-1 pb-1"><span class="text-right">SQL Query Optimization</span></Button><br>

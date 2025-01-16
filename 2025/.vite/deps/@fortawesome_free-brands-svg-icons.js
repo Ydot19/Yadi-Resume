@@ -1,2124 +1,21 @@
-"use strict";
-(() => {
-  var __create = Object.create;
-  var __defProp = Object.defineProperty;
-  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getProtoOf = Object.getPrototypeOf;
-  var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __esm = (fn, res) => function __init() {
-    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-  };
-  var __commonJS = (cb, mod) => function __require() {
-    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-  };
-  var __copyProps = (to, from, except, desc) => {
-    if (from && typeof from === "object" || typeof from === "function") {
-      for (let key of __getOwnPropNames(from))
-        if (!__hasOwnProp.call(to, key) && key !== except)
-          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-    }
-    return to;
-  };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
-
-  // node_modules/.pnpm/base64-js@1.5.1/node_modules/base64-js/index.js
-  var require_base64_js = __commonJS({
-    "node_modules/.pnpm/base64-js@1.5.1/node_modules/base64-js/index.js"(exports) {
-      "use strict";
-      init_dist();
-      exports.byteLength = byteLength;
-      exports.toByteArray = toByteArray;
-      exports.fromByteArray = fromByteArray;
-      var lookup = [];
-      var revLookup = [];
-      var Arr = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-      var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-      for (i = 0, len = code.length; i < len; ++i) {
-        lookup[i] = code[i];
-        revLookup[code.charCodeAt(i)] = i;
-      }
-      var i;
-      var len;
-      revLookup["-".charCodeAt(0)] = 62;
-      revLookup["_".charCodeAt(0)] = 63;
-      function getLens(b64) {
-        var len2 = b64.length;
-        if (len2 % 4 > 0) {
-          throw new Error("Invalid string. Length must be a multiple of 4");
-        }
-        var validLen = b64.indexOf("=");
-        if (validLen === -1)
-          validLen = len2;
-        var placeHoldersLen = validLen === len2 ? 0 : 4 - validLen % 4;
-        return [validLen, placeHoldersLen];
-      }
-      function byteLength(b64) {
-        var lens = getLens(b64);
-        var validLen = lens[0];
-        var placeHoldersLen = lens[1];
-        return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
-      }
-      function _byteLength(b64, validLen, placeHoldersLen) {
-        return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
-      }
-      function toByteArray(b64) {
-        var tmp;
-        var lens = getLens(b64);
-        var validLen = lens[0];
-        var placeHoldersLen = lens[1];
-        var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
-        var curByte = 0;
-        var len2 = placeHoldersLen > 0 ? validLen - 4 : validLen;
-        var i2;
-        for (i2 = 0; i2 < len2; i2 += 4) {
-          tmp = revLookup[b64.charCodeAt(i2)] << 18 | revLookup[b64.charCodeAt(i2 + 1)] << 12 | revLookup[b64.charCodeAt(i2 + 2)] << 6 | revLookup[b64.charCodeAt(i2 + 3)];
-          arr[curByte++] = tmp >> 16 & 255;
-          arr[curByte++] = tmp >> 8 & 255;
-          arr[curByte++] = tmp & 255;
-        }
-        if (placeHoldersLen === 2) {
-          tmp = revLookup[b64.charCodeAt(i2)] << 2 | revLookup[b64.charCodeAt(i2 + 1)] >> 4;
-          arr[curByte++] = tmp & 255;
-        }
-        if (placeHoldersLen === 1) {
-          tmp = revLookup[b64.charCodeAt(i2)] << 10 | revLookup[b64.charCodeAt(i2 + 1)] << 4 | revLookup[b64.charCodeAt(i2 + 2)] >> 2;
-          arr[curByte++] = tmp >> 8 & 255;
-          arr[curByte++] = tmp & 255;
-        }
-        return arr;
-      }
-      function tripletToBase64(num) {
-        return lookup[num >> 18 & 63] + lookup[num >> 12 & 63] + lookup[num >> 6 & 63] + lookup[num & 63];
-      }
-      function encodeChunk(uint8, start, end) {
-        var tmp;
-        var output = [];
-        for (var i2 = start; i2 < end; i2 += 3) {
-          tmp = (uint8[i2] << 16 & 16711680) + (uint8[i2 + 1] << 8 & 65280) + (uint8[i2 + 2] & 255);
-          output.push(tripletToBase64(tmp));
-        }
-        return output.join("");
-      }
-      function fromByteArray(uint8) {
-        var tmp;
-        var len2 = uint8.length;
-        var extraBytes = len2 % 3;
-        var parts = [];
-        var maxChunkLength = 16383;
-        for (var i2 = 0, len22 = len2 - extraBytes; i2 < len22; i2 += maxChunkLength) {
-          parts.push(encodeChunk(uint8, i2, i2 + maxChunkLength > len22 ? len22 : i2 + maxChunkLength));
-        }
-        if (extraBytes === 1) {
-          tmp = uint8[len2 - 1];
-          parts.push(
-            lookup[tmp >> 2] + lookup[tmp << 4 & 63] + "=="
-          );
-        } else if (extraBytes === 2) {
-          tmp = (uint8[len2 - 2] << 8) + uint8[len2 - 1];
-          parts.push(
-            lookup[tmp >> 10] + lookup[tmp >> 4 & 63] + lookup[tmp << 2 & 63] + "="
-          );
-        }
-        return parts.join("");
-      }
-    }
-  });
-
-  // node_modules/.pnpm/ieee754@1.2.1/node_modules/ieee754/index.js
-  var require_ieee754 = __commonJS({
-    "node_modules/.pnpm/ieee754@1.2.1/node_modules/ieee754/index.js"(exports) {
-      init_dist();
-      exports.read = function(buffer, offset, isLE, mLen, nBytes) {
-        var e, m;
-        var eLen = nBytes * 8 - mLen - 1;
-        var eMax = (1 << eLen) - 1;
-        var eBias = eMax >> 1;
-        var nBits = -7;
-        var i = isLE ? nBytes - 1 : 0;
-        var d = isLE ? -1 : 1;
-        var s2 = buffer[offset + i];
-        i += d;
-        e = s2 & (1 << -nBits) - 1;
-        s2 >>= -nBits;
-        nBits += eLen;
-        for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {
-        }
-        m = e & (1 << -nBits) - 1;
-        e >>= -nBits;
-        nBits += mLen;
-        for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {
-        }
-        if (e === 0) {
-          e = 1 - eBias;
-        } else if (e === eMax) {
-          return m ? NaN : (s2 ? -1 : 1) * Infinity;
-        } else {
-          m = m + Math.pow(2, mLen);
-          e = e - eBias;
-        }
-        return (s2 ? -1 : 1) * m * Math.pow(2, e - mLen);
-      };
-      exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
-        var e, m, c;
-        var eLen = nBytes * 8 - mLen - 1;
-        var eMax = (1 << eLen) - 1;
-        var eBias = eMax >> 1;
-        var rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0;
-        var i = isLE ? 0 : nBytes - 1;
-        var d = isLE ? 1 : -1;
-        var s2 = value < 0 || value === 0 && 1 / value < 0 ? 1 : 0;
-        value = Math.abs(value);
-        if (isNaN(value) || value === Infinity) {
-          m = isNaN(value) ? 1 : 0;
-          e = eMax;
-        } else {
-          e = Math.floor(Math.log(value) / Math.LN2);
-          if (value * (c = Math.pow(2, -e)) < 1) {
-            e--;
-            c *= 2;
-          }
-          if (e + eBias >= 1) {
-            value += rt / c;
-          } else {
-            value += rt * Math.pow(2, 1 - eBias);
-          }
-          if (value * c >= 2) {
-            e++;
-            c /= 2;
-          }
-          if (e + eBias >= eMax) {
-            m = 0;
-            e = eMax;
-          } else if (e + eBias >= 1) {
-            m = (value * c - 1) * Math.pow(2, mLen);
-            e = e + eBias;
-          } else {
-            m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
-            e = 0;
-          }
-        }
-        for (; mLen >= 8; buffer[offset + i] = m & 255, i += d, m /= 256, mLen -= 8) {
-        }
-        e = e << mLen | m;
-        eLen += mLen;
-        for (; eLen > 0; buffer[offset + i] = e & 255, i += d, e /= 256, eLen -= 8) {
-        }
-        buffer[offset + i - d] |= s2 * 128;
-      };
-    }
-  });
-
-  // node_modules/.pnpm/buffer@6.0.3_patch_hash=zkkuxompt5d553skpnegwi5wuy/node_modules/buffer/index.js
-  var require_buffer = __commonJS({
-    "node_modules/.pnpm/buffer@6.0.3_patch_hash=zkkuxompt5d553skpnegwi5wuy/node_modules/buffer/index.js"(exports) {
-      "use strict";
-      init_dist();
-      var base64 = require_base64_js();
-      var ieee754 = require_ieee754();
-      var customInspectSymbol = typeof Symbol === "function" && typeof Symbol["for"] === "function" ? Symbol["for"]("nodejs.util.inspect.custom") : null;
-      exports.Buffer = Buffer2;
-      exports.SlowBuffer = SlowBuffer;
-      exports.INSPECT_MAX_BYTES = 50;
-      var K_MAX_LENGTH = 2147483647;
-      exports.kMaxLength = K_MAX_LENGTH;
-      var { Uint8Array: GlobalUint8Array, ArrayBuffer: GlobalArrayBuffer, SharedArrayBuffer: GlobalSharedArrayBuffer } = globalThis;
-      Buffer2.TYPED_ARRAY_SUPPORT = typedArraySupport();
-      if (!Buffer2.TYPED_ARRAY_SUPPORT && typeof console !== "undefined" && typeof console.error === "function") {
-        console.error(
-          "This browser lacks typed array (Uint8Array) support which is required by `buffer` v5.x. Use `buffer` v4.x if you require old browser support."
-        );
-      }
-      function typedArraySupport() {
-        try {
-          const arr = new GlobalUint8Array(1);
-          const proto = { foo: function() {
-            return 42;
-          } };
-          Object.setPrototypeOf(proto, GlobalUint8Array.prototype);
-          Object.setPrototypeOf(arr, proto);
-          return arr.foo() === 42;
-        } catch (e) {
-          return false;
-        }
-      }
-      Object.defineProperty(Buffer2.prototype, "parent", {
-        enumerable: true,
-        get: function() {
-          if (!Buffer2.isBuffer(this))
-            return void 0;
-          return this.buffer;
-        }
-      });
-      Object.defineProperty(Buffer2.prototype, "offset", {
-        enumerable: true,
-        get: function() {
-          if (!Buffer2.isBuffer(this))
-            return void 0;
-          return this.byteOffset;
-        }
-      });
-      function createBuffer(length) {
-        if (length > K_MAX_LENGTH) {
-          throw new RangeError('The value "' + length + '" is invalid for option "size"');
-        }
-        const buf = new GlobalUint8Array(length);
-        Object.setPrototypeOf(buf, Buffer2.prototype);
-        return buf;
-      }
-      function Buffer2(arg, encodingOrOffset, length) {
-        if (typeof arg === "number") {
-          if (typeof encodingOrOffset === "string") {
-            throw new TypeError(
-              'The "string" argument must be of type string. Received type number'
-            );
-          }
-          return allocUnsafe(arg);
-        }
-        return from(arg, encodingOrOffset, length);
-      }
-      Buffer2.poolSize = 8192;
-      function from(value, encodingOrOffset, length) {
-        if (typeof value === "string") {
-          return fromString(value, encodingOrOffset);
-        }
-        if (GlobalArrayBuffer.isView(value)) {
-          return fromArrayView(value);
-        }
-        if (value == null) {
-          throw new TypeError(
-            "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof value
-          );
-        }
-        if (isInstance(value, GlobalArrayBuffer) || value && isInstance(value.buffer, GlobalArrayBuffer)) {
-          return fromArrayBuffer(value, encodingOrOffset, length);
-        }
-        if (typeof GlobalSharedArrayBuffer !== "undefined" && (isInstance(value, GlobalSharedArrayBuffer) || value && isInstance(value.buffer, GlobalSharedArrayBuffer))) {
-          return fromArrayBuffer(value, encodingOrOffset, length);
-        }
-        if (typeof value === "number") {
-          throw new TypeError(
-            'The "value" argument must not be of type number. Received type number'
-          );
-        }
-        const valueOf = value.valueOf && value.valueOf();
-        if (valueOf != null && valueOf !== value) {
-          return Buffer2.from(valueOf, encodingOrOffset, length);
-        }
-        const b = fromObject(value);
-        if (b)
-          return b;
-        if (typeof Symbol !== "undefined" && Symbol.toPrimitive != null && typeof value[Symbol.toPrimitive] === "function") {
-          return Buffer2.from(value[Symbol.toPrimitive]("string"), encodingOrOffset, length);
-        }
-        throw new TypeError(
-          "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof value
-        );
-      }
-      Buffer2.from = function(value, encodingOrOffset, length) {
-        return from(value, encodingOrOffset, length);
-      };
-      Object.setPrototypeOf(Buffer2.prototype, GlobalUint8Array.prototype);
-      Object.setPrototypeOf(Buffer2, GlobalUint8Array);
-      function assertSize(size) {
-        if (typeof size !== "number") {
-          throw new TypeError('"size" argument must be of type number');
-        } else if (size < 0) {
-          throw new RangeError('The value "' + size + '" is invalid for option "size"');
-        }
-      }
-      function alloc(size, fill, encoding) {
-        assertSize(size);
-        if (size <= 0) {
-          return createBuffer(size);
-        }
-        if (fill !== void 0) {
-          return typeof encoding === "string" ? createBuffer(size).fill(fill, encoding) : createBuffer(size).fill(fill);
-        }
-        return createBuffer(size);
-      }
-      Buffer2.alloc = function(size, fill, encoding) {
-        return alloc(size, fill, encoding);
-      };
-      function allocUnsafe(size) {
-        assertSize(size);
-        return createBuffer(size < 0 ? 0 : checked(size) | 0);
-      }
-      Buffer2.allocUnsafe = function(size) {
-        return allocUnsafe(size);
-      };
-      Buffer2.allocUnsafeSlow = function(size) {
-        return allocUnsafe(size);
-      };
-      function fromString(string, encoding) {
-        if (typeof encoding !== "string" || encoding === "") {
-          encoding = "utf8";
-        }
-        if (!Buffer2.isEncoding(encoding)) {
-          throw new TypeError("Unknown encoding: " + encoding);
-        }
-        const length = byteLength(string, encoding) | 0;
-        let buf = createBuffer(length);
-        const actual = buf.write(string, encoding);
-        if (actual !== length) {
-          buf = buf.slice(0, actual);
-        }
-        return buf;
-      }
-      function fromArrayLike(array) {
-        const length = array.length < 0 ? 0 : checked(array.length) | 0;
-        const buf = createBuffer(length);
-        for (let i = 0; i < length; i += 1) {
-          buf[i] = array[i] & 255;
-        }
-        return buf;
-      }
-      function fromArrayView(arrayView) {
-        if (isInstance(arrayView, GlobalUint8Array)) {
-          const copy = new GlobalUint8Array(arrayView);
-          return fromArrayBuffer(copy.buffer, copy.byteOffset, copy.byteLength);
-        }
-        return fromArrayLike(arrayView);
-      }
-      function fromArrayBuffer(array, byteOffset, length) {
-        if (byteOffset < 0 || array.byteLength < byteOffset) {
-          throw new RangeError('"offset" is outside of buffer bounds');
-        }
-        if (array.byteLength < byteOffset + (length || 0)) {
-          throw new RangeError('"length" is outside of buffer bounds');
-        }
-        let buf;
-        if (byteOffset === void 0 && length === void 0) {
-          buf = new GlobalUint8Array(array);
-        } else if (length === void 0) {
-          buf = new GlobalUint8Array(array, byteOffset);
-        } else {
-          buf = new GlobalUint8Array(array, byteOffset, length);
-        }
-        Object.setPrototypeOf(buf, Buffer2.prototype);
-        return buf;
-      }
-      function fromObject(obj) {
-        if (Buffer2.isBuffer(obj)) {
-          const len = checked(obj.length) | 0;
-          const buf = createBuffer(len);
-          if (buf.length === 0) {
-            return buf;
-          }
-          obj.copy(buf, 0, 0, len);
-          return buf;
-        }
-        if (obj.length !== void 0) {
-          if (typeof obj.length !== "number" || numberIsNaN(obj.length)) {
-            return createBuffer(0);
-          }
-          return fromArrayLike(obj);
-        }
-        if (obj.type === "Buffer" && Array.isArray(obj.data)) {
-          return fromArrayLike(obj.data);
-        }
-      }
-      function checked(length) {
-        if (length >= K_MAX_LENGTH) {
-          throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + K_MAX_LENGTH.toString(16) + " bytes");
-        }
-        return length | 0;
-      }
-      function SlowBuffer(length) {
-        if (+length != length) {
-          length = 0;
-        }
-        return Buffer2.alloc(+length);
-      }
-      Buffer2.isBuffer = function isBuffer(b) {
-        return b != null && b._isBuffer === true && b !== Buffer2.prototype;
-      };
-      Buffer2.compare = function compare(a, b) {
-        if (isInstance(a, GlobalUint8Array))
-          a = Buffer2.from(a, a.offset, a.byteLength);
-        if (isInstance(b, GlobalUint8Array))
-          b = Buffer2.from(b, b.offset, b.byteLength);
-        if (!Buffer2.isBuffer(a) || !Buffer2.isBuffer(b)) {
-          throw new TypeError(
-            'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array'
-          );
-        }
-        if (a === b)
-          return 0;
-        let x = a.length;
-        let y = b.length;
-        for (let i = 0, len = Math.min(x, y); i < len; ++i) {
-          if (a[i] !== b[i]) {
-            x = a[i];
-            y = b[i];
-            break;
-          }
-        }
-        if (x < y)
-          return -1;
-        if (y < x)
-          return 1;
-        return 0;
-      };
-      Buffer2.isEncoding = function isEncoding(encoding) {
-        switch (String(encoding).toLowerCase()) {
-          case "hex":
-          case "utf8":
-          case "utf-8":
-          case "ascii":
-          case "latin1":
-          case "binary":
-          case "base64":
-          case "ucs2":
-          case "ucs-2":
-          case "utf16le":
-          case "utf-16le":
-            return true;
-          default:
-            return false;
-        }
-      };
-      Buffer2.concat = function concat(list, length) {
-        if (!Array.isArray(list)) {
-          throw new TypeError('"list" argument must be an Array of Buffers');
-        }
-        if (list.length === 0) {
-          return Buffer2.alloc(0);
-        }
-        let i;
-        if (length === void 0) {
-          length = 0;
-          for (i = 0; i < list.length; ++i) {
-            length += list[i].length;
-          }
-        }
-        const buffer = Buffer2.allocUnsafe(length);
-        let pos = 0;
-        for (i = 0; i < list.length; ++i) {
-          let buf = list[i];
-          if (isInstance(buf, GlobalUint8Array)) {
-            if (pos + buf.length > buffer.length) {
-              if (!Buffer2.isBuffer(buf))
-                buf = Buffer2.from(buf);
-              buf.copy(buffer, pos);
-            } else {
-              GlobalUint8Array.prototype.set.call(
-                buffer,
-                buf,
-                pos
-              );
-            }
-          } else if (!Buffer2.isBuffer(buf)) {
-            throw new TypeError('"list" argument must be an Array of Buffers');
-          } else {
-            buf.copy(buffer, pos);
-          }
-          pos += buf.length;
-        }
-        return buffer;
-      };
-      function byteLength(string, encoding) {
-        if (Buffer2.isBuffer(string)) {
-          return string.length;
-        }
-        if (GlobalArrayBuffer.isView(string) || isInstance(string, GlobalArrayBuffer)) {
-          return string.byteLength;
-        }
-        if (typeof string !== "string") {
-          throw new TypeError(
-            'The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' + typeof string
-          );
-        }
-        const len = string.length;
-        const mustMatch = arguments.length > 2 && arguments[2] === true;
-        if (!mustMatch && len === 0)
-          return 0;
-        let loweredCase = false;
-        for (; ; ) {
-          switch (encoding) {
-            case "ascii":
-            case "latin1":
-            case "binary":
-              return len;
-            case "utf8":
-            case "utf-8":
-              return utf8ToBytes(string).length;
-            case "ucs2":
-            case "ucs-2":
-            case "utf16le":
-            case "utf-16le":
-              return len * 2;
-            case "hex":
-              return len >>> 1;
-            case "base64":
-              return base64ToBytes(string).length;
-            default:
-              if (loweredCase) {
-                return mustMatch ? -1 : utf8ToBytes(string).length;
-              }
-              encoding = ("" + encoding).toLowerCase();
-              loweredCase = true;
-          }
-        }
-      }
-      Buffer2.byteLength = byteLength;
-      function slowToString(encoding, start, end) {
-        let loweredCase = false;
-        if (start === void 0 || start < 0) {
-          start = 0;
-        }
-        if (start > this.length) {
-          return "";
-        }
-        if (end === void 0 || end > this.length) {
-          end = this.length;
-        }
-        if (end <= 0) {
-          return "";
-        }
-        end >>>= 0;
-        start >>>= 0;
-        if (end <= start) {
-          return "";
-        }
-        if (!encoding)
-          encoding = "utf8";
-        while (true) {
-          switch (encoding) {
-            case "hex":
-              return hexSlice(this, start, end);
-            case "utf8":
-            case "utf-8":
-              return utf8Slice(this, start, end);
-            case "ascii":
-              return asciiSlice(this, start, end);
-            case "latin1":
-            case "binary":
-              return latin1Slice(this, start, end);
-            case "base64":
-              return base64Slice(this, start, end);
-            case "ucs2":
-            case "ucs-2":
-            case "utf16le":
-            case "utf-16le":
-              return utf16leSlice(this, start, end);
-            default:
-              if (loweredCase)
-                throw new TypeError("Unknown encoding: " + encoding);
-              encoding = (encoding + "").toLowerCase();
-              loweredCase = true;
-          }
-        }
-      }
-      Buffer2.prototype._isBuffer = true;
-      function swap(b, n, m) {
-        const i = b[n];
-        b[n] = b[m];
-        b[m] = i;
-      }
-      Buffer2.prototype.swap16 = function swap16() {
-        const len = this.length;
-        if (len % 2 !== 0) {
-          throw new RangeError("Buffer size must be a multiple of 16-bits");
-        }
-        for (let i = 0; i < len; i += 2) {
-          swap(this, i, i + 1);
-        }
-        return this;
-      };
-      Buffer2.prototype.swap32 = function swap32() {
-        const len = this.length;
-        if (len % 4 !== 0) {
-          throw new RangeError("Buffer size must be a multiple of 32-bits");
-        }
-        for (let i = 0; i < len; i += 4) {
-          swap(this, i, i + 3);
-          swap(this, i + 1, i + 2);
-        }
-        return this;
-      };
-      Buffer2.prototype.swap64 = function swap64() {
-        const len = this.length;
-        if (len % 8 !== 0) {
-          throw new RangeError("Buffer size must be a multiple of 64-bits");
-        }
-        for (let i = 0; i < len; i += 8) {
-          swap(this, i, i + 7);
-          swap(this, i + 1, i + 6);
-          swap(this, i + 2, i + 5);
-          swap(this, i + 3, i + 4);
-        }
-        return this;
-      };
-      Buffer2.prototype.toString = function toString() {
-        const length = this.length;
-        if (length === 0)
-          return "";
-        if (arguments.length === 0)
-          return utf8Slice(this, 0, length);
-        return slowToString.apply(this, arguments);
-      };
-      Buffer2.prototype.toLocaleString = Buffer2.prototype.toString;
-      Buffer2.prototype.equals = function equals(b) {
-        if (!Buffer2.isBuffer(b))
-          throw new TypeError("Argument must be a Buffer");
-        if (this === b)
-          return true;
-        return Buffer2.compare(this, b) === 0;
-      };
-      Buffer2.prototype.inspect = function inspect() {
-        let str = "";
-        const max = exports.INSPECT_MAX_BYTES;
-        str = this.toString("hex", 0, max).replace(/(.{2})/g, "$1 ").trim();
-        if (this.length > max)
-          str += " ... ";
-        return "<Buffer " + str + ">";
-      };
-      if (customInspectSymbol) {
-        Buffer2.prototype[customInspectSymbol] = Buffer2.prototype.inspect;
-      }
-      Buffer2.prototype.compare = function compare(target, start, end, thisStart, thisEnd) {
-        if (isInstance(target, GlobalUint8Array)) {
-          target = Buffer2.from(target, target.offset, target.byteLength);
-        }
-        if (!Buffer2.isBuffer(target)) {
-          throw new TypeError(
-            'The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof target
-          );
-        }
-        if (start === void 0) {
-          start = 0;
-        }
-        if (end === void 0) {
-          end = target ? target.length : 0;
-        }
-        if (thisStart === void 0) {
-          thisStart = 0;
-        }
-        if (thisEnd === void 0) {
-          thisEnd = this.length;
-        }
-        if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
-          throw new RangeError("out of range index");
-        }
-        if (thisStart >= thisEnd && start >= end) {
-          return 0;
-        }
-        if (thisStart >= thisEnd) {
-          return -1;
-        }
-        if (start >= end) {
-          return 1;
-        }
-        start >>>= 0;
-        end >>>= 0;
-        thisStart >>>= 0;
-        thisEnd >>>= 0;
-        if (this === target)
-          return 0;
-        let x = thisEnd - thisStart;
-        let y = end - start;
-        const len = Math.min(x, y);
-        const thisCopy = this.slice(thisStart, thisEnd);
-        const targetCopy = target.slice(start, end);
-        for (let i = 0; i < len; ++i) {
-          if (thisCopy[i] !== targetCopy[i]) {
-            x = thisCopy[i];
-            y = targetCopy[i];
-            break;
-          }
-        }
-        if (x < y)
-          return -1;
-        if (y < x)
-          return 1;
-        return 0;
-      };
-      function bidirectionalIndexOf(buffer, val, byteOffset, encoding, dir) {
-        if (buffer.length === 0)
-          return -1;
-        if (typeof byteOffset === "string") {
-          encoding = byteOffset;
-          byteOffset = 0;
-        } else if (byteOffset > 2147483647) {
-          byteOffset = 2147483647;
-        } else if (byteOffset < -2147483648) {
-          byteOffset = -2147483648;
-        }
-        byteOffset = +byteOffset;
-        if (numberIsNaN(byteOffset)) {
-          byteOffset = dir ? 0 : buffer.length - 1;
-        }
-        if (byteOffset < 0)
-          byteOffset = buffer.length + byteOffset;
-        if (byteOffset >= buffer.length) {
-          if (dir)
-            return -1;
-          else
-            byteOffset = buffer.length - 1;
-        } else if (byteOffset < 0) {
-          if (dir)
-            byteOffset = 0;
-          else
-            return -1;
-        }
-        if (typeof val === "string") {
-          val = Buffer2.from(val, encoding);
-        }
-        if (Buffer2.isBuffer(val)) {
-          if (val.length === 0) {
-            return -1;
-          }
-          return arrayIndexOf(buffer, val, byteOffset, encoding, dir);
-        } else if (typeof val === "number") {
-          val = val & 255;
-          if (typeof GlobalUint8Array.prototype.indexOf === "function") {
-            if (dir) {
-              return GlobalUint8Array.prototype.indexOf.call(buffer, val, byteOffset);
-            } else {
-              return GlobalUint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset);
-            }
-          }
-          return arrayIndexOf(buffer, [val], byteOffset, encoding, dir);
-        }
-        throw new TypeError("val must be string, number or Buffer");
-      }
-      function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
-        let indexSize = 1;
-        let arrLength = arr.length;
-        let valLength = val.length;
-        if (encoding !== void 0) {
-          encoding = String(encoding).toLowerCase();
-          if (encoding === "ucs2" || encoding === "ucs-2" || encoding === "utf16le" || encoding === "utf-16le") {
-            if (arr.length < 2 || val.length < 2) {
-              return -1;
-            }
-            indexSize = 2;
-            arrLength /= 2;
-            valLength /= 2;
-            byteOffset /= 2;
-          }
-        }
-        function read(buf, i2) {
-          if (indexSize === 1) {
-            return buf[i2];
-          } else {
-            return buf.readUInt16BE(i2 * indexSize);
-          }
-        }
-        let i;
-        if (dir) {
-          let foundIndex = -1;
-          for (i = byteOffset; i < arrLength; i++) {
-            if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
-              if (foundIndex === -1)
-                foundIndex = i;
-              if (i - foundIndex + 1 === valLength)
-                return foundIndex * indexSize;
-            } else {
-              if (foundIndex !== -1)
-                i -= i - foundIndex;
-              foundIndex = -1;
-            }
-          }
-        } else {
-          if (byteOffset + valLength > arrLength)
-            byteOffset = arrLength - valLength;
-          for (i = byteOffset; i >= 0; i--) {
-            let found = true;
-            for (let j = 0; j < valLength; j++) {
-              if (read(arr, i + j) !== read(val, j)) {
-                found = false;
-                break;
-              }
-            }
-            if (found)
-              return i;
-          }
-        }
-        return -1;
-      }
-      Buffer2.prototype.includes = function includes(val, byteOffset, encoding) {
-        return this.indexOf(val, byteOffset, encoding) !== -1;
-      };
-      Buffer2.prototype.indexOf = function indexOf(val, byteOffset, encoding) {
-        return bidirectionalIndexOf(this, val, byteOffset, encoding, true);
-      };
-      Buffer2.prototype.lastIndexOf = function lastIndexOf(val, byteOffset, encoding) {
-        return bidirectionalIndexOf(this, val, byteOffset, encoding, false);
-      };
-      function hexWrite(buf, string, offset, length) {
-        offset = Number(offset) || 0;
-        const remaining = buf.length - offset;
-        if (!length) {
-          length = remaining;
-        } else {
-          length = Number(length);
-          if (length > remaining) {
-            length = remaining;
-          }
-        }
-        const strLen = string.length;
-        if (length > strLen / 2) {
-          length = strLen / 2;
-        }
-        let i;
-        for (i = 0; i < length; ++i) {
-          const parsed = parseInt(string.substr(i * 2, 2), 16);
-          if (numberIsNaN(parsed))
-            return i;
-          buf[offset + i] = parsed;
-        }
-        return i;
-      }
-      function utf8Write(buf, string, offset, length) {
-        return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length);
-      }
-      function asciiWrite(buf, string, offset, length) {
-        return blitBuffer(asciiToBytes(string), buf, offset, length);
-      }
-      function base64Write(buf, string, offset, length) {
-        return blitBuffer(base64ToBytes(string), buf, offset, length);
-      }
-      function ucs2Write(buf, string, offset, length) {
-        return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length);
-      }
-      Buffer2.prototype.write = function write(string, offset, length, encoding) {
-        if (offset === void 0) {
-          encoding = "utf8";
-          length = this.length;
-          offset = 0;
-        } else if (length === void 0 && typeof offset === "string") {
-          encoding = offset;
-          length = this.length;
-          offset = 0;
-        } else if (isFinite(offset)) {
-          offset = offset >>> 0;
-          if (isFinite(length)) {
-            length = length >>> 0;
-            if (encoding === void 0)
-              encoding = "utf8";
-          } else {
-            encoding = length;
-            length = void 0;
-          }
-        } else {
-          throw new Error(
-            "Buffer.write(string, encoding, offset[, length]) is no longer supported"
-          );
-        }
-        const remaining = this.length - offset;
-        if (length === void 0 || length > remaining)
-          length = remaining;
-        if (string.length > 0 && (length < 0 || offset < 0) || offset > this.length) {
-          throw new RangeError("Attempt to write outside buffer bounds");
-        }
-        if (!encoding)
-          encoding = "utf8";
-        let loweredCase = false;
-        for (; ; ) {
-          switch (encoding) {
-            case "hex":
-              return hexWrite(this, string, offset, length);
-            case "utf8":
-            case "utf-8":
-              return utf8Write(this, string, offset, length);
-            case "ascii":
-            case "latin1":
-            case "binary":
-              return asciiWrite(this, string, offset, length);
-            case "base64":
-              return base64Write(this, string, offset, length);
-            case "ucs2":
-            case "ucs-2":
-            case "utf16le":
-            case "utf-16le":
-              return ucs2Write(this, string, offset, length);
-            default:
-              if (loweredCase)
-                throw new TypeError("Unknown encoding: " + encoding);
-              encoding = ("" + encoding).toLowerCase();
-              loweredCase = true;
-          }
-        }
-      };
-      Buffer2.prototype.toJSON = function toJSON() {
-        return {
-          type: "Buffer",
-          data: Array.prototype.slice.call(this._arr || this, 0)
-        };
-      };
-      function base64Slice(buf, start, end) {
-        if (start === 0 && end === buf.length) {
-          return base64.fromByteArray(buf);
-        } else {
-          return base64.fromByteArray(buf.slice(start, end));
-        }
-      }
-      function utf8Slice(buf, start, end) {
-        end = Math.min(buf.length, end);
-        const res = [];
-        let i = start;
-        while (i < end) {
-          const firstByte = buf[i];
-          let codePoint = null;
-          let bytesPerSequence = firstByte > 239 ? 4 : firstByte > 223 ? 3 : firstByte > 191 ? 2 : 1;
-          if (i + bytesPerSequence <= end) {
-            let secondByte, thirdByte, fourthByte, tempCodePoint;
-            switch (bytesPerSequence) {
-              case 1:
-                if (firstByte < 128) {
-                  codePoint = firstByte;
-                }
-                break;
-              case 2:
-                secondByte = buf[i + 1];
-                if ((secondByte & 192) === 128) {
-                  tempCodePoint = (firstByte & 31) << 6 | secondByte & 63;
-                  if (tempCodePoint > 127) {
-                    codePoint = tempCodePoint;
-                  }
-                }
-                break;
-              case 3:
-                secondByte = buf[i + 1];
-                thirdByte = buf[i + 2];
-                if ((secondByte & 192) === 128 && (thirdByte & 192) === 128) {
-                  tempCodePoint = (firstByte & 15) << 12 | (secondByte & 63) << 6 | thirdByte & 63;
-                  if (tempCodePoint > 2047 && (tempCodePoint < 55296 || tempCodePoint > 57343)) {
-                    codePoint = tempCodePoint;
-                  }
-                }
-                break;
-              case 4:
-                secondByte = buf[i + 1];
-                thirdByte = buf[i + 2];
-                fourthByte = buf[i + 3];
-                if ((secondByte & 192) === 128 && (thirdByte & 192) === 128 && (fourthByte & 192) === 128) {
-                  tempCodePoint = (firstByte & 15) << 18 | (secondByte & 63) << 12 | (thirdByte & 63) << 6 | fourthByte & 63;
-                  if (tempCodePoint > 65535 && tempCodePoint < 1114112) {
-                    codePoint = tempCodePoint;
-                  }
-                }
-            }
-          }
-          if (codePoint === null) {
-            codePoint = 65533;
-            bytesPerSequence = 1;
-          } else if (codePoint > 65535) {
-            codePoint -= 65536;
-            res.push(codePoint >>> 10 & 1023 | 55296);
-            codePoint = 56320 | codePoint & 1023;
-          }
-          res.push(codePoint);
-          i += bytesPerSequence;
-        }
-        return decodeCodePointsArray(res);
-      }
-      var MAX_ARGUMENTS_LENGTH = 4096;
-      function decodeCodePointsArray(codePoints) {
-        const len = codePoints.length;
-        if (len <= MAX_ARGUMENTS_LENGTH) {
-          return String.fromCharCode.apply(String, codePoints);
-        }
-        let res = "";
-        let i = 0;
-        while (i < len) {
-          res += String.fromCharCode.apply(
-            String,
-            codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
-          );
-        }
-        return res;
-      }
-      function asciiSlice(buf, start, end) {
-        let ret = "";
-        end = Math.min(buf.length, end);
-        for (let i = start; i < end; ++i) {
-          ret += String.fromCharCode(buf[i] & 127);
-        }
-        return ret;
-      }
-      function latin1Slice(buf, start, end) {
-        let ret = "";
-        end = Math.min(buf.length, end);
-        for (let i = start; i < end; ++i) {
-          ret += String.fromCharCode(buf[i]);
-        }
-        return ret;
-      }
-      function hexSlice(buf, start, end) {
-        const len = buf.length;
-        if (!start || start < 0)
-          start = 0;
-        if (!end || end < 0 || end > len)
-          end = len;
-        let out = "";
-        for (let i = start; i < end; ++i) {
-          out += hexSliceLookupTable[buf[i]];
-        }
-        return out;
-      }
-      function utf16leSlice(buf, start, end) {
-        const bytes = buf.slice(start, end);
-        let res = "";
-        for (let i = 0; i < bytes.length - 1; i += 2) {
-          res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256);
-        }
-        return res;
-      }
-      Buffer2.prototype.slice = function slice(start, end) {
-        const len = this.length;
-        start = ~~start;
-        end = end === void 0 ? len : ~~end;
-        if (start < 0) {
-          start += len;
-          if (start < 0)
-            start = 0;
-        } else if (start > len) {
-          start = len;
-        }
-        if (end < 0) {
-          end += len;
-          if (end < 0)
-            end = 0;
-        } else if (end > len) {
-          end = len;
-        }
-        if (end < start)
-          end = start;
-        const newBuf = this.subarray(start, end);
-        Object.setPrototypeOf(newBuf, Buffer2.prototype);
-        return newBuf;
-      };
-      function checkOffset(offset, ext, length) {
-        if (offset % 1 !== 0 || offset < 0)
-          throw new RangeError("offset is not uint");
-        if (offset + ext > length)
-          throw new RangeError("Trying to access beyond buffer length");
-      }
-      Buffer2.prototype.readUintLE = Buffer2.prototype.readUIntLE = function readUIntLE(offset, byteLength2, noAssert) {
-        offset = offset >>> 0;
-        byteLength2 = byteLength2 >>> 0;
-        if (!noAssert)
-          checkOffset(offset, byteLength2, this.length);
-        let val = this[offset];
-        let mul = 1;
-        let i = 0;
-        while (++i < byteLength2 && (mul *= 256)) {
-          val += this[offset + i] * mul;
-        }
-        return val;
-      };
-      Buffer2.prototype.readUintBE = Buffer2.prototype.readUIntBE = function readUIntBE(offset, byteLength2, noAssert) {
-        offset = offset >>> 0;
-        byteLength2 = byteLength2 >>> 0;
-        if (!noAssert) {
-          checkOffset(offset, byteLength2, this.length);
-        }
-        let val = this[offset + --byteLength2];
-        let mul = 1;
-        while (byteLength2 > 0 && (mul *= 256)) {
-          val += this[offset + --byteLength2] * mul;
-        }
-        return val;
-      };
-      Buffer2.prototype.readUint8 = Buffer2.prototype.readUInt8 = function readUInt8(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 1, this.length);
-        return this[offset];
-      };
-      Buffer2.prototype.readUint16LE = Buffer2.prototype.readUInt16LE = function readUInt16LE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 2, this.length);
-        return this[offset] | this[offset + 1] << 8;
-      };
-      Buffer2.prototype.readUint16BE = Buffer2.prototype.readUInt16BE = function readUInt16BE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 2, this.length);
-        return this[offset] << 8 | this[offset + 1];
-      };
-      Buffer2.prototype.readUint32LE = Buffer2.prototype.readUInt32LE = function readUInt32LE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 4, this.length);
-        return (this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16) + this[offset + 3] * 16777216;
-      };
-      Buffer2.prototype.readUint32BE = Buffer2.prototype.readUInt32BE = function readUInt32BE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 4, this.length);
-        return this[offset] * 16777216 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
-      };
-      Buffer2.prototype.readBigUInt64LE = defineBigIntMethod(function readBigUInt64LE(offset) {
-        offset = offset >>> 0;
-        validateNumber(offset, "offset");
-        const first = this[offset];
-        const last = this[offset + 7];
-        if (first === void 0 || last === void 0) {
-          boundsError(offset, this.length - 8);
-        }
-        const lo = first + this[++offset] * 2 ** 8 + this[++offset] * 2 ** 16 + this[++offset] * 2 ** 24;
-        const hi = this[++offset] + this[++offset] * 2 ** 8 + this[++offset] * 2 ** 16 + last * 2 ** 24;
-        return BigInt(lo) + (BigInt(hi) << BigInt(32));
-      });
-      Buffer2.prototype.readBigUInt64BE = defineBigIntMethod(function readBigUInt64BE(offset) {
-        offset = offset >>> 0;
-        validateNumber(offset, "offset");
-        const first = this[offset];
-        const last = this[offset + 7];
-        if (first === void 0 || last === void 0) {
-          boundsError(offset, this.length - 8);
-        }
-        const hi = first * 2 ** 24 + this[++offset] * 2 ** 16 + this[++offset] * 2 ** 8 + this[++offset];
-        const lo = this[++offset] * 2 ** 24 + this[++offset] * 2 ** 16 + this[++offset] * 2 ** 8 + last;
-        return (BigInt(hi) << BigInt(32)) + BigInt(lo);
-      });
-      Buffer2.prototype.readIntLE = function readIntLE(offset, byteLength2, noAssert) {
-        offset = offset >>> 0;
-        byteLength2 = byteLength2 >>> 0;
-        if (!noAssert)
-          checkOffset(offset, byteLength2, this.length);
-        let val = this[offset];
-        let mul = 1;
-        let i = 0;
-        while (++i < byteLength2 && (mul *= 256)) {
-          val += this[offset + i] * mul;
-        }
-        mul *= 128;
-        if (val >= mul)
-          val -= Math.pow(2, 8 * byteLength2);
-        return val;
-      };
-      Buffer2.prototype.readIntBE = function readIntBE(offset, byteLength2, noAssert) {
-        offset = offset >>> 0;
-        byteLength2 = byteLength2 >>> 0;
-        if (!noAssert)
-          checkOffset(offset, byteLength2, this.length);
-        let i = byteLength2;
-        let mul = 1;
-        let val = this[offset + --i];
-        while (i > 0 && (mul *= 256)) {
-          val += this[offset + --i] * mul;
-        }
-        mul *= 128;
-        if (val >= mul)
-          val -= Math.pow(2, 8 * byteLength2);
-        return val;
-      };
-      Buffer2.prototype.readInt8 = function readInt8(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 1, this.length);
-        if (!(this[offset] & 128))
-          return this[offset];
-        return (255 - this[offset] + 1) * -1;
-      };
-      Buffer2.prototype.readInt16LE = function readInt16LE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 2, this.length);
-        const val = this[offset] | this[offset + 1] << 8;
-        return val & 32768 ? val | 4294901760 : val;
-      };
-      Buffer2.prototype.readInt16BE = function readInt16BE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 2, this.length);
-        const val = this[offset + 1] | this[offset] << 8;
-        return val & 32768 ? val | 4294901760 : val;
-      };
-      Buffer2.prototype.readInt32LE = function readInt32LE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 4, this.length);
-        return this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16 | this[offset + 3] << 24;
-      };
-      Buffer2.prototype.readInt32BE = function readInt32BE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 4, this.length);
-        return this[offset] << 24 | this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3];
-      };
-      Buffer2.prototype.readBigInt64LE = defineBigIntMethod(function readBigInt64LE(offset) {
-        offset = offset >>> 0;
-        validateNumber(offset, "offset");
-        const first = this[offset];
-        const last = this[offset + 7];
-        if (first === void 0 || last === void 0) {
-          boundsError(offset, this.length - 8);
-        }
-        const val = this[offset + 4] + this[offset + 5] * 2 ** 8 + this[offset + 6] * 2 ** 16 + (last << 24);
-        return (BigInt(val) << BigInt(32)) + BigInt(first + this[++offset] * 2 ** 8 + this[++offset] * 2 ** 16 + this[++offset] * 2 ** 24);
-      });
-      Buffer2.prototype.readBigInt64BE = defineBigIntMethod(function readBigInt64BE(offset) {
-        offset = offset >>> 0;
-        validateNumber(offset, "offset");
-        const first = this[offset];
-        const last = this[offset + 7];
-        if (first === void 0 || last === void 0) {
-          boundsError(offset, this.length - 8);
-        }
-        const val = (first << 24) + // Overflow
-        this[++offset] * 2 ** 16 + this[++offset] * 2 ** 8 + this[++offset];
-        return (BigInt(val) << BigInt(32)) + BigInt(this[++offset] * 2 ** 24 + this[++offset] * 2 ** 16 + this[++offset] * 2 ** 8 + last);
-      });
-      Buffer2.prototype.readFloatLE = function readFloatLE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 4, this.length);
-        return ieee754.read(this, offset, true, 23, 4);
-      };
-      Buffer2.prototype.readFloatBE = function readFloatBE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 4, this.length);
-        return ieee754.read(this, offset, false, 23, 4);
-      };
-      Buffer2.prototype.readDoubleLE = function readDoubleLE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 8, this.length);
-        return ieee754.read(this, offset, true, 52, 8);
-      };
-      Buffer2.prototype.readDoubleBE = function readDoubleBE(offset, noAssert) {
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkOffset(offset, 8, this.length);
-        return ieee754.read(this, offset, false, 52, 8);
-      };
-      function checkInt(buf, value, offset, ext, max, min) {
-        if (!Buffer2.isBuffer(buf))
-          throw new TypeError('"buffer" argument must be a Buffer instance');
-        if (value > max || value < min)
-          throw new RangeError('"value" argument is out of bounds');
-        if (offset + ext > buf.length)
-          throw new RangeError("Index out of range");
-      }
-      Buffer2.prototype.writeUintLE = Buffer2.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength2, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        byteLength2 = byteLength2 >>> 0;
-        if (!noAssert) {
-          const maxBytes = Math.pow(2, 8 * byteLength2) - 1;
-          checkInt(this, value, offset, byteLength2, maxBytes, 0);
-        }
-        let mul = 1;
-        let i = 0;
-        this[offset] = value & 255;
-        while (++i < byteLength2 && (mul *= 256)) {
-          this[offset + i] = value / mul & 255;
-        }
-        return offset + byteLength2;
-      };
-      Buffer2.prototype.writeUintBE = Buffer2.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength2, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        byteLength2 = byteLength2 >>> 0;
-        if (!noAssert) {
-          const maxBytes = Math.pow(2, 8 * byteLength2) - 1;
-          checkInt(this, value, offset, byteLength2, maxBytes, 0);
-        }
-        let i = byteLength2 - 1;
-        let mul = 1;
-        this[offset + i] = value & 255;
-        while (--i >= 0 && (mul *= 256)) {
-          this[offset + i] = value / mul & 255;
-        }
-        return offset + byteLength2;
-      };
-      Buffer2.prototype.writeUint8 = Buffer2.prototype.writeUInt8 = function writeUInt8(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 1, 255, 0);
-        this[offset] = value & 255;
-        return offset + 1;
-      };
-      Buffer2.prototype.writeUint16LE = Buffer2.prototype.writeUInt16LE = function writeUInt16LE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 2, 65535, 0);
-        this[offset] = value & 255;
-        this[offset + 1] = value >>> 8;
-        return offset + 2;
-      };
-      Buffer2.prototype.writeUint16BE = Buffer2.prototype.writeUInt16BE = function writeUInt16BE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 2, 65535, 0);
-        this[offset] = value >>> 8;
-        this[offset + 1] = value & 255;
-        return offset + 2;
-      };
-      Buffer2.prototype.writeUint32LE = Buffer2.prototype.writeUInt32LE = function writeUInt32LE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 4, 4294967295, 0);
-        this[offset + 3] = value >>> 24;
-        this[offset + 2] = value >>> 16;
-        this[offset + 1] = value >>> 8;
-        this[offset] = value & 255;
-        return offset + 4;
-      };
-      Buffer2.prototype.writeUint32BE = Buffer2.prototype.writeUInt32BE = function writeUInt32BE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 4, 4294967295, 0);
-        this[offset] = value >>> 24;
-        this[offset + 1] = value >>> 16;
-        this[offset + 2] = value >>> 8;
-        this[offset + 3] = value & 255;
-        return offset + 4;
-      };
-      function wrtBigUInt64LE(buf, value, offset, min, max) {
-        checkIntBI(value, min, max, buf, offset, 7);
-        let lo = Number(value & BigInt(4294967295));
-        buf[offset++] = lo;
-        lo = lo >> 8;
-        buf[offset++] = lo;
-        lo = lo >> 8;
-        buf[offset++] = lo;
-        lo = lo >> 8;
-        buf[offset++] = lo;
-        let hi = Number(value >> BigInt(32) & BigInt(4294967295));
-        buf[offset++] = hi;
-        hi = hi >> 8;
-        buf[offset++] = hi;
-        hi = hi >> 8;
-        buf[offset++] = hi;
-        hi = hi >> 8;
-        buf[offset++] = hi;
-        return offset;
-      }
-      function wrtBigUInt64BE(buf, value, offset, min, max) {
-        checkIntBI(value, min, max, buf, offset, 7);
-        let lo = Number(value & BigInt(4294967295));
-        buf[offset + 7] = lo;
-        lo = lo >> 8;
-        buf[offset + 6] = lo;
-        lo = lo >> 8;
-        buf[offset + 5] = lo;
-        lo = lo >> 8;
-        buf[offset + 4] = lo;
-        let hi = Number(value >> BigInt(32) & BigInt(4294967295));
-        buf[offset + 3] = hi;
-        hi = hi >> 8;
-        buf[offset + 2] = hi;
-        hi = hi >> 8;
-        buf[offset + 1] = hi;
-        hi = hi >> 8;
-        buf[offset] = hi;
-        return offset + 8;
-      }
-      Buffer2.prototype.writeBigUInt64LE = defineBigIntMethod(function writeBigUInt64LE(value, offset = 0) {
-        return wrtBigUInt64LE(this, value, offset, BigInt(0), BigInt("0xffffffffffffffff"));
-      });
-      Buffer2.prototype.writeBigUInt64BE = defineBigIntMethod(function writeBigUInt64BE(value, offset = 0) {
-        return wrtBigUInt64BE(this, value, offset, BigInt(0), BigInt("0xffffffffffffffff"));
-      });
-      Buffer2.prototype.writeIntLE = function writeIntLE(value, offset, byteLength2, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert) {
-          const limit = Math.pow(2, 8 * byteLength2 - 1);
-          checkInt(this, value, offset, byteLength2, limit - 1, -limit);
-        }
-        let i = 0;
-        let mul = 1;
-        let sub = 0;
-        this[offset] = value & 255;
-        while (++i < byteLength2 && (mul *= 256)) {
-          if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
-            sub = 1;
-          }
-          this[offset + i] = (value / mul >> 0) - sub & 255;
-        }
-        return offset + byteLength2;
-      };
-      Buffer2.prototype.writeIntBE = function writeIntBE(value, offset, byteLength2, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert) {
-          const limit = Math.pow(2, 8 * byteLength2 - 1);
-          checkInt(this, value, offset, byteLength2, limit - 1, -limit);
-        }
-        let i = byteLength2 - 1;
-        let mul = 1;
-        let sub = 0;
-        this[offset + i] = value & 255;
-        while (--i >= 0 && (mul *= 256)) {
-          if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
-            sub = 1;
-          }
-          this[offset + i] = (value / mul >> 0) - sub & 255;
-        }
-        return offset + byteLength2;
-      };
-      Buffer2.prototype.writeInt8 = function writeInt8(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 1, 127, -128);
-        if (value < 0)
-          value = 255 + value + 1;
-        this[offset] = value & 255;
-        return offset + 1;
-      };
-      Buffer2.prototype.writeInt16LE = function writeInt16LE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 2, 32767, -32768);
-        this[offset] = value & 255;
-        this[offset + 1] = value >>> 8;
-        return offset + 2;
-      };
-      Buffer2.prototype.writeInt16BE = function writeInt16BE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 2, 32767, -32768);
-        this[offset] = value >>> 8;
-        this[offset + 1] = value & 255;
-        return offset + 2;
-      };
-      Buffer2.prototype.writeInt32LE = function writeInt32LE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 4, 2147483647, -2147483648);
-        this[offset] = value & 255;
-        this[offset + 1] = value >>> 8;
-        this[offset + 2] = value >>> 16;
-        this[offset + 3] = value >>> 24;
-        return offset + 4;
-      };
-      Buffer2.prototype.writeInt32BE = function writeInt32BE(value, offset, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert)
-          checkInt(this, value, offset, 4, 2147483647, -2147483648);
-        if (value < 0)
-          value = 4294967295 + value + 1;
-        this[offset] = value >>> 24;
-        this[offset + 1] = value >>> 16;
-        this[offset + 2] = value >>> 8;
-        this[offset + 3] = value & 255;
-        return offset + 4;
-      };
-      Buffer2.prototype.writeBigInt64LE = defineBigIntMethod(function writeBigInt64LE(value, offset = 0) {
-        return wrtBigUInt64LE(this, value, offset, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"));
-      });
-      Buffer2.prototype.writeBigInt64BE = defineBigIntMethod(function writeBigInt64BE(value, offset = 0) {
-        return wrtBigUInt64BE(this, value, offset, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"));
-      });
-      function checkIEEE754(buf, value, offset, ext, max, min) {
-        if (offset + ext > buf.length)
-          throw new RangeError("Index out of range");
-        if (offset < 0)
-          throw new RangeError("Index out of range");
-      }
-      function writeFloat(buf, value, offset, littleEndian, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert) {
-          checkIEEE754(buf, value, offset, 4, 34028234663852886e22, -34028234663852886e22);
-        }
-        ieee754.write(buf, value, offset, littleEndian, 23, 4);
-        return offset + 4;
-      }
-      Buffer2.prototype.writeFloatLE = function writeFloatLE(value, offset, noAssert) {
-        return writeFloat(this, value, offset, true, noAssert);
-      };
-      Buffer2.prototype.writeFloatBE = function writeFloatBE(value, offset, noAssert) {
-        return writeFloat(this, value, offset, false, noAssert);
-      };
-      function writeDouble(buf, value, offset, littleEndian, noAssert) {
-        value = +value;
-        offset = offset >>> 0;
-        if (!noAssert) {
-          checkIEEE754(buf, value, offset, 8, 17976931348623157e292, -17976931348623157e292);
-        }
-        ieee754.write(buf, value, offset, littleEndian, 52, 8);
-        return offset + 8;
-      }
-      Buffer2.prototype.writeDoubleLE = function writeDoubleLE(value, offset, noAssert) {
-        return writeDouble(this, value, offset, true, noAssert);
-      };
-      Buffer2.prototype.writeDoubleBE = function writeDoubleBE(value, offset, noAssert) {
-        return writeDouble(this, value, offset, false, noAssert);
-      };
-      Buffer2.prototype.copy = function copy(target, targetStart, start, end) {
-        if (!Buffer2.isBuffer(target))
-          throw new TypeError("argument should be a Buffer");
-        if (!start)
-          start = 0;
-        if (!end && end !== 0)
-          end = this.length;
-        if (targetStart >= target.length)
-          targetStart = target.length;
-        if (!targetStart)
-          targetStart = 0;
-        if (end > 0 && end < start)
-          end = start;
-        if (end === start)
-          return 0;
-        if (target.length === 0 || this.length === 0)
-          return 0;
-        if (targetStart < 0) {
-          throw new RangeError("targetStart out of bounds");
-        }
-        if (start < 0 || start >= this.length)
-          throw new RangeError("Index out of range");
-        if (end < 0)
-          throw new RangeError("sourceEnd out of bounds");
-        if (end > this.length)
-          end = this.length;
-        if (target.length - targetStart < end - start) {
-          end = target.length - targetStart + start;
-        }
-        const len = end - start;
-        if (this === target && typeof GlobalUint8Array.prototype.copyWithin === "function") {
-          this.copyWithin(targetStart, start, end);
-        } else {
-          GlobalUint8Array.prototype.set.call(
-            target,
-            this.subarray(start, end),
-            targetStart
-          );
-        }
-        return len;
-      };
-      Buffer2.prototype.fill = function fill(val, start, end, encoding) {
-        if (typeof val === "string") {
-          if (typeof start === "string") {
-            encoding = start;
-            start = 0;
-            end = this.length;
-          } else if (typeof end === "string") {
-            encoding = end;
-            end = this.length;
-          }
-          if (encoding !== void 0 && typeof encoding !== "string") {
-            throw new TypeError("encoding must be a string");
-          }
-          if (typeof encoding === "string" && !Buffer2.isEncoding(encoding)) {
-            throw new TypeError("Unknown encoding: " + encoding);
-          }
-          if (val.length === 1) {
-            const code = val.charCodeAt(0);
-            if (encoding === "utf8" && code < 128 || encoding === "latin1") {
-              val = code;
-            }
-          }
-        } else if (typeof val === "number") {
-          val = val & 255;
-        } else if (typeof val === "boolean") {
-          val = Number(val);
-        }
-        if (start < 0 || this.length < start || this.length < end) {
-          throw new RangeError("Out of range index");
-        }
-        if (end <= start) {
-          return this;
-        }
-        start = start >>> 0;
-        end = end === void 0 ? this.length : end >>> 0;
-        if (!val)
-          val = 0;
-        let i;
-        if (typeof val === "number") {
-          for (i = start; i < end; ++i) {
-            this[i] = val;
-          }
-        } else {
-          const bytes = Buffer2.isBuffer(val) ? val : Buffer2.from(val, encoding);
-          const len = bytes.length;
-          if (len === 0) {
-            throw new TypeError('The value "' + val + '" is invalid for argument "value"');
-          }
-          for (i = 0; i < end - start; ++i) {
-            this[i + start] = bytes[i % len];
-          }
-        }
-        return this;
-      };
-      var errors = {};
-      function E(sym, getMessage, Base) {
-        errors[sym] = class NodeError extends Base {
-          constructor() {
-            super();
-            Object.defineProperty(this, "message", {
-              value: getMessage.apply(this, arguments),
-              writable: true,
-              configurable: true
-            });
-            this.name = `${this.name} [${sym}]`;
-            this.stack;
-            delete this.name;
-          }
-          get code() {
-            return sym;
-          }
-          set code(value) {
-            Object.defineProperty(this, "code", {
-              configurable: true,
-              enumerable: true,
-              value,
-              writable: true
-            });
-          }
-          toString() {
-            return `${this.name} [${sym}]: ${this.message}`;
-          }
-        };
-      }
-      E(
-        "ERR_BUFFER_OUT_OF_BOUNDS",
-        function(name) {
-          if (name) {
-            return `${name} is outside of buffer bounds`;
-          }
-          return "Attempt to access memory outside buffer bounds";
-        },
-        RangeError
-      );
-      E(
-        "ERR_INVALID_ARG_TYPE",
-        function(name, actual) {
-          return `The "${name}" argument must be of type number. Received type ${typeof actual}`;
-        },
-        TypeError
-      );
-      E(
-        "ERR_OUT_OF_RANGE",
-        function(str, range, input) {
-          let msg = `The value of "${str}" is out of range.`;
-          let received = input;
-          if (Number.isInteger(input) && Math.abs(input) > 2 ** 32) {
-            received = addNumericalSeparator(String(input));
-          } else if (typeof input === "bigint") {
-            received = String(input);
-            if (input > BigInt(2) ** BigInt(32) || input < -(BigInt(2) ** BigInt(32))) {
-              received = addNumericalSeparator(received);
-            }
-            received += "n";
-          }
-          msg += ` It must be ${range}. Received ${received}`;
-          return msg;
-        },
-        RangeError
-      );
-      function addNumericalSeparator(val) {
-        let res = "";
-        let i = val.length;
-        const start = val[0] === "-" ? 1 : 0;
-        for (; i >= start + 4; i -= 3) {
-          res = `_${val.slice(i - 3, i)}${res}`;
-        }
-        return `${val.slice(0, i)}${res}`;
-      }
-      function checkBounds(buf, offset, byteLength2) {
-        validateNumber(offset, "offset");
-        if (buf[offset] === void 0 || buf[offset + byteLength2] === void 0) {
-          boundsError(offset, buf.length - (byteLength2 + 1));
-        }
-      }
-      function checkIntBI(value, min, max, buf, offset, byteLength2) {
-        if (value > max || value < min) {
-          const n = typeof min === "bigint" ? "n" : "";
-          let range;
-          if (byteLength2 > 3) {
-            if (min === 0 || min === BigInt(0)) {
-              range = `>= 0${n} and < 2${n} ** ${(byteLength2 + 1) * 8}${n}`;
-            } else {
-              range = `>= -(2${n} ** ${(byteLength2 + 1) * 8 - 1}${n}) and < 2 ** ${(byteLength2 + 1) * 8 - 1}${n}`;
-            }
-          } else {
-            range = `>= ${min}${n} and <= ${max}${n}`;
-          }
-          throw new errors.ERR_OUT_OF_RANGE("value", range, value);
-        }
-        checkBounds(buf, offset, byteLength2);
-      }
-      function validateNumber(value, name) {
-        if (typeof value !== "number") {
-          throw new errors.ERR_INVALID_ARG_TYPE(name, "number", value);
-        }
-      }
-      function boundsError(value, length, type) {
-        if (Math.floor(value) !== value) {
-          validateNumber(value, type);
-          throw new errors.ERR_OUT_OF_RANGE(type || "offset", "an integer", value);
-        }
-        if (length < 0) {
-          throw new errors.ERR_BUFFER_OUT_OF_BOUNDS();
-        }
-        throw new errors.ERR_OUT_OF_RANGE(
-          type || "offset",
-          `>= ${type ? 1 : 0} and <= ${length}`,
-          value
-        );
-      }
-      var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g;
-      function base64clean(str) {
-        str = str.split("=")[0];
-        str = str.trim().replace(INVALID_BASE64_RE, "");
-        if (str.length < 2)
-          return "";
-        while (str.length % 4 !== 0) {
-          str = str + "=";
-        }
-        return str;
-      }
-      function utf8ToBytes(string, units) {
-        units = units || Infinity;
-        let codePoint;
-        const length = string.length;
-        let leadSurrogate = null;
-        const bytes = [];
-        for (let i = 0; i < length; ++i) {
-          codePoint = string.charCodeAt(i);
-          if (codePoint > 55295 && codePoint < 57344) {
-            if (!leadSurrogate) {
-              if (codePoint > 56319) {
-                if ((units -= 3) > -1)
-                  bytes.push(239, 191, 189);
-                continue;
-              } else if (i + 1 === length) {
-                if ((units -= 3) > -1)
-                  bytes.push(239, 191, 189);
-                continue;
-              }
-              leadSurrogate = codePoint;
-              continue;
-            }
-            if (codePoint < 56320) {
-              if ((units -= 3) > -1)
-                bytes.push(239, 191, 189);
-              leadSurrogate = codePoint;
-              continue;
-            }
-            codePoint = (leadSurrogate - 55296 << 10 | codePoint - 56320) + 65536;
-          } else if (leadSurrogate) {
-            if ((units -= 3) > -1)
-              bytes.push(239, 191, 189);
-          }
-          leadSurrogate = null;
-          if (codePoint < 128) {
-            if ((units -= 1) < 0)
-              break;
-            bytes.push(codePoint);
-          } else if (codePoint < 2048) {
-            if ((units -= 2) < 0)
-              break;
-            bytes.push(
-              codePoint >> 6 | 192,
-              codePoint & 63 | 128
-            );
-          } else if (codePoint < 65536) {
-            if ((units -= 3) < 0)
-              break;
-            bytes.push(
-              codePoint >> 12 | 224,
-              codePoint >> 6 & 63 | 128,
-              codePoint & 63 | 128
-            );
-          } else if (codePoint < 1114112) {
-            if ((units -= 4) < 0)
-              break;
-            bytes.push(
-              codePoint >> 18 | 240,
-              codePoint >> 12 & 63 | 128,
-              codePoint >> 6 & 63 | 128,
-              codePoint & 63 | 128
-            );
-          } else {
-            throw new Error("Invalid code point");
-          }
-        }
-        return bytes;
-      }
-      function asciiToBytes(str) {
-        const byteArray = [];
-        for (let i = 0; i < str.length; ++i) {
-          byteArray.push(str.charCodeAt(i) & 255);
-        }
-        return byteArray;
-      }
-      function utf16leToBytes(str, units) {
-        let c, hi, lo;
-        const byteArray = [];
-        for (let i = 0; i < str.length; ++i) {
-          if ((units -= 2) < 0)
-            break;
-          c = str.charCodeAt(i);
-          hi = c >> 8;
-          lo = c % 256;
-          byteArray.push(lo);
-          byteArray.push(hi);
-        }
-        return byteArray;
-      }
-      function base64ToBytes(str) {
-        return base64.toByteArray(base64clean(str));
-      }
-      function blitBuffer(src, dst, offset, length) {
-        let i;
-        for (i = 0; i < length; ++i) {
-          if (i + offset >= dst.length || i >= src.length)
-            break;
-          dst[i + offset] = src[i];
-        }
-        return i;
-      }
-      function isInstance(obj, type) {
-        return obj instanceof type || obj != null && obj.constructor != null && obj.constructor.name != null && obj.constructor.name === type.name;
-      }
-      function numberIsNaN(obj) {
-        return obj !== obj;
-      }
-      var hexSliceLookupTable = function() {
-        const alphabet = "0123456789abcdef";
-        const table = new Array(256);
-        for (let i = 0; i < 16; ++i) {
-          const i16 = i * 16;
-          for (let j = 0; j < 16; ++j) {
-            table[i16 + j] = alphabet[i] + alphabet[j];
-          }
-        }
-        return table;
-      }();
-      function defineBigIntMethod(fn) {
-        return typeof BigInt === "undefined" ? BufferBigIntNotDefined : fn;
-      }
-      function BufferBigIntNotDefined() {
-        throw new Error("BigInt not supported");
-      }
-    }
-  });
-
-  // node_modules/.pnpm/process@0.11.10/node_modules/process/browser.js
-  var require_browser = __commonJS({
-    "node_modules/.pnpm/process@0.11.10/node_modules/process/browser.js"(exports, module) {
-      init_dist();
-      var process = module.exports = {};
-      var cachedSetTimeout;
-      var cachedClearTimeout;
-      function defaultSetTimout() {
-        throw new Error("setTimeout has not been defined");
-      }
-      function defaultClearTimeout() {
-        throw new Error("clearTimeout has not been defined");
-      }
-      (function() {
-        try {
-          if (typeof setTimeout === "function") {
-            cachedSetTimeout = setTimeout;
-          } else {
-            cachedSetTimeout = defaultSetTimout;
-          }
-        } catch (e) {
-          cachedSetTimeout = defaultSetTimout;
-        }
-        try {
-          if (typeof clearTimeout === "function") {
-            cachedClearTimeout = clearTimeout;
-          } else {
-            cachedClearTimeout = defaultClearTimeout;
-          }
-        } catch (e) {
-          cachedClearTimeout = defaultClearTimeout;
-        }
-      })();
-      function runTimeout(fun) {
-        if (cachedSetTimeout === setTimeout) {
-          return setTimeout(fun, 0);
-        }
-        if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-          cachedSetTimeout = setTimeout;
-          return setTimeout(fun, 0);
-        }
-        try {
-          return cachedSetTimeout(fun, 0);
-        } catch (e) {
-          try {
-            return cachedSetTimeout.call(null, fun, 0);
-          } catch (e2) {
-            return cachedSetTimeout.call(this, fun, 0);
-          }
-        }
-      }
-      function runClearTimeout(marker) {
-        if (cachedClearTimeout === clearTimeout) {
-          return clearTimeout(marker);
-        }
-        if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-          cachedClearTimeout = clearTimeout;
-          return clearTimeout(marker);
-        }
-        try {
-          return cachedClearTimeout(marker);
-        } catch (e) {
-          try {
-            return cachedClearTimeout.call(null, marker);
-          } catch (e2) {
-            return cachedClearTimeout.call(this, marker);
-          }
-        }
-      }
-      var queue = [];
-      var draining = false;
-      var currentQueue;
-      var queueIndex = -1;
-      function cleanUpNextTick() {
-        if (!draining || !currentQueue) {
-          return;
-        }
-        draining = false;
-        if (currentQueue.length) {
-          queue = currentQueue.concat(queue);
-        } else {
-          queueIndex = -1;
-        }
-        if (queue.length) {
-          drainQueue();
-        }
-      }
-      function drainQueue() {
-        if (draining) {
-          return;
-        }
-        var timeout = runTimeout(cleanUpNextTick);
-        draining = true;
-        var len = queue.length;
-        while (len) {
-          currentQueue = queue;
-          queue = [];
-          while (++queueIndex < len) {
-            if (currentQueue) {
-              currentQueue[queueIndex].run();
-            }
-          }
-          queueIndex = -1;
-          len = queue.length;
-        }
-        currentQueue = null;
-        draining = false;
-        runClearTimeout(timeout);
-      }
-      process.nextTick = function(fun) {
-        var args = new Array(arguments.length - 1);
-        if (arguments.length > 1) {
-          for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-          }
-        }
-        queue.push(new Item(fun, args));
-        if (queue.length === 1 && !draining) {
-          runTimeout(drainQueue);
-        }
-      };
-      function Item(fun, array) {
-        this.fun = fun;
-        this.array = array;
-      }
-      Item.prototype.run = function() {
-        this.fun.apply(null, this.array);
-      };
-      process.title = "browser";
-      process.browser = true;
-      process.env = {};
-      process.argv = [];
-      process.version = "";
-      process.versions = {};
-      function noop() {
-      }
-      process.on = noop;
-      process.addListener = noop;
-      process.once = noop;
-      process.off = noop;
-      process.removeListener = noop;
-      process.removeAllListeners = noop;
-      process.emit = noop;
-      process.prependListener = noop;
-      process.prependOnceListener = noop;
-      process.listeners = function(name) {
-        return [];
-      };
-      process.binding = function(name) {
-        throw new Error("process.binding is not supported");
-      };
-      process.cwd = function() {
-        return "/";
-      };
-      process.chdir = function(dir) {
-        throw new Error("process.chdir is not supported");
-      };
-      process.umask = function() {
-        return 0;
-      };
-    }
-  });
-
-  // shims/dist/index.js
-  var import_buffer_polyfill, import_process, o;
-  var init_dist = __esm({
-    "shims/dist/index.js"() {
-      "use strict";
-      import_buffer_polyfill = __toESM(require_buffer(), 1);
-      import_process = __toESM(require_browser(), 1);
-      o = globalThis || void 0 || self;
-    }
-  });
-
-  // shims/banner/index.cjs
-  var require_banner = __commonJS({
-    "shims/banner/index.cjs"() {
-      init_dist();
-      globalThis.Buffer = globalThis.Buffer || import_buffer_polyfill.Buffer;
-      globalThis.global = globalThis.global || o;
-      globalThis.process = globalThis.process || import_process.default;
-    }
-  });
-  require_banner();
-})();
-/*! Bundled license information:
-
-ieee754/index.js:
-  (*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> *)
-
-buffer/index.js:
-  (*!
-   * The buffer module from node.js, for the browser.
-   *
-   * @author   Feross Aboukhadijeh <https://feross.org>
-   * @license  MIT
-   *)
-*/
+import __buffer_polyfill from 'vite-plugin-node-polyfills/shims/buffer'
+globalThis.Buffer = globalThis.Buffer || __buffer_polyfill
+import __global_polyfill from 'vite-plugin-node-polyfills/shims/global'
+globalThis.global = globalThis.global || __global_polyfill
+import __process_polyfill from 'vite-plugin-node-polyfills/shims/process'
+globalThis.process = globalThis.process || __process_polyfill
 
 import {
   __toESM,
-  require_dist
-} from "./chunk-NFZ6GMSI.js";
+  require_dist,
+  require_dist2,
+  require_dist3
+} from "./chunk-T2TQJYUV.js";
 
-// node_modules/.deno/@fortawesome+free-brands-svg-icons@6.4.2/node_modules/@fortawesome/free-brands-svg-icons/index.mjs
+// node_modules/.deno/@fortawesome+free-brands-svg-icons@6.7.2/node_modules/@fortawesome/free-brands-svg-icons/index.mjs
 var import_dist = __toESM(require_dist(), 1);
+var import_dist2 = __toESM(require_dist2(), 1);
+var import_dist3 = __toESM(require_dist3(), 1);
 var prefix = "fab";
 var faMonero = {
   prefix: "fab",
@@ -2180,6 +77,11 @@ var faUps = {
   iconName: "ups",
   icon: [384, 512, [], "f7e0", "M103.2 303c-5.2 3.6-32.6 13.1-32.6-19V180H37.9v102.6c0 74.9 80.2 51.1 97.9 39V180h-32.6zM4 74.82v220.9c0 103.7 74.9 135.2 187.7 184.1 112.4-48.9 187.7-80.2 187.7-184.1V74.82c-116.3-61.6-281.8-49.6-375.4 0zm358.1 220.9c0 86.6-53.2 113.6-170.4 165.3-117.5-51.8-170.5-78.7-170.5-165.3v-126.4c102.3-93.8 231.6-100 340.9-89.8zm-209.6-107.4v212.8h32.7v-68.7c24.4 7.3 71.7-2.6 71.7-78.5 0-97.4-80.7-80.92-104.4-65.6zm32.7 117.3v-100.3c8.4-4.2 38.4-12.7 38.4 49.3 0 67.9-36.4 51.8-38.4 51zm79.1-86.4c.1 47.3 51.6 42.5 52.2 70.4.6 23.5-30.4 23-50.8 4.9v30.1c36.2 21.5 81.9 8.1 83.2-33.5 1.7-51.5-54.1-46.6-53.4-73.2.6-20.3 30.6-20.5 48.5-2.2v-28.4c-28.5-22-79.9-9.2-79.7 31.9z"]
 };
+var faPixiv = {
+  prefix: "fab",
+  iconName: "pixiv",
+  icon: [448, 512, [], "e640", "M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm171.5 84c41 0 76.3 12.9 101.4 35.2l0 0c25.2 22.2 39.8 54.1 39.8 88.8c.1 35.3-16.6 66.3-42.4 87c-25.9 20.8-60.6 32.4-98.8 32.4c-43.5 0-83.8-16.1-83.8-16.1v51.8c7.4 2.2 19.7 7 11.9 14.8H104.8c-7.7-7.8 3.6-12.4 12.1-14.8V175.5C97.1 190.9 87 204.3 81.8 214.2c6 19.4-5.3 18.5-5.3 18.5L56 199.7s72.7-83.7 179.5-83.7zm-3.6 222.9c30 0 56-11.3 73.9-29.2c17.9-18.1 27.9-41.6 28-70.2c-.1-29.3-9.5-54.6-26.7-73.6c-17.2-18.9-42.7-31.3-75.2-31.4c-26.7-.1-59.8 9-80.2 23.7V323.1c18.6 9.3 46.8 15.9 80.2 15.8z"]
+};
 var faWpexplorer = {
   prefix: "fab",
   iconName: "wpexplorer",
@@ -2228,7 +130,7 @@ var faVnv = {
 var faSquareJs = {
   prefix: "fab",
   iconName: "square-js",
-  icon: [448, 512, ["js-square"], "f3b9", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM243.8 381.4c0 43.6-25.6 63.5-62.9 63.5-33.7 0-53.2-17.4-63.2-38.5l34.3-20.7c6.6 11.7 12.6 21.6 27.1 21.6 13.8 0 22.6-5.4 22.6-26.5V237.7h42.1v143.7zm99.6 63.5c-39.1 0-64.4-18.6-76.7-43l34.3-19.8c9 14.7 20.8 25.6 41.5 25.6 17.4 0 28.6-8.7 28.6-20.8 0-14.4-11.4-19.5-30.7-28l-10.5-4.5c-30.4-12.9-50.5-29.2-50.5-63.5 0-31.6 24.1-55.6 61.6-55.6 26.8 0 46 9.3 59.8 33.7L368 290c-7.2-12.9-15-18-27.1-18-12.3 0-20.1 7.8-20.1 18 0 12.6 7.8 17.7 25.9 25.6l10.5 4.5c35.8 15.3 55.9 31 55.9 66.2 0 37.8-29.8 58.6-69.7 58.6z"]
+  icon: [448, 512, ["js-square"], "f3b9", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM180.9 444.9c-33.7 0-53.2-17.4-63.2-38.5L152 385.7c6.6 11.7 12.6 21.6 27.1 21.6c13.8 0 22.6-5.4 22.6-26.5V237.7h42.1V381.4c0 43.6-25.6 63.5-62.9 63.5zm85.8-43L301 382.1c9 14.7 20.8 25.6 41.5 25.6c17.4 0 28.6-8.7 28.6-20.8c0-14.4-11.4-19.5-30.7-28l-10.5-4.5c-30.4-12.9-50.5-29.2-50.5-63.5c0-31.6 24.1-55.6 61.6-55.6c26.8 0 46 9.3 59.8 33.7L368 290c-7.2-12.9-15-18-27.1-18c-12.3 0-20.1 7.8-20.1 18c0 12.6 7.8 17.7 25.9 25.6l10.5 4.5c35.8 15.3 55.9 31 55.9 66.2c0 37.8-29.8 58.6-69.7 58.6c-39.1 0-64.4-18.6-76.7-43z"]
 };
 var faJsSquare = faSquareJs;
 var faMicrosoft = {
@@ -2275,6 +177,16 @@ var faDrupal = {
   prefix: "fab",
   iconName: "drupal",
   icon: [448, 512, [], "f1a9", "M303.973,108.136C268.2,72.459,234.187,38.35,224.047,0c-9.957,38.35-44.25,72.459-80.019,108.136C90.467,161.7,29.716,222.356,29.716,313.436c-2.337,107.3,82.752,196.18,190.053,198.517S415.948,429.2,418.285,321.9q.091-4.231,0-8.464C418.285,222.356,357.534,161.7,303.973,108.136Zm-174.326,223a130.282,130.282,0,0,0-15.211,24.153,4.978,4.978,0,0,1-3.319,2.766h-1.659c-4.333,0-9.219-8.481-9.219-8.481h0c-1.29-2.028-2.489-4.149-3.687-6.361l-.83-1.752c-11.247-25.72-1.475-62.318-1.475-62.318h0a160.585,160.585,0,0,1,23.231-49.873A290.8,290.8,0,0,1,138.5,201.613l9.219,9.219,43.512,44.434a4.979,4.979,0,0,1,0,6.638L145.78,312.33h0Zm96.612,127.311a67.2,67.2,0,0,1-49.781-111.915c14.2-16.871,31.528-33.464,50.334-55.313,22.309,23.785,36.875,40.1,51.164,57.986a28.413,28.413,0,0,1,2.95,4.425,65.905,65.905,0,0,1,11.984,37.981,66.651,66.651,0,0,1-66.466,66.836ZM352.371,351.6h0a7.743,7.743,0,0,1-6.176,5.347H344.9a11.249,11.249,0,0,1-6.269-5.07h0a348.21,348.21,0,0,0-39.456-48.952L281.387,284.49,222.3,223.185a497.888,497.888,0,0,1-35.4-36.322,12.033,12.033,0,0,0-.922-1.382,35.4,35.4,0,0,1-4.7-9.219V174.51a31.346,31.346,0,0,1,9.218-27.656c11.432-11.431,22.955-22.954,33.833-34.939,11.984,13.275,24.8,26,37.428,38.627h0a530.991,530.991,0,0,1,69.6,79.1,147.494,147.494,0,0,1,27.011,83.8A134.109,134.109,0,0,1,352.371,351.6Z"]
+};
+var faJxl = {
+  prefix: "fab",
+  iconName: "jxl",
+  icon: [448, 512, [], "e67b", "M412.2 32H35.8C16 32 0 48 0 67.8V444.2C0 464 16 480 35.8 480H412.2c19.8 0 35.8-16 35.8-35.8V67.8C448 48 432 32 412.2 32zM378.6 333.7c0 40.2-32.6 72.8-72.8 72.8H70.2c0-40.2 32.6-72.8 72.8-72.8H378.6zm0-113.9c0 40.2-32.6 72.8-72.8 72.8H70.2c0-40.2 32.6-72.8 72.8-72.8H378.6zm0-113.9c0 40.2-32.6 72.8-72.8 72.8H70.2c0-40.2 32.6-72.8 72.8-72.8H378.6z"]
+};
+var faDartLang = {
+  prefix: "fab",
+  iconName: "dart-lang",
+  icon: [512, 512, [], "e693", "M378.6 78.9c-2.8-.1-5.6-.2-8.5-.2l-264.1 0 143.2-72C256.6 2.3 268 0 279.6 0c13.5 0 29.4 9.2 37 16.8l62 62zM107.3 96.5l262.8 0c16 0 25.4 1.4 35.4 9.3L512 212.2 512 421l-79.3 .7L107.3 96.5zM96.5 373l0-262.2L420.3 434.6l.7 77.4-212.2 0-98.1-98.2 0 0C99.4 402.5 96.5 398.5 96.5 373zM78.7 105.3l0 267.7c0 3.3 .1 6.3 .2 9.1l-62-62C6.5 309.3 0 294.3 0 279.6c0-6.8 3.9-17.5 6.7-23.6l72-150.7z"]
 };
 var faHireAHelper = {
   prefix: "fab",
@@ -2324,7 +236,7 @@ var faCss3Alt = {
 var faSquareReddit = {
   prefix: "fab",
   iconName: "square-reddit",
-  icon: [448, 512, ["reddit-square"], "f1a2", "M283.2 345.5c2.7 2.7 2.7 6.8 0 9.2-24.5 24.5-93.8 24.6-118.4 0-2.7-2.4-2.7-6.5 0-9.2 2.4-2.4 6.5-2.4 8.9 0 18.7 19.2 81 19.6 100.5 0 2.4-2.3 6.6-2.3 9 0zm-91.3-53.8c0-14.9-11.9-26.8-26.5-26.8-14.9 0-26.8 11.9-26.8 26.8 0 14.6 11.9 26.5 26.8 26.5 14.6 0 26.5-11.9 26.5-26.5zm90.7-26.8c-14.6 0-26.5 11.9-26.5 26.8 0 14.6 11.9 26.5 26.5 26.5 14.9 0 26.8-11.9 26.8-26.5 0-14.9-11.9-26.8-26.8-26.8zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-99.7 140.6c-10.1 0-19 4.2-25.6 10.7-24.1-16.7-56.5-27.4-92.5-28.6l18.7-84.2 59.5 13.4c0 14.6 11.9 26.5 26.5 26.5 14.9 0 26.8-12.2 26.8-26.8 0-14.6-11.9-26.8-26.8-26.8-10.4 0-19.3 6.2-23.8 14.9l-65.7-14.6c-3.3-.9-6.5 1.5-7.4 4.8l-20.5 92.8c-35.7 1.5-67.8 12.2-91.9 28.9-6.5-6.8-15.8-11-25.9-11-37.5 0-49.8 50.4-15.5 67.5-1.2 5.4-1.8 11-1.8 16.7 0 56.5 63.7 102.3 141.9 102.3 78.5 0 142.2-45.8 142.2-102.3 0-5.7-.6-11.6-2.1-17 33.6-17.2 21.2-67.2-16.1-67.2z"]
+  icon: [448, 512, ["reddit-square"], "f1a2", "M64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32zM305.9 166.4c20.6 0 37.3-16.7 37.3-37.3s-16.7-37.3-37.3-37.3c-18 0-33.1 12.8-36.6 29.8c-30.2 3.2-53.8 28.8-53.8 59.9l0 .2c-32.8 1.4-62.8 10.7-86.6 25.5c-8.8-6.8-19.9-10.9-32-10.9c-28.9 0-52.3 23.4-52.3 52.3c0 21 12.3 39 30.1 47.4c1.7 60.7 67.9 109.6 149.3 109.6s147.6-48.9 149.3-109.7c17.7-8.4 29.9-26.4 29.9-47.3c0-28.9-23.4-52.3-52.3-52.3c-12 0-23 4-31.9 10.8c-24-14.9-54.3-24.2-87.5-25.4l0-.1c0-22.2 16.5-40.7 37.9-43.7l0 0c3.9 16.5 18.7 28.7 36.3 28.7zM155 248.1c14.6 0 25.8 15.4 25 34.4s-11.8 25.9-26.5 25.9s-27.5-7.7-26.6-26.7s13.5-33.5 28.1-33.5zm166.4 33.5c.9 19-12 26.7-26.6 26.7s-25.6-6.9-26.5-25.9c-.9-19 10.3-34.4 25-34.4s27.3 14.6 28.1 33.5zm-42.1 49.6c-9 21.5-30.3 36.7-55.1 36.7s-46.1-15.1-55.1-36.7c-1.1-2.6 .7-5.4 3.4-5.7c16.1-1.6 33.5-2.5 51.7-2.5s35.6 .9 51.7 2.5c2.7 .3 4.5 3.1 3.4 5.7z"]
 };
 var faRedditSquare = faSquareReddit;
 var faVimeoV = {
@@ -2340,12 +252,17 @@ var faContao = {
 var faSquareFontAwesome = {
   prefix: "fab",
   iconName: "square-font-awesome",
-  icon: [448, 512, [], "e5ad", "M384.5,32.5h-320c-35.3,0-64,28.7-64,64v320c0,35.3,28.7,64,64,64h320c35.3,0,64-28.7,64-64v-320 C448.5,61.2,419.8,32.5,384.5,32.5z M336.5,312.5c-31.6,11.2-41.2,16-59.8,16c-31.4,0-43.2-16-74.6-16c-10.2,0-18.2,1.6-25.6,4v-32 c7.4-2.2,15.4-4,25.6-4c31.2,0,43.2,16,74.6,16c10.2,0,17.8-1.4,27.8-4.6v-96c-10,3.2-17.6,4.6-27.8,4.6c-31.4,0-43.2-16-74.6-16 c-25.4,0-37.4,10.4-57.6,14.4v153.6c0,8.8-7.2,16-16,16c-8.8,0-16-7.2-16-16v-192c0-8.8,7.2-16,16-16c8.8,0,16,7.2,16,16v6.4 c20.2-4,32.2-14.4,57.6-14.4c31.2,0,43.2,16,74.6,16c18.6,0,28.2-4.8,59.8-16V312.5z"]
+  icon: [448, 512, [], "e5ad", "M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zm90 122c0 9.3-4.8 17.4-12.1 22l188.9 0c7.3 0 13.2 5.9 13.2 13.2c0 1.8-.4 3.7-1.1 5.4L312 264l30.9 69.4c.7 1.7 1.1 3.5 1.1 5.4c0 7.3-5.9 13.2-13.2 13.2L144 352l0 32-32 0 0-32 0-176 0-1.5c-6.1-4.8-10-12.2-10-20.5c0-14.4 11.6-26 26-26s26 11.6 26 26z"]
 };
 var faDeskpro = {
   prefix: "fab",
   iconName: "deskpro",
   icon: [480, 512, [], "f38f", "M205.9 512l31.1-38.4c12.3-.2 25.6-1.4 36.5-6.6 38.9-18.6 38.4-61.9 38.3-63.8-.1-5-.8-4.4-28.9-37.4H362c-.2 50.1-7.3 68.5-10.2 75.7-9.4 23.7-43.9 62.8-95.2 69.4-8.7 1.1-32.8 1.2-50.7 1.1zm200.4-167.7c38.6 0 58.5-13.6 73.7-30.9l-175.5-.3-17.4 31.3 119.2-.1zm-43.6-223.9v168.3h-73.5l-32.7 55.5H250c-52.3 0-58.1-56.5-58.3-58.9-1.2-13.2-21.3-11.6-20.1 1.8 1.4 15.8 8.8 40 26.4 57.1h-91c-25.5 0-110.8-26.8-107-114V16.9C0 .9 9.7.3 15 .1h82c.2 0 .3.1.5.1 4.3-.4 50.1-2.1 50.1 43.7 0 13.3 20.2 13.4 20.2 0 0-18.2-5.5-32.8-15.8-43.7h84.2c108.7-.4 126.5 79.4 126.5 120.2zm-132.5 56l64 29.3c13.3-45.5-42.2-71.7-64-29.3z"]
+};
+var faBrave = {
+  prefix: "fab",
+  iconName: "brave",
+  icon: [448, 512, [], "e63c", "M145.5 0H224h78.5l44.7 50.8s39.3-10.9 57.8 7.6s33.8 34.9 33.8 34.9l-12 29.5 15.3 43.7s-44.9 170.2-50.1 191c-10.4 40.9-17.4 56.8-46.9 77.5s-82.9 56.8-91.6 62.2c-1.9 1.2-3.9 2.5-5.9 3.9c-7.5 5.1-15.8 10.8-23.5 10.8l0 0 0 0c-7.7 0-16.1-5.7-23.5-10.8c-2-1.4-4-2.8-5.9-3.9c-8.7-5.5-62.1-41.5-91.6-62.2s-36.5-36.6-46.9-77.5c-5.3-20.8-50.1-191-50.1-191l15.3-43.7L9.2 93.3s15.3-16.4 33.8-34.9s57.8-7.6 57.8-7.6L145.5 0zM224 407.6l0 0c3.7 0 8.9-4.7 13-8.4c.6-.5 1.2-1.1 1.7-1.5c4.2-3.7 47.8-37.5 51-39.8s5.4-6.5 1.9-8.7c-2.8-1.7-10-5.5-20.3-10.8c-3-1.6-6.3-3.2-9.7-5c-15.4-8-34.5-14.7-37.5-14.7l0 0 0 0c-3 0-22.1 6.8-37.5 14.7c-3.5 1.8-6.7 3.5-9.7 5c-10.3 5.3-17.6 9.1-20.3 10.8c-3.6 2.2-1.4 6.4 1.9 8.7s46.8 36.1 51 39.8c.5 .5 1.1 1 1.7 1.5c4.1 3.7 9.3 8.4 13 8.4l0 0zm0-165.7l0 0c4.7 0 17.6-3 26.4-5l0 0 2-.5c7.8-1.8 7.3-6.3 6.4-13c-.1-.8-.2-1.6-.3-2.4c-.6-6.1-5.8-33.1-9.1-50.3c-1.1-5.8-2-10.5-2.4-12.9c-1.5-8.1-.6-9.4 .7-11.3c.2-.3 .5-.7 .7-1.1c1.4-2.3 16-6.2 27.9-9.5l0 0c2.5-.7 4.8-1.3 6.9-1.9c10.6-3 32.4-.6 44.2 .6c1.8 .2 3.4 .4 4.7 .5c9.6 .9 10.4 2.3 7.2 3.8c-2.3 1.1-16.2 6.3-28.7 10.9l0 0 0 0c-4.7 1.8-9.2 3.5-12.8 4.8c-1.5 .5-3 1.1-4.5 1.7c-12.5 4.6-27.2 10-28.9 19.4c-1.5 8.3 5.2 19.9 11.3 30.3l0 0c1.6 2.8 3.2 5.5 4.6 8.1c6.3 11.9 6.5 13.3 6.1 18.1c-.4 3.9-14.5 12.7-22.4 17.6l0 0c-1.8 1.1-3.3 2.1-4.2 2.7c-.8 .5-2.1 1.4-3.8 2.4c-8.6 5.2-26.3 16-26.3 22.5c0 7.8 24.6 28.1 32.4 33.2s28.9 16.1 37.9 17.8s23-8.5 31.2-23.8c7.7-14.4 1.7-28.5-3.2-40l-.9-2.2c-4.5-10.6 1.9-17 6.2-21.3l0 0c.5-.5 1-1 1.4-1.4L377.7 194c1.3-1.3 2.5-2.6 3.7-3.8l0 0c5.8-5.7 10.8-10.5 10.8-22.8c0-14.9-57.5-84.5-57.5-84.5s-48.5 9.3-55.1 9.3c-5.2 0-15.3-3.5-25.8-7.1l0 0c-2.7-.9-5.4-1.9-8-2.7C232.8 78.1 224 78 224 78l0 0 0 0s-8.7 0-21.8 4.4c-2.7 .9-5.4 1.8-8 2.7l0 0c-10.5 3.6-20.6 7.1-25.8 7.1c-6.5 0-55.1-9.3-55.1-9.3s-57.5 69.6-57.5 84.5c0 12.3 4.9 17.1 10.8 22.8l0 0c1.2 1.2 2.5 2.4 3.7 3.8l43.1 45.8c.4 .5 .9 .9 1.4 1.4l0 0c4.3 4.3 10.6 10.7 6.2 21.3l-.9 2.2c-4.9 11.5-11 25.6-3.2 40c8.2 15.3 22.2 25.5 31.2 23.8s30.1-12.7 37.9-17.8s32.4-25.4 32.4-33.2c0-6.5-17.7-17.3-26.3-22.5c-1.7-1-3.1-1.9-3.8-2.4c-.9-.6-2.4-1.5-4.2-2.7c-7.9-4.9-22-13.7-22.4-17.6c-.4-4.8-.3-6.2 6.1-18.1c1.3-2.5 2.9-5.3 4.6-8.1c6-10.4 12.8-22 11.3-30.3c-1.7-9.4-16.4-14.8-28.9-19.4c-1.6-.6-3.1-1.1-4.5-1.7c-3.6-1.4-8.1-3.1-12.8-4.8l-.1 0c-12.5-4.7-26.4-9.9-28.7-10.9c-3.2-1.5-2.3-2.8 7.2-3.8c1.3-.1 2.9-.3 4.7-.5c11.8-1.3 33.6-3.6 44.2-.6c2.1 .6 4.4 1.2 6.9 1.9c11.9 3.2 26.5 7.2 27.9 9.5c.2 .4 .5 .7 .7 1.1c1.3 1.9 2.2 3.2 .7 11.3c-.4 2.4-1.3 7.1-2.4 12.9c-3.3 17.2-8.5 44.2-9.1 50.3c-.1 .8-.2 1.7-.3 2.4c-.8 6.7-1.4 11.2 6.4 13l2 .5 0 0c8.8 2 21.8 5 26.4 5l0 0z"]
 };
 var faSistrix = {
   prefix: "fab",
@@ -2355,7 +272,7 @@ var faSistrix = {
 var faSquareInstagram = {
   prefix: "fab",
   iconName: "square-instagram",
-  icon: [448, 512, ["instagram-square"], "e055", "M224,202.66A53.34,53.34,0,1,0,277.36,256,53.38,53.38,0,0,0,224,202.66Zm124.71-41a54,54,0,0,0-30.41-30.41c-21-8.29-71-6.43-94.3-6.43s-73.25-1.93-94.31,6.43a54,54,0,0,0-30.41,30.41c-8.28,21-6.43,71.05-6.43,94.33S91,329.26,99.32,350.33a54,54,0,0,0,30.41,30.41c21,8.29,71,6.43,94.31,6.43s73.24,1.93,94.3-6.43a54,54,0,0,0,30.41-30.41c8.35-21,6.43-71.05,6.43-94.33S357.1,182.74,348.75,161.67ZM224,338a82,82,0,1,1,82-82A81.9,81.9,0,0,1,224,338Zm85.38-148.3a19.14,19.14,0,1,1,19.13-19.14A19.1,19.1,0,0,1,309.42,189.74ZM400,32H48A48,48,0,0,0,0,80V432a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V80A48,48,0,0,0,400,32ZM382.88,322c-1.29,25.63-7.14,48.34-25.85,67s-41.4,24.63-67,25.85c-26.41,1.49-105.59,1.49-132,0-25.63-1.29-48.26-7.15-67-25.85s-24.63-41.42-25.85-67c-1.49-26.42-1.49-105.61,0-132,1.29-25.63,7.07-48.34,25.85-67s41.47-24.56,67-25.78c26.41-1.49,105.59-1.49,132,0,25.63,1.29,48.33,7.15,67,25.85s24.63,41.42,25.85,67.05C384.37,216.44,384.37,295.56,382.88,322Z"]
+  icon: [448, 512, ["instagram-square"], "e055", "M194.4 211.7a53.3 53.3 0 1 0 59.3 88.7 53.3 53.3 0 1 0 -59.3-88.7zm142.3-68.4c-5.2-5.2-11.5-9.3-18.4-12c-18.1-7.1-57.6-6.8-83.1-6.5c-4.1 0-7.9 .1-11.2 .1c-3.3 0-7.2 0-11.4-.1c-25.5-.3-64.8-.7-82.9 6.5c-6.9 2.7-13.1 6.8-18.4 12s-9.3 11.5-12 18.4c-7.1 18.1-6.7 57.7-6.5 83.2c0 4.1 .1 7.9 .1 11.1s0 7-.1 11.1c-.2 25.5-.6 65.1 6.5 83.2c2.7 6.9 6.8 13.1 12 18.4s11.5 9.3 18.4 12c18.1 7.1 57.6 6.8 83.1 6.5c4.1 0 7.9-.1 11.2-.1c3.3 0 7.2 0 11.4 .1c25.5 .3 64.8 .7 82.9-6.5c6.9-2.7 13.1-6.8 18.4-12s9.3-11.5 12-18.4c7.2-18 6.8-57.4 6.5-83c0-4.2-.1-8.1-.1-11.4s0-7.1 .1-11.4c.3-25.5 .7-64.9-6.5-83l0 0c-2.7-6.9-6.8-13.1-12-18.4zm-67.1 44.5A82 82 0 1 1 178.4 324.2a82 82 0 1 1 91.1-136.4zm29.2-1.3c-3.1-2.1-5.6-5.1-7.1-8.6s-1.8-7.3-1.1-11.1s2.6-7.1 5.2-9.8s6.1-4.5 9.8-5.2s7.6-.4 11.1 1.1s6.5 3.9 8.6 7s3.2 6.8 3.2 10.6c0 2.5-.5 5-1.4 7.3s-2.4 4.4-4.1 6.2s-3.9 3.2-6.2 4.2s-4.8 1.5-7.3 1.5l0 0c-3.8 0-7.5-1.1-10.6-3.2zM448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM357 389c-18.7 18.7-41.4 24.6-67 25.9c-26.4 1.5-105.6 1.5-132 0c-25.6-1.3-48.3-7.2-67-25.9s-24.6-41.4-25.8-67c-1.5-26.4-1.5-105.6 0-132c1.3-25.6 7.1-48.3 25.8-67s41.5-24.6 67-25.8c26.4-1.5 105.6-1.5 132 0c25.6 1.3 48.3 7.1 67 25.8s24.6 41.4 25.8 67c1.5 26.3 1.5 105.4 0 131.9c-1.3 25.6-7.1 48.3-25.8 67z"]
 };
 var faInstagramSquare = faSquareInstagram;
 var faBattleNet = {
@@ -2371,7 +288,7 @@ var faTheRedYeti = {
 var faSquareHackerNews = {
   prefix: "fab",
   iconName: "square-hacker-news",
-  icon: [448, 512, ["hacker-news-square"], "f3af", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM21.2 229.2H21c.1-.1.2-.3.3-.4 0 .1 0 .3-.1.4zm218 53.9V384h-31.4V281.3L128 128h37.3c52.5 98.3 49.2 101.2 59.3 125.6 12.3-27 5.8-24.4 60.6-125.6H320l-80.8 155.1z"]
+  icon: [448, 512, ["hacker-news-square"], "f3af", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM21 229.2c0 0 .1-.1 .1-.2s.1-.2 .2-.2c0 .1 0 .3-.1 .4H21zM239.2 384H207.8V281.3L128 128h37.3c41.5 77.7 48.1 95.8 54.1 112c1.6 4.3 3.1 8.5 5.2 13.6c3.2-7 5.1-11.9 7.1-17.3c5.9-15.3 12.8-33.2 53.5-108.3H320L239.2 283.1V384z"]
 };
 var faHackerNewsSquare = faSquareHackerNews;
 var faEdge = {
@@ -2478,7 +395,7 @@ var faGoogle = {
 var faSquareFontAwesomeStroke = {
   prefix: "fab",
   iconName: "square-font-awesome-stroke",
-  icon: [448, 512, ["font-awesome-alt"], "f35c", "M201.6,152c-25.4,0-37.4,10.4-57.6,14.4V160c0-8.8-7.2-16-16-16s-16,7.2-16,16v192c0,0.8,0.1,1.6,0.2,2.4 c0.1,0.4,0.1,0.8,0.2,1.2c1.6,7.1,8,12.4,15.6,12.4s14-5.3,15.6-12.4c0.1-0.4,0.2-0.8,0.2-1.2c0.1-0.8,0.2-1.6,0.2-2.4V198.4 c4-0.8,7.7-1.8,11.2-3c14.3-4.7,26-11.4,46.4-11.4c31.4,0,43.2,16,74.6,16c8.9,0,15.9-1.1,24.2-3.5c1.2-0.3,2.4-0.7,3.6-1.1v96 c-10,3.2-17.6,4.6-27.8,4.6c-31.4,0-43.4-16-74.6-16c-10.2,0-18.2,1.8-25.6,4v32c7.4-2.4,15.4-4,25.6-4c31.4,0,43.2,16,74.6,16 c18.6,0,28.2-4.8,59.8-16V152c-31.6,11.2-41.2,16-59.8,16C244.8,168,232.8,152,201.6,152z M384,32H64C28.7,32,0,60.7,0,96v320 c0,35.3,28.7,64,64,64h320c35.3,0,64-28.7,64-64V96C448,60.7,419.3,32,384,32z M416,416c0,17.6-14.4,32-32,32H64 c-17.6,0-32-14.4-32-32V96c0-17.6,14.4-32,32-32h320c17.6,0,32,14.4,32,32V416z"]
+  icon: [448, 512, ["font-awesome-alt"], "f35c", "M64 64C46.3 64 32 78.3 32 96l0 320c0 17.7 14.3 32 32 32l320 0c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L64 64zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zm154 58c0 9.3-4.8 17.4-12.1 22l188.9 0c7.3 0 13.2 5.9 13.2 13.2c0 1.8-.4 3.7-1.1 5.4L312 264l30.9 69.4c.8 1.7 1.1 3.5 1.1 5.4c0 7.3-5.9 13.2-13.2 13.2L144 352l0 32-32 0 0-32 0-176 0-1.5c-6.1-4.8-10-12.2-10-20.5c0-14.4 11.6-26 26-26s26 11.6 26 26z"]
 };
 var faFontAwesomeAlt = faSquareFontAwesomeStroke;
 var faAtlassian = {
@@ -2584,7 +501,7 @@ var faWizardsOfTheCoast = {
 var faSquareViadeo = {
   prefix: "fab",
   iconName: "square-viadeo",
-  icon: [448, 512, ["viadeo-square"], "f2aa", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM280.7 381.2c-42.4 46.2-120 46.6-162.4 0-68-73.6-19.8-196.1 81.2-196.1 13.3 0 26.6 2.1 39.1 6.7-4.3 8.4-7.3 17.6-8.4 27.1-9.7-4.1-20.2-6-30.7-6-48.8 0-84.6 41.7-84.6 88.9 0 43 28.5 78.7 69.5 85.9 61.5-24 72.9-117.6 72.9-175 0-7.3 0-14.8-.6-22.1-11.2-32.9-26.6-64.6-44.2-94.5 27.1 18.3 41.9 62.5 44.2 94.1v.4c7.7 22.5 11.8 46.2 11.8 70 0 54.1-21.9 99-68.3 128.2l-2.4.2c50 1 86.2-38.6 86.2-87.2 0-12.2-2.1-24.3-6.9-35.7 9.5-1.9 18.5-5.6 26.4-10.5 15.3 36.6 12.6 87.3-22.8 125.6zM309 233.7c-13.3 0-25.1-7.1-34.4-16.1 21.9-12 49.6-30.7 62.3-53 1.5-3 4.1-8.6 4.5-12-12.5 27.9-44.2 49.8-73.9 56.7-4.7-7.3-7.5-15.5-7.5-24.3 0-10.3 5.2-24.1 12.9-31.6 21.6-20.5 53-8.5 72.4-50 32.5 46.2 13.1 130.3-36.3 130.3z"]
+  icon: [448, 512, ["viadeo-square"], "f2aa", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM118.3 381.2c-68-73.6-19.8-196.1 81.2-196.1c13.3 0 26.6 2.1 39.1 6.7c-4.3 8.4-7.3 17.6-8.4 27.1c-9.7-4.1-20.2-6-30.7-6c-48.8 0-84.6 41.7-84.6 88.9c0 43 28.5 78.7 69.5 85.9c61.5-24 72.9-117.6 72.9-175v0c0-7.3 0-14.8-.6-22.1c-11.2-32.9-26.6-64.6-44.2-94.5c27.1 18.3 41.9 62.5 44.2 94.1v.4c7.7 22.5 11.8 46.2 11.8 70c0 54.1-21.9 99-68.3 128.2l-2.4 .2c50 1 86.2-38.6 86.2-87.2c0-12.2-2.1-24.3-6.9-35.7c9.5-1.9 18.5-5.6 26.4-10.5c15.3 36.6 12.6 87.3-22.8 125.6c-42.4 46.2-120 46.6-162.4 0zM274.6 217.6c21.9-12 49.6-30.7 62.3-53c1.5-3 4.1-8.6 4.5-12c-12.5 27.9-44.2 49.8-73.9 56.7c-4.7-7.3-7.5-15.5-7.5-24.3c0-10.3 5.2-24.1 12.9-31.6c8.3-7.9 18-10.9 27.9-14.1c16-5.1 32.5-10.3 44.5-35.9c32.5 46.2 13.1 130.3-36.3 130.3c-13.3 0-25.1-7.1-34.4-16.1z"]
 };
 var faViadeoSquare = faSquareViadeo;
 var faMeetup = {
@@ -2607,6 +524,11 @@ var faCloudsmith = {
   iconName: "cloudsmith",
   icon: [512, 512, [], "f384", "M512 227.6v56.9L284.4 512H227.6L0 284.4V227.6L227.6 0h56.9L512 227.6zm-256 162a133.6 133.6 0 1 0 0-267.1 133.6 133.6 0 1 0 0 267.1z"]
 };
+var faOpensuse = {
+  prefix: "fab",
+  iconName: "opensuse",
+  icon: [640, 512, [], "e62b", "M471.1 102.7s-.3 18.3-.3 20.3c-9.1-3-74.4-24.1-135.7-26.3c-51.9-1.8-122.8-4.3-223 57.3c-19.4 12.4-73.9 46.1-99.6 109.7C7 277-.1 307 7 335.1c3.3 12.8 8.9 24.9 16.5 35.7c17.4 25 46.6 41.6 78.1 44.4c44.4 3.9 78.1-16 90-53.3c8.2-25.8 0-63.6-31.5-82.9c-25.6-15.7-53.3-12.1-69.2-1.6c-13.9 9.2-21.8 23.5-21.6 39.2c.3 27.8 24.3 42.6 41.5 42.6c5.4 0 10.7-.9 15.8-2.7c6.5-1.8 13.3-6.5 13.3-14.9c0-12.1-11.6-14.8-16.8-13.9c-2.9 .5-4.5 2-11.8 2.4c-2-.2-12-3.1-12-14V316c.2-12.3 13.2-18 25.5-16.9c32.3 2.8 47.7 40.7 28.5 65.7C135 388.5 76.7 388 53.6 344.4c-26-49.2 12.7-111.2 87-98.4c33.2 5.7 83.6 35.5 102.4 104.3h45.9c-5.7-17.6-8.9-68.3 42.7-68.3c56.7 0 63.9 39.9 79.8 68.3H460c-12.8-18.3-21.7-38.7-18.9-55.8c5.6-33.8 39.7-18.4 82.4-17.4c66.5 .4 102.1-27 103.1-28c3.7-3.1 6.5-15.8 7-17.7c1.3-5.1-3.2-2.4-3.2-2.4c-8.7 5.2-30.5 15.2-50.9 15.6c-25.3 .5-76.2-25.4-81.6-28.2c-.3-.4 .1 1.2-11-25.5c88.4 58.3 118.3 40.5 145.2 21.7c.8-.6 4.3-2.9 3.6-5.7c-13.8-48.1-22.4-62.7-34.5-69.6c-37-21.6-125-34.7-129.2-35.3c.1-.1-.9-.3-.9 .7l0 0zm135.6 75.4a37.6 37.6 0 1 1 -75.2-2.6 37.6 37.6 0 1 1 75.2 2.6zm-36.6-27.9a26.3 26.3 0 1 0 -1.7 52.5 26.3 26.3 0 1 0 1.7-52.5zm4.3 28.8c-15.4 0-15.4-15.6 0-15.6s15.4 15.6 0 15.6v0z"]
+};
 var faPiedPiperAlt = {
   prefix: "fab",
   iconName: "pied-piper-alt",
@@ -2615,7 +537,7 @@ var faPiedPiperAlt = {
 var faSquareDribbble = {
   prefix: "fab",
   iconName: "square-dribbble",
-  icon: [448, 512, ["dribbble-square"], "f397", "M90.2 228.2c8.9-42.4 37.4-77.7 75.7-95.7 3.6 4.9 28 38.8 50.7 79-64 17-120.3 16.8-126.4 16.7zM314.6 154c-33.6-29.8-79.3-41.1-122.6-30.6 3.8 5.1 28.6 38.9 51 80 48.6-18.3 69.1-45.9 71.6-49.4zM140.1 364c40.5 31.6 93.3 36.7 137.3 18-2-12-10-53.8-29.2-103.6-55.1 18.8-93.8 56.4-108.1 85.6zm98.8-108.2c-3.4-7.8-7.2-15.5-11.1-23.2C159.6 253 93.4 252.2 87.4 252c0 1.4-.1 2.8-.1 4.2 0 35.1 13.3 67.1 35.1 91.4 22.2-37.9 67.1-77.9 116.5-91.8zm34.9 16.3c17.9 49.1 25.1 89.1 26.5 97.4 30.7-20.7 52.5-53.6 58.6-91.6-4.6-1.5-42.3-12.7-85.1-5.8zm-20.3-48.4c4.8 9.8 8.3 17.8 12 26.8 45.5-5.7 90.7 3.4 95.2 4.4-.3-32.3-11.8-61.9-30.9-85.1-2.9 3.9-25.8 33.2-76.3 53.9zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-64 176c0-88.2-71.8-160-160-160S64 167.8 64 256s71.8 160 160 160 160-71.8 160-160z"]
+  icon: [448, 512, ["dribbble-square"], "f397", "M165.9 132.5c-38.3 18-66.8 53.3-75.7 95.7c6.1 .1 62.4 .3 126.4-16.7c-22.7-40.2-47.1-74.1-50.7-79zm26.1-9.1c3.8 5.1 28.6 38.9 51 80c48.6-18.3 69.1-45.9 71.6-49.4C281 124.2 235.3 112.9 192 123.4zM277.4 382c-2-12-10-53.8-29.2-103.6c-55.1 18.8-93.8 56.4-108.1 85.6c40.5 31.6 93.3 36.7 137.3 18zM227.8 232.6C159.6 253 93.4 252.2 87.4 252c0 .7 0 1.4 0 2.1s0 1.4 0 2.1c0 35.1 13.3 67.1 35.1 91.4c22.2-37.9 67.1-77.9 116.5-91.8c-3.4-7.8-7.2-15.5-11.1-23.2zm72.5 136.9c30.7-20.7 52.5-53.6 58.6-91.6c-4.6-1.5-42.3-12.7-85.1-5.8c17.9 49.1 25.1 89.1 26.5 97.4zm-34.8-119c45.5-5.7 90.7 3.4 95.2 4.4c-.3-32.3-11.8-61.9-30.9-85.1c-2.9 3.9-25.8 33.2-76.3 53.9c4.8 9.8 8.3 17.8 12 26.8zM384 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zM224 416a160 160 0 1 1 0-320 160 160 0 1 1 0 320z"]
 };
 var faDribbbleSquare = faSquareDribbble;
 var faCodiepie = {
@@ -2651,7 +573,7 @@ var faScribd = {
 var faDebian = {
   prefix: "fab",
   iconName: "debian",
-  icon: [448, 512, [], "e60b", "M248.2 .9c-4 .2-8.1 .4-11.4 1.6l-3.4-.5c5.4-.7 10.9-1.1 16.4-1.5c2.4-.2 4.8-.4 7.2-.6c-2.7 .6-5.7 .8-8.8 .9zm132 244.7c3-7.6 5.5-14 5.2-24.4l-4.3 9c4.4-13.2 4-27.1 3.6-40.4c-.2-6-.3-11.8 0-17.4l-1.8-.5c-1.5-45.2-40.6-93.1-75.3-109.4c-30-13.8-76.1-16.2-97.3-5.8c1.3-1.1 4.2-2 6.8-2.7c3.4-1 6.3-1.8 4.3-3c-19.2 1.9-24.9 5.5-31.1 9.4c-4.6 2.9-9.5 6-20.3 8.7c-3.5 3.4 1.7 2 5.8 .9c4.1-1.1 7.2-1.9-.1 2.4c-3.6 1-6.7 1.3-9.7 1.6c-8.3 .8-15.8 1.6-30.7 17c.8 1.3 3.5-.3 5.4-1.4c2.3-1.4 3.4-2-1.7 4.4c-19.1-2.4-60.3 43.7-69.1 59l4.6 .8c-3.2 8-6.8 14.8-10 20.8c-4.3 8.1-7.9 14.9-8.7 21.3c-.4 5.9-1.2 12.9-2 20.3c-3 27.4-6.8 61.3 3.8 73.6l-1.3 13c.6 1.2 1.1 2.3 1.6 3.5c1.2 2.5 2.3 5 3.9 7.4l-3 .2c7 22.2 10.8 22.5 15.1 22.9c4.4 .4 9.3 .9 18.7 24.2c-2.7-.9-5.5-1.9-9.4-7.2c-.5 4.1 5.8 16.3 13.1 25.8l-3.1 3.6c3.2 5.8 6.1 8.1 8.6 10l0 0c.8 .6 1.5 1.1 2.1 1.7c-11.9-6.5 3.2 13.7 11.9 25.2c2.5 3.4 4.5 6 5.1 7l2.4-4.2c-.3 6.1 4.3 13.9 13.1 24.7l7.3-.3c3 6 14 16.7 20.7 17.2l-4.4 5.8c8.1 2.6 10.3 4.3 12.7 6.2c2.6 2.1 5.4 4.3 16.1 8.1l-4.2-7.4c3.5 3 6.2 5.9 8.8 8.7c5.2 5.6 9.9 10.7 19.8 15.4c11.2 3.9 17.1 4.8 23.6 5.9c5.4 .8 11.2 1.8 20.8 4.5c-2.2-.1-4.4-.1-6.7-.2l0 0h0c-16.3-.4-34-.8-46.4-5.2C107.8 480.5 19.5 367.2 26 250.6c-.6-9.9-.3-20.9 0-30.7c.4-13.5 .7-24.8-1.6-28.3l1-3.1c5.3-17.4 11.7-38.2 23.8-62.8l-.1-.2 0-.1 0 0 0 0c.4 .4 3.4 3.4 8.8-5.8c1.3-2.9 2.5-5.8 3.8-8.8l0 0c2.5-6.1 5.1-12.3 8.4-17.9l2.6-.6c1.7-10.1 17-23.8 29.8-35.2l0 0c6.1-5.5 11.6-10.4 14.7-14.1l.7 4.4c17.1-16 45-27.7 66.1-36.6c4.8-2 9.3-3.9 13.3-5.7c-3.4 3.8 2.2 2.7 10 1c4.8-1 10.4-2.1 15.3-2.4c-1.3 .7-2.6 1.4-3.9 2.1l0 0 0 0c-2.7 1.4-5.4 2.8-8 4.6c8.3-2 11.9-1.4 16-.8c3.5 .6 7.3 1.2 14.6 .2c-5.6 .8-12.3 3-11.2 3.8c7.9 .9 12.8-.1 17.2-1c5.6-1.1 10.4-2.1 19.5 .9l-1-4.8c7.5 2.7 13.1 4.4 18 5.9c10 3 17.6 5.3 34.2 14.1c3.2 .2 5.3-.5 7.4-1.2c3.6-1.1 7-2.2 15.3 1.2c.5 .8 .7 1.5 1 2.1c1 2.6 1.7 4.6 14.6 12.2c1.8-.7-3.1-5.1-7-8.7l-.2-.1c32.3 17.3 67.5 54.1 78.2 93.6c-6-11.1-5.2-5.5-4.3 .5c.6 4 1.2 8.1-.2 7.5c4.5 12.1 8.1 24.5 10.4 37.4l-.8-2.9c-3.3-11.8-9.6-34.5-20-49.6c-.4 4.4-2.9 3.9-5.3 3.5c-3.3-.6-6.3-1.2-1.9 12.6c2.6 3.8 3.1 2.4 3.5 1.1c.5-1.5 .9-2.8 4.7 5.2c.1 4.3 1.1 8.5 2.2 13.3l0 0 0 0 0 0 0 0 0 0 0 0c.7 3 1.5 6.2 2.1 9.8c-1.1-.2-2.3-2.2-3.4-4.2l0 0 0 0c-1.4-2.4-2.8-4.7-3.7-3.2c2.4 11.5 6.5 17.4 8 18.3c-.3 .6-.6 .7-1.1 .7c-.8 0-1.8 .1-1.9 5.3c.7 13.7 3.3 12.5 5.3 11.6c.6-.3 1.2-.6 1.7-.4c-.6 2.5-1.6 5.1-2.7 7.9l0 0c-2.8 7.1-6 15.4-3.4 26.1c-.8-3.1-2.1-6.3-3.3-9.3l0 0 0 0c-.5-1.3-1.1-2.6-1.5-3.8c-.6 4.8-.3 8.2-.1 11.3c.4 5.3 .7 10-3 19.9c4.3-14.2 3.8-26.9-.2-20.8c1 11-3.8 20.5-8.1 29.1c-3.6 7.1-6.8 13.5-5.9 19.3l-5.2-7.1c-7.6 11-7 13.3-6.5 15.6c.5 1.9 1 3.8-3.4 10.8c1.7-2.9 1.3-3.6 1-4.2c-.4-.8-.7-1.5 1.7-5.1c-1.6 .1-5.5 3.9-10.1 8.5l0 0c-3.9 3.9-8.5 8.4-12.8 11.8c-37.5 30.1-82.3 34-125.6 17.8l0 0c.2-1-.2-2.1-3.1-4.1c-36.8-28.2-58.5-52.1-50.9-107.5c2.2-1.7 3.7-6.2 5.6-11.6c2.9-8.4 6.5-18.9 14.3-23.9c7.8-17.3 31.3-33.3 56.4-33.7c25.6-1.4 47.2 13.7 58.1 27.9c-19.8-18.4-52.1-24-79.7-10.4c-28.2 12.7-45 43.8-42.5 74.7c.3-.5 .7-.7 1-.9c.6-.5 1.2-.9 1.5-3.4c-.9 60.2 64.8 104.3 112.1 82l.6 1.3c12.7-3.5 15.9-6.5 20.3-10.7c2.2-2.1 4.7-4.5 9-7.4c-.3 .7-1.3 1.7-2.4 2.7c-2.2 2.1-4.6 4.5-1.6 4.6c5.3-1.4 20.1-14.8 30.2-23.8l0 0 0 0c1.6-1.4 3-2.7 4.3-3.9c2-4.3 1.6-5.7 1.3-7.1c-.4-1.6-.8-3.3 2.4-9.6l7.3-3.7c1-2.8 2-5.4 2.9-7.8l0 0zM233.1 321.9a.9 .9 0 1 0 -1.7 0 .9 .9 0 1 0 1.7 0zm-.2 .5l-.2 .4c-.3 .7-.6 1.4-.3 2.4c-12.2-5.7-23.4-14.3-32.6-24.9c4.9 7.1 10.1 14.1 17 19.5c-6.9-2.3-15.2-11.9-21.7-19.4l0 0 0 0c-4.3-5-7.9-9.1-9.7-9.5c19.8 35.5 80.5 62.3 112.3 49c-14.7 .5-33.4 .3-49.9-5.8c-6.3-3.2-14.6-9.6-14.9-11.8zM237.5 7c3.8 .6 7.3 1.2 6.7 2.1c5-1.1 6.1-2.1-9-2.5c.8 .1 1.6 .3 2.4 .4zm92.2 208.4c-1 3.9-1.8 1.4-2.7-1.2c-.5-1.5-1.1-3.1-1.7-3.4c1.4-5.8 5.4-10.7 4.4 4.6zm-6.8 21.2c-1.3 7.9-5 15.5-10.1 22.5c.2-2-1.2-2.4-2.6-2.8c-2.9-.8-5.9-1.6 5.6-16.1c-.5 2-2.3 4.9-4 7.7l0 0c-3.6 5.9-6.7 11 4 4.3l1-1.8c2.6-4.5 5-8.8 6-13.8zM280 276.6c-11.1-1.7-21.2-6-12.7-6.1c7.1 .6 14.1 .6 21-1.1c-2.5 2.4-5.2 4.8-8.3 7.2zM244.2 9.1l-.2 .4-3 .3 3.2-.7zm-69.5 273c3.7 7.2 6.5 11.7 9.1 15.9c2.3 3.7 4.4 7.1 6.8 11.7c-5.2-4.3-8.9-9.8-12.8-15.5c-1.4-2.1-2.8-4.2-4.4-6.2l1.2-5.9zm7.3-10c1.7 3.4 3.3 6.7 5.9 9.5l2.6 7.7-1.3-2.1c-3.2-5.3-6.3-10.6-8-16.7l.8 1.6zm239.1-41.2c-2.3 17.4-7.7 34.6-16 50.3c7.6-14.9 12.5-30.9 14.8-47.2l1.2-3.1zM35.4 109.6c0 .3 0 .5 .1 .7c0-.2 0-.5-.1-.7zm.1 .7c.3 1.2 1.4 .9 2.4 .6c1.9-.5 3.6-.9-.1 7.6c-2.4 1.7-3.8 2.8-4.6 3.4c-.6 .4-.8 .6-.8 .6c0 0 .1-.2 .3-.5c.8-1.4 3.4-5.5 2.9-11.7zm-10.2 42c-.7 3.7-1.5 7.9-3.4 13.9c.2-1.9 0-3.5-.2-4.9c-.4-3.4-.8-6.3 4.3-12.9c-.3 1.2-.5 2.5-.7 3.8z"]
+  icon: [448, 512, [], "e60b", "M380.2 245.6c3-7.6 5.5-14 5.2-24.4l-4.3 9c4.4-13.2 4-27.1 3.6-40.4c-.2-6-.3-11.8 0-17.4l-1.8-.5c-1.5-45.2-40.6-93.1-75.3-109.4c-30-13.8-76.1-16.2-97.3-5.8c1.3-1.1 4.2-2 6.8-2.7l.3-.1c3.3-1 6-1.7 4-2.9c-19.2 1.9-24.9 5.5-31.1 9.4l-.1 0c-4.6 2.9-9.5 6-20.3 8.7c-3.5 3.4 1.7 2 5.8 .9l0 0c4.1-1.1 7.2-1.9-.1 2.4c-3.5 1-6.6 1.3-9.6 1.6l-.1 0c-8.3 .8-15.8 1.6-30.7 17c.8 1.3 3.4-.2 5.3-1.3l.1-.1c2.3-1.4 3.4-2-1.7 4.4c-19.1-2.4-60.3 43.7-69.1 59l4.6 .8c-3.2 8-6.8 14.8-10 20.8c-4.3 8.1-7.9 14.9-8.7 21.3c-.3 5.1-1 11-1.7 17.3l0 0c-.1 1-.2 2-.3 3l-.1 .6c-3 27.3-6.7 60.8 3.9 73l-1.3 13c.6 1.2 1.1 2.3 1.6 3.5c.2 .4 .4 .8 .5 1.1l0 0 0 0 0 0 0 0 0 0 0 0 0 0c1 2.1 2 4.2 3.3 6.2l-3 .2c7 22.1 10.8 22.5 15.1 22.9l0 0c4.4 .4 9.3 .9 18.7 24.2c-2.7-.9-5.5-1.9-9.4-7.2c-.5 4.1 5.8 16.3 13.1 25.8l-3.1 3.6c2.1 3.7 4.8 6.2 7.6 8.8l0 0 0 0c1 .9 2.1 1.9 3.1 2.9c-11.9-6.5 3.2 13.7 11.9 25.2c.8 1.1 1.5 2 2.2 2.9l0 0 0 0 0 0 0 0 0 0c1.4 1.9 2.5 3.4 2.9 4.1l2.4-4.2c-.3 6.1 4.3 13.9 13.1 24.7l7.3-.3c3 6 14 16.7 20.7 17.2l-4.4 5.8c8.1 2.6 10.3 4.3 12.7 6.2c2.6 2.1 5.4 4.3 16.1 8.1l-4.2-7.4c3.5 3 6.2 5.9 8.8 8.7l.1 .1c5.2 5.6 9.9 10.6 19.7 15.3c10.7 3.7 16.6 4.7 22.7 5.8c.3 0 .6 .1 .9 .1c5.4 .8 11.2 1.8 20.8 4.5c-1.1-.1-2.2-.1-3.3-.1h0c-2.3-.1-4.7-.1-7-.1l0 0 0 0 0 0 0 0 0 0 0 0 0 0c-14.4-.2-29.2-.4-42.7-5.2C107.8 480.5 19.5 367.2 26 250.6c-.6-9.9-.3-20.9 0-30.7c.4-13.5 .7-24.8-1.6-28.3l1-3.1c5.3-17.4 11.7-38.2 23.8-62.8l-.1-.2v-.1c.4 .4 3.4 3.4 8.8-5.8c.8-1.8 1.6-3.7 2.4-5.6c.5-1.1 .9-2.2 1.4-3.2c2.5-6.1 5.1-12.3 8.4-17.9l2.6-.6c1.7-10.1 17-23.8 29.8-35.2l1.1-1c5.7-5.1 10.7-9.7 13.6-13.1l.7 4.4c17-15.9 44.6-27.5 65.6-36.4l.5-.2c4.8-2 9.3-3.9 13.3-5.7c-3.4 3.8 2.2 2.7 10 1c4.8-1 10.4-2.1 15.3-2.4l-3.9 2.1c-2.7 1.4-5.4 2.8-8 4.6c8.1-2 11.7-1.4 15.7-.8l.3 0c3.5 .6 7.3 1.2 14.6 .2c-5.6 .8-12.3 3-11.2 3.8c7.9 .9 12.8-.1 17.2-1l.2 0c5.5-1.1 10.3-2 19.3 .9l-1-4.8c7.3 2.6 12.7 4.3 17.5 5.8l.5 .1c10 3 17.6 5.3 34.2 14.1c3.2 .2 5.3-.5 7.4-1.2l.1 0c3.6-1.1 7-2.1 15.2 1.2c.3 .5 .5 1 .7 1.4c.1 .2 .2 .5 .3 .7l0 .1c1 2.6 1.8 4.6 14.6 12.1c1.7-.7-2.7-4.7-6.4-8.2c0 0 0 0-.1-.1c-.2-.1-.3-.3-.5-.4c32.2 17.3 67.3 54.1 78 93.5c-6-11.1-5.2-5.5-4.3 .5c.6 4 1.2 8.1-.2 7.5c4.5 12.1 8.1 24.5 10.4 37.4l-.8-2.9-.1-.3c-3.3-11.9-9.6-34.3-19.9-49.3c-.4 4.3-2.8 3.9-5.2 3.5l-.1 0 0 0c-3.3-.6-6.2-1.1-1.9 12.6c2.6 3.8 3.1 2.4 3.5 1.1l0 0c.5-1.5 .9-2.7 4.7 5.2c.1 4.1 1 8.2 2.1 12.7l0 0 0 0 .1 .6c.1 .3 .1 .5 .2 .8l.1 .6c.6 2.6 1.3 5.4 1.8 8.4c-1.1-.2-2.3-2.2-3.4-4.2c-1.4-2.4-2.8-4.7-3.7-3.2c2.4 11.5 6.5 17.4 8 18.3c-.3 .6-.6 .7-1.1 .7c-.8 0-1.8 .1-1.9 5.3c.7 13.7 3.3 12.5 5.3 11.6l0 0c.6-.3 1.2-.6 1.7-.4c-.6 2.5-1.6 5.1-2.7 7.9c-2.8 7.1-6 15.4-3.4 26.1c-.8-3-2-6-3.1-8.9l-.1-.4c-.2-.5-.4-1-.6-1.5l0 0c-.3-.8-.6-1.6-.9-2.3c-.6 4.4-.3 7.7-.1 10.6c0 .2 0 .5 0 .7c.4 5.3 .7 10-3 19.9c4.3-14.2 3.8-26.9-.2-20.8c1 10.9-3.7 20.4-8 28.9l-.1 .2c-3.6 7.1-6.8 13.5-5.9 19.3l-5.2-7.1c-7.5 10.9-7 13.3-6.5 15.5l0 .1c.5 1.9 1 3.8-3.4 10.8c1.7-2.9 1.3-3.6 1-4.2l0 0c-.4-.8-.7-1.5 1.7-5.1c-1.6 .1-5.5 3.9-10.1 8.5c-3.9 3.9-8.5 8.4-12.8 11.8c-37.5 30.1-82.3 34-125.6 17.8c.2-1-.2-2.1-3.1-4.1c-36.8-28.2-58.5-52.1-50.9-107.5c2.1-1.6 3.6-5.8 5.3-10.8l0 0 0 0 .2-.4 .1-.3 0-.1c2.9-8.4 6.5-18.8 14.3-23.8c7.8-17.3 31.3-33.3 56.4-33.7c25.6-1.4 47.2 13.7 58.1 27.9c-19.8-18.4-52.1-24-79.7-10.4c-28.2 12.7-45 43.8-42.5 74.7c.3-.4 .6-.6 .9-.8l0 0s0 0 0 0c0 0 .1-.1 .1-.1l.1-.1c.6-.5 1.1-.9 1.4-3.3c-.9 60.2 64.8 104.3 112.1 82l.6 1.3c12.7-3.5 15.9-6.5 20.3-10.7l.1-.1 0 0c2.2-2.1 4.7-4.5 8.9-7.3c-.3 .7-1.3 1.7-2.4 2.7c-2.2 2.1-4.6 4.5-1.6 4.6c5-1.3 18.5-13.4 28.5-22.3l0 0 0 0c.6-.5 1.2-1 1.7-1.5c1.5-1.3 2.8-2.5 4-3.6l0 0 .3-.3c1.9-4.2 1.6-5.6 1.3-7l0-.1c-.4-1.6-.8-3.3 2.4-9.6l7.3-3.7c.8-2.1 1.5-4.1 2.2-6c.2-.6 .5-1.2 .7-1.8l-.4-.2zM349.3 34.3l-.2-.1 .2 .1 0 0zM247.8 334.1c-6-3-13.7-8.9-14.8-11.4l-.4 .3c-.3 .6-.5 1.3-.2 2.2c-12.2-5.7-23.4-14.3-32.6-24.9c4.9 7.1 10.1 14.1 17 19.5c-6.9-2.3-15.1-11.8-21.6-19.3l-.1-.1c-4.3-5-7.9-9.1-9.7-9.5c19.8 35.5 80.5 62.3 112.3 49c-14.7 .5-33.4 .3-49.9-5.8zm79.3-119.7l-.1-.2c-.5-1.5-1.1-3.1-1.7-3.4c1.4-5.8 5.4-10.7 4.4 4.6c-1 3.8-1.8 1.5-2.6-1zm-4.2 22.2c-1.3 7.9-5 15.5-10.1 22.5c.2-2-1.2-2.4-2.6-2.8l0 0c-2.9-.8-5.9-1.6 5.6-16.1c-.5 1.9-2.1 4.6-3.7 7.3l0 0 0 0-.3 .4c-3.6 5.9-6.7 11 4 4.3l1-1.8c2.6-4.5 5-8.8 6-13.8h.1zm-55.6 33.9c7.1 .6 14.1 .6 21-1.1c-2.5 2.4-5.2 4.8-8.3 7.2c-11.1-1.7-21.2-6-12.7-6.1zm-92.6 11.6c3.6 7.1 6.4 11.5 9 15.7l.1 .2c2.3 3.7 4.4 7.1 6.8 11.7c-5.1-4.2-8.7-9.5-12.5-15l-.3-.5c-1.4-2.1-2.8-4.2-4.4-6.2l1.2-5.9h.1zm7.5-9.6c1.6 3.3 3.2 6.4 5.7 9.1l2.6 7.7-1.3-2.1c-3.2-5.3-6.3-10.6-8-16.7l.8 1.6 .2 .4zm238.9-41.6c-2.3 17.4-7.7 34.6-16 50.3c7.6-14.9 12.5-30.9 14.8-47.2l1.2-3.1zM35.6 110.6c.4 .8 1.4 .5 2.3 .3c1.9-.5 3.6-.9-.1 7.6c-.5 .3-1 .7-1.5 1l0 0 0 0c-1.4 .9-2.8 1.9-3.9 3c1.9-3.8 3.5-7.4 3.2-11.9zM25.3 152.3c-.7 3.7-1.5 7.9-3.4 13.9c.2-1.9 0-3.5-.2-4.9l0-.1c-.4-3.4-.7-6.3 4.3-12.8c-.3 1.2-.5 2.5-.7 3.8v.1z"]
 };
 var faOpenid = {
   prefix: "fab",
@@ -2662,6 +584,11 @@ var faInstalod = {
   prefix: "fab",
   iconName: "instalod",
   icon: [512, 512, [], "e081", "M153.384,480H387.113L502.554,275.765,204.229,333.211ZM504.726,240.078,387.113,32H155.669L360.23,267.9ZM124.386,48.809,7.274,256,123.236,461.154,225.627,165.561Z"]
+};
+var faFilesPinwheel = {
+  prefix: "fab",
+  iconName: "files-pinwheel",
+  icon: [512, 512, [], "e69f", "M253.2 246.4L136.9 130.2c-.6-.6-1-1.3-1.4-2s-.5-1.6-.5-2.4s.2-1.6 .5-2.4s.8-1.4 1.4-2L253.3 5.1c.9-.9 2-1.5 3.2-1.7s2.5-.1 3.6 .3s2.1 1.3 2.8 2.3s1.1 2.2 1.1 3.5L264 242c0 1.3-.3 2.5-1 3.6s-1.7 1.9-2.9 2.4s-2.5 .6-3.7 .3s-2.4-.9-3.2-1.9zm40.3-4.4l0-134.4c0-.8 .1-1.6 .5-2.4s.8-1.5 1.3-2.1s1.3-1.1 2-1.4s1.6-.5 2.4-.5l134.4 0c1.2 0 2.5 .4 3.5 1.1s1.8 1.7 2.3 2.8s.6 2.4 .3 3.6s-.9 2.3-1.7 3.2L304 246.4c-.9 .8-2 1.4-3.2 1.6s-2.4 .1-3.5-.4s-2.1-1.3-2.8-2.3s-1.1-2.2-1.1-3.4zm30.6 35c-1.2 0-2.5-.3-3.5-1s-1.9-1.6-2.4-2.8s-.6-2.4-.4-3.6s.8-2.3 1.7-3.2l84.2-84.2c.6-.6 1.3-1 2-1.4s1.6-.5 2.4-.5s1.6 .2 2.4 .5s1.4 .8 2 1.4l84.4 84.2c.9 .9 1.5 2 1.7 3.2s.1 2.5-.3 3.6s-1.3 2.1-2.3 2.8s-2.2 1.1-3.5 1.1l-168.5 0zM414.8 408l-95.3-95.2c-.9-.9-1.5-2-1.7-3.2s-.1-2.5 .4-3.7s1.3-2.1 2.4-2.8s2.3-1 3.5-1l95.2 0c1.7 0 3.2 .7 4.4 1.8s1.8 2.8 1.8 4.4l0 95.3c0 1.2-.4 2.5-1.1 3.5s-1.7 1.8-2.8 2.3s-2.4 .6-3.6 .3s-2.3-.9-3.2-1.7zM16.5 302.1l216.9 0c1.2 0 2.5 .4 3.5 1.1s1.8 1.7 2.3 2.8s.6 2.4 .3 3.6s-.8 2.3-1.7 3.2L129.4 421.2c-.6 .6-1.3 1-2 1.4s-1.6 .5-2.4 .5s-1.6-.2-2.4-.5s-1.4-.8-2-1.4L12 312.8c-.9-.9-1.5-2-1.7-3.2s-.1-2.5 .4-3.6s1.3-2.1 2.3-2.8s2.3-1 3.5-1zM264 465.3c0 .8-.2 1.6-.5 2.4s-.8 1.5-1.4 2s-1.3 1-2 1.4s-1.6 .5-2.4 .5l-128 0c-1.2 0-2.5-.4-3.5-1.1s-1.8-1.7-2.3-2.8s-.6-2.4-.3-3.6s.8-2.3 1.7-3.2l128-128c.9-.9 2-1.5 3.2-1.7s2.5-.1 3.6 .3s2.1 1.3 2.8 2.3s1.1 2.2 1.1 3.5l0 128zm40-132.5l82.8 82.7c.6 .6 1 1.3 1.4 2s.5 1.6 .5 2.4s-.2 1.6-.5 2.4s-.8 1.4-1.4 2L304 507c-.9 .9-2 1.5-3.2 1.7s-2.5 .1-3.6-.3s-2.1-1.3-2.8-2.3s-1.1-2.2-1.1-3.5l0-165.4c0-1.2 .4-2.5 1.1-3.5s1.7-1.8 2.8-2.3s2.4-.6 3.6-.3s2.3 .8 3.2 1.7zM78.7 122.4c0-1.2 .3-2.5 1-3.5s1.7-1.8 2.8-2.3s2.4-.6 3.6-.4s2.3 .8 3.2 1.7L237.8 266.4c.9 .9 1.5 2 1.7 3.2s.1 2.5-.3 3.6s-1.3 2.1-2.3 2.8s-2.2 1.1-3.5 1.1L85 277.1c-1.7 0-3.2-.7-4.4-1.8s-1.8-2.8-1.8-4.4l0-148.4z"]
 };
 var faExpeditedssl = {
   prefix: "fab",
@@ -2737,8 +664,9 @@ var faGolang = {
 var faKickstarter = {
   prefix: "fab",
   iconName: "kickstarter",
-  icon: [448, 512, [], "f3bb", "M400 480H48c-26.4 0-48-21.6-48-48V80c0-26.4 21.6-48 48-48h352c26.4 0 48 21.6 48 48v352c0 26.4-21.6 48-48 48zM199.6 178.5c0-30.7-17.6-45.1-39.7-45.1-25.8 0-40 19.8-40 44.5v154.8c0 25.8 13.7 45.6 40.5 45.6 21.5 0 39.2-14 39.2-45.6v-41.8l60.6 75.7c12.3 14.9 39 16.8 55.8 0 14.6-15.1 14.8-36.8 4-50.4l-49.1-62.8 40.5-58.7c9.4-13.5 9.5-34.5-5.6-49.1-16.4-15.9-44.6-17.3-61.4 7l-44.8 64.7v-38.8z"]
+  icon: [448, 512, ["square-kickstarter"], "f3bb", "M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM320.8 233l-23.3 23.1L320.8 279c24.1 23.9 24.1 63 0 86.9s-63.4 23.9-87.6 0l-8.5-8.4c-11.3 16-29.7 26.5-50.9 26.5c-34.1 0-61.9-27.5-61.9-61.4l0-133.2c0-33.8 27.7-61.4 61.9-61.4c21.1 0 39.6 10.5 50.9 26.5l8.5-8.4c24.1-23.9 63.4-23.9 87.6 0s24.1 63 0 86.9z"]
 };
+var faSquareKickstarter = faKickstarter;
 var faGrav = {
   prefix: "fab",
   iconName: "grav",
@@ -2762,7 +690,7 @@ var faFirstdraft = {
 var faSquareYoutube = {
   prefix: "fab",
   iconName: "square-youtube",
-  icon: [448, 512, [61798, "youtube-square"], "f431", "M186.8 202.1l95.2 54.1-95.2 54.1V202.1zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-42 176.3s0-59.6-7.6-88.2c-4.2-15.8-16.5-28.2-32.2-32.4C337.9 128 224 128 224 128s-113.9 0-142.2 7.7c-15.7 4.2-28 16.6-32.2 32.4-7.6 28.5-7.6 88.2-7.6 88.2s0 59.6 7.6 88.2c4.2 15.8 16.5 27.7 32.2 31.9C110.1 384 224 384 224 384s113.9 0 142.2-7.7c15.7-4.2 28-16.1 32.2-31.9 7.6-28.5 7.6-88.1 7.6-88.1z"]
+  icon: [448, 512, [61798, "youtube-square"], "f431", "M282 256.2l-95.2-54.1V310.3L282 256.2zM384 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zm14.4 136.1c7.6 28.6 7.6 88.2 7.6 88.2s0 59.6-7.6 88.1c-4.2 15.8-16.5 27.7-32.2 31.9C337.9 384 224 384 224 384s-113.9 0-142.2-7.6c-15.7-4.2-28-16.1-32.2-31.9C42 315.9 42 256.3 42 256.3s0-59.7 7.6-88.2c4.2-15.8 16.5-28.2 32.2-32.4C110.1 128 224 128 224 128s113.9 0 142.2 7.7c15.7 4.2 28 16.6 32.2 32.4z"]
 };
 var faYoutubeSquare = faSquareYoutube;
 var faWikipediaW = {
@@ -2819,7 +747,7 @@ var faMeta = {
 var faLaravel = {
   prefix: "fab",
   iconName: "laravel",
-  icon: [512, 512, [], "f3bd", "M504.4,115.83a5.72,5.72,0,0,0-.28-.68,8.52,8.52,0,0,0-.53-1.25,6,6,0,0,0-.54-.71,9.36,9.36,0,0,0-.72-.94c-.23-.22-.52-.4-.77-.6a8.84,8.84,0,0,0-.9-.68L404.4,55.55a8,8,0,0,0-8,0L300.12,111h0a8.07,8.07,0,0,0-.88.69,7.68,7.68,0,0,0-.78.6,8.23,8.23,0,0,0-.72.93c-.17.24-.39.45-.54.71a9.7,9.7,0,0,0-.52,1.25c-.08.23-.21.44-.28.68a8.08,8.08,0,0,0-.28,2.08V223.18l-80.22,46.19V63.44a7.8,7.8,0,0,0-.28-2.09c-.06-.24-.2-.45-.28-.68a8.35,8.35,0,0,0-.52-1.24c-.14-.26-.37-.47-.54-.72a9.36,9.36,0,0,0-.72-.94,9.46,9.46,0,0,0-.78-.6,9.8,9.8,0,0,0-.88-.68h0L115.61,1.07a8,8,0,0,0-8,0L11.34,56.49h0a6.52,6.52,0,0,0-.88.69,7.81,7.81,0,0,0-.79.6,8.15,8.15,0,0,0-.71.93c-.18.25-.4.46-.55.72a7.88,7.88,0,0,0-.51,1.24,6.46,6.46,0,0,0-.29.67,8.18,8.18,0,0,0-.28,2.1v329.7a8,8,0,0,0,4,6.95l192.5,110.84a8.83,8.83,0,0,0,1.33.54c.21.08.41.2.63.26a7.92,7.92,0,0,0,4.1,0c.2-.05.37-.16.55-.22a8.6,8.6,0,0,0,1.4-.58L404.4,400.09a8,8,0,0,0,4-6.95V287.88l92.24-53.11a8,8,0,0,0,4-7V117.92A8.63,8.63,0,0,0,504.4,115.83ZM111.6,17.28h0l80.19,46.15-80.2,46.18L31.41,63.44Zm88.25,60V278.6l-46.53,26.79-33.69,19.4V123.5l46.53-26.79Zm0,412.78L23.37,388.5V77.32L57.06,96.7l46.52,26.8V338.68a6.94,6.94,0,0,0,.12.9,8,8,0,0,0,.16,1.18h0a5.92,5.92,0,0,0,.38.9,6.38,6.38,0,0,0,.42,1v0a8.54,8.54,0,0,0,.6.78,7.62,7.62,0,0,0,.66.84l0,0c.23.22.52.38.77.58a8.93,8.93,0,0,0,.86.66l0,0,0,0,92.19,52.18Zm8-106.17-80.06-45.32,84.09-48.41,92.26-53.11,80.13,46.13-58.8,33.56Zm184.52,4.57L215.88,490.11V397.8L346.6,323.2l45.77-26.15Zm0-119.13L358.68,250l-46.53-26.79V131.79l33.69,19.4L392.37,178Zm8-105.28-80.2-46.17,80.2-46.16,80.18,46.15Zm8,105.28V178L455,151.19l33.68-19.4v91.39h0Z"]
+  icon: [512, 512, [], "f3bd", "M107.2 0c2.5 0 4.7 .8 6.7 2l94.3 54.1c2.7 1.5 4.5 3.5 5.4 5.9c.9 2.2 .9 4.3 .9 5.6l0 193.4 69.2-39.7 0-100.3c0-2.6 .6-5 2.2-7.2c1.5-2.1 3.5-3.6 5.7-4.8c0 0 0 0 0 0l94-54c1.6-.9 3.4-1.6 5.5-1.6s4 .7 5.6 1.6l95.8 55.1c2.3 1.3 3.9 3 4.9 5.3c.9 2.1 .9 4.2 .9 5.8l0 107.2c0 2-.2 4.3-1.4 6.4c-1.2 2.2-3 3.7-5.1 4.9l-.1 .1-88 50.5 0 100c0 2.3-.3 4.8-1.6 7c-1.3 2.2-3.3 3.7-5.3 4.9c0 0 0 0-.1 0L208.7 510c-2.2 1.2-4.5 2-7.1 2s-4.9-.9-7.1-2l-.1-.1L7.1 402l-.5-.3c-1.1-.7-2.6-1.7-3.8-2.9C.9 396.9 0 394.6 0 391.6L0 65.9c0-4.8 3-7.9 5.5-9.3L100.5 2c2-1.2 4.3-2 6.8-2zM38.1 67.1l69 39.9 69.2-39.9L107.1 27.4l-69 39.7zm353 93.2l69-39.7-69-39.7-69.1 39.7 69.1 39.7zM189.2 89L120 128.8l0 186.4 69.2-39.9 0-186.4zM94.5 128.9L25.2 89.1l0 294.2 164 94.2 0-79.4-87.3-49.3-.2-.1c-1.3-.8-3.2-1.9-4.6-3.7c-1.7-2.1-2.5-4.7-2.5-7.7l0-208.5zm214.7 92.4l69.3 39.6 0-78.5-69.3-39.9 0 78.8zm94.5 39.6L473 221.2l0-78.8-69.3 39.9 0 78.5zM201.6 376.1l163.8-93.2-69-39.9L133 337.1l68.6 38.9zm12.9 101.5l164-94.2 0-78.8-164 93.6 0 79.4z"]
 };
 var faHotjar = {
   prefix: "fab",
@@ -2830,6 +758,11 @@ var faBluetoothB = {
   prefix: "fab",
   iconName: "bluetooth-b",
   icon: [320, 512, [], "f294", "M196.48 260.023l92.626-103.333L143.125 0v206.33l-86.111-86.111-31.406 31.405 108.061 108.399L25.608 368.422l31.406 31.405 86.111-86.111L145.84 512l148.552-148.644-97.912-103.333zm40.86-102.996l-49.977 49.978-.338-100.295 50.315 50.317zM187.363 313.04l49.977 49.978-50.315 50.316.338-100.294z"]
+};
+var faSquareLetterboxd = {
+  prefix: "fab",
+  iconName: "square-letterboxd",
+  icon: [448, 512, [], "e62e", "M384 32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96C0 60.7 28.7 32 64 32H384zM105.1 187C66.4 187 35 218.3 35 257s31.4 70 70.1 70c24.8 0 46.5-12.8 59-32.2l.5-.7-.4-.6c-6.5-10.6-10.2-23.1-10.2-36.5c0-13.6 3.9-26.3 10.6-37.1c-12.4-19.8-34.4-32.9-59.5-32.9zM224 187c-24.8 0-46.5 12.8-59 32.2l-.5 .7 .4 .6c6.5 10.6 10.2 23.1 10.2 36.5c0 13.6-3.9 26.3-10.6 37.1C176.9 313.8 198.9 327 224 327c24.8 0 46.5-12.8 59-32.2l.5-.7-.4-.6c-6.5-10.6-10.2-23.1-10.2-36.5c0-13.6 3.9-26.3 10.6-37.1C271.1 200.2 249.1 187 224 187zm118.9 0c-24.8 0-46.5 12.8-59 32.2l-.5 .7 .4 .6c6.5 10.6 10.2 23.1 10.2 36.5c0 13.6-3.9 26.3-10.6 37.1c12.4 19.8 34.4 32.9 59.5 32.9c38.7 0 70.1-31.3 70.1-70s-31.4-70-70.1-70z"]
 };
 var faStickerMule = {
   prefix: "fab",
@@ -2846,6 +779,11 @@ var faHips = {
   iconName: "hips",
   icon: [640, 512, [], "f452", "M251.6 157.6c0-1.9-.9-2.8-2.8-2.8h-40.9c-1.6 0-2.7 1.4-2.7 2.8v201.8c0 1.4 1.1 2.8 2.7 2.8h40.9c1.9 0 2.8-.9 2.8-2.8zM156.5 168c-16.1-11.8-36.3-17.9-60.3-18-18.1-.1-34.6 3.7-49.8 11.4V80.2c0-1.8-.9-2.7-2.8-2.7H2.7c-1.8 0-2.7.9-2.7 2.7v279.2c0 1.9.9 2.8 2.7 2.8h41c1.9 0 2.8-.9 2.8-2.8V223.3c0-.8-2.8-27 45.8-27 48.5 0 45.8 26.1 45.8 27v122.6c0 9 7.3 16.3 16.4 16.3h27.3c1.8 0 2.7-.9 2.7-2.8V223.3c0-23.4-9.3-41.8-28-55.3zm478.4 110.1c-6.8-15.7-18.4-27-34.9-34.1l-57.6-25.3c-8.6-3.6-9.2-11.2-2.6-16.1 7.4-5.5 44.3-13.9 84 6.8 1.7 1 4-.3 4-2.4v-44.7c0-1.3-.6-2.1-1.9-2.6-17.7-6.6-36.1-9.9-55.1-9.9-26.5 0-45.3 5.8-58.5 15.4-.5.4-28.4 20-22.7 53.7 3.4 19.6 15.8 34.2 37.2 43.6l53.6 23.5c11.6 5.1 15.2 13.3 12.2 21.2-3.7 9.1-13.2 13.6-36.5 13.6-24.3 0-44.7-8.9-58.4-19.1-2.1-1.4-4.4.2-4.4 2.3v34.4c0 10.4 4.9 17.3 14.6 20.7 15.6 5.5 31.6 8.2 48.2 8.2 12.7 0 25.8-1.2 36.3-4.3.7-.3 36-8.9 45.6-45.8 3.5-13.5 2.4-26.5-3.1-39.1zM376.2 149.8c-31.7 0-104.2 20.1-104.2 103.5v183.5c0 .8.6 2.7 2.7 2.7h40.9c1.9 0 2.8-.9 2.8-2.7V348c16.5 12.7 35.8 19.1 57.7 19.1 60.5 0 108.7-48.5 108.7-108.7.1-60.3-48.2-108.6-108.6-108.6zm0 170.9c-17.2 0-31.9-6.1-44-18.2-12.2-12.2-18.2-26.8-18.2-44 0-34.5 27.6-62.2 62.2-62.2 34.5 0 62.2 27.6 62.2 62.2.1 34.3-27.3 62.2-62.2 62.2zM228.3 72.5c-15.9 0-28.8 12.9-28.9 28.9 0 15.6 12.7 28.9 28.9 28.9s28.9-13.1 28.9-28.9c0-16.2-13-28.9-28.9-28.9z"]
 };
+var faCss = {
+  prefix: "fab",
+  iconName: "css",
+  icon: [448, 512, [], "e6a2", "M376.3 32L0 32 0 408.3c0 19 7.6 37.2 21 50.7s31.7 21 50.7 21l304.6 0c19 0 37.2-7.6 50.7-21s21-31.7 21-50.7l0-304.6c0-19-7.6-37.2-21-50.7s-31.7-21-50.7-21zM332.4 431.4c-7.7-8.5-11.7-20.7-12-36.6l31.3 0c.2 14.1 5.1 21.1 14.8 21.1c4.9 0 8.4-1.6 10.5-4.7c2-3.1 3-8 3-14.8c0-5.4-1.3-9.9-4-13.4c-3.5-4.2-8.1-7.5-13.2-9.5L351.2 368c-10.3-4.9-17.8-10.8-22.5-17.6c-4.5-6.8-6.7-16.3-6.7-28.4c0-13.6 4-24.6 11.8-33.1c8.1-8.5 19.1-12.7 33.2-12.7c13.6 0 24.1 4.2 31.5 12.5c7.5 8.4 11.5 20.3 11.8 35.9l-30.1 0c.2-5.1-.9-10.2-3-14.8c-1.7-3.4-5-5.1-10-5.1c-8.8 0-13.2 5.2-13.2 15.7c0 5.3 1.1 9.4 3.2 12.6c3.1 3.5 7 6.2 11.4 7.8l11.1 4.9c11.5 5.3 19.7 11.7 24.8 19.4c5.1 7.7 7.6 18 7.6 31c0 15.5-4 27.4-12.3 35.7c-8.2 8.3-19.5 12.5-34.1 12.5s-25.6-4.2-33.4-12.7zm-101 0c-7.7-8.5-11.7-20.7-12-36.6l31.3 0c.2 14.1 5.1 21.1 14.8 21.1c4.9 0 8.4-1.6 10.4-4.7c2-3.1 3-8 3-14.8c0-5.4-1.3-9.9-3.9-13.4c-3.5-4.2-8.1-7.5-13.2-9.5L250.2 368c-10.3-4.9-17.8-10.8-22.5-17.6c-4.5-6.8-6.7-16.3-6.7-28.4c0-13.6 4-24.6 11.8-33.1c8.1-8.5 19.1-12.7 33.2-12.7c13.6 0 24.1 4.2 31.4 12.5c7.6 8.4 11.5 20.3 11.9 35.9l-30.1 0c.2-5.1-.9-10.2-3-14.8c-1.7-3.4-5-5.1-10-5.1c-8.8 0-13.2 5.2-13.2 15.7c0 5.3 1.1 9.4 3.2 12.6c3.1 3.5 7 6.2 11.4 7.8l11.1 4.9c11.5 5.3 19.7 11.7 24.8 19.4c5.1 7.7 7.6 18 7.6 31c0 15.5-4.1 27.4-12.3 35.7s-19.5 12.5-34.1 12.5s-25.6-4.2-33.4-12.7zm-105.6 1.1c-8.4-7.7-12.5-19.2-12.5-34.5l0-75.4c0-15.2 4.4-26.7 13.2-34.6c8.9-7.8 20.7-11.8 35.2-11.8c14.1 0 25.2 4 33.4 12c8.3 8 12.5 20 12.5 35.9l0 6-33.1 0 0-5.8c0-6.1-1.3-10.7-4-13.6c-1.1-1.5-2.6-2.7-4.3-3.5s-3.5-1.2-5.4-1.1c-5.4 0-9.2 1.8-11.4 5.6c-2.3 5.2-3.3 10.8-3 16.4l0 65.5c0 13.7 4.8 20.6 14.4 20.8c4.5 0 7.9-1.6 10.2-4.8c2.5-4.1 3.7-8.8 3.5-13.6l0-4.9 33.1 0 0 5.1c0 10.6-2.1 19.5-6.2 26.6c-4 6.9-9.9 12.5-17.1 16c-7.7 3.7-16.1 5.5-24.6 5.3c-14.2 0-25.5-3.9-33.8-11.6z"]
+};
 var faBehance = {
   prefix: "fab",
   iconName: "behance",
@@ -2854,7 +792,7 @@ var faBehance = {
 var faReddit = {
   prefix: "fab",
   iconName: "reddit",
-  icon: [512, 512, [], "f1a1", "M201.5 305.5c-13.8 0-24.9-11.1-24.9-24.6 0-13.8 11.1-24.9 24.9-24.9 13.6 0 24.6 11.1 24.6 24.9 0 13.6-11.1 24.6-24.6 24.6zM504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-132.3-41.2c-9.4 0-17.7 3.9-23.8 10-22.4-15.5-52.6-25.5-86.1-26.6l17.4-78.3 55.4 12.5c0 13.6 11.1 24.6 24.6 24.6 13.8 0 24.9-11.3 24.9-24.9s-11.1-24.9-24.9-24.9c-9.7 0-18 5.8-22.1 13.8l-61.2-13.6c-3-.8-6.1 1.4-6.9 4.4l-19.1 86.4c-33.2 1.4-63.1 11.3-85.5 26.8-6.1-6.4-14.7-10.2-24.1-10.2-34.9 0-46.3 46.9-14.4 62.8-1.1 5-1.7 10.2-1.7 15.5 0 52.6 59.2 95.2 132 95.2 73.1 0 132.3-42.6 132.3-95.2 0-5.3-.6-10.8-1.9-15.8 31.3-16 19.8-62.5-14.9-62.5zM302.8 331c-18.2 18.2-76.1 17.9-93.6 0-2.2-2.2-6.1-2.2-8.3 0-2.5 2.5-2.5 6.4 0 8.6 22.8 22.8 87.3 22.8 110.2 0 2.5-2.2 2.5-6.1 0-8.6-2.2-2.2-6.1-2.2-8.3 0zm7.7-75c-13.6 0-24.6 11.1-24.6 24.9 0 13.6 11.1 24.6 24.6 24.6 13.8 0 24.9-11.1 24.9-24.6 0-13.8-11-24.9-24.9-24.9z"]
+  icon: [512, 512, [], "f1a1", "M0 256C0 114.6 114.6 0 256 0S512 114.6 512 256s-114.6 256-256 256L37.1 512c-13.7 0-20.5-16.5-10.9-26.2L75 437C28.7 390.7 0 326.7 0 256zM349.6 153.6c23.6 0 42.7-19.1 42.7-42.7s-19.1-42.7-42.7-42.7c-20.6 0-37.8 14.6-41.8 34c-34.5 3.7-61.4 33-61.4 68.4l0 .2c-37.5 1.6-71.8 12.3-99 29.1c-10.1-7.8-22.8-12.5-36.5-12.5c-33 0-59.8 26.8-59.8 59.8c0 24 14.1 44.6 34.4 54.1c2 69.4 77.6 125.2 170.6 125.2s168.7-55.9 170.6-125.3c20.2-9.6 34.1-30.2 34.1-54c0-33-26.8-59.8-59.8-59.8c-13.7 0-26.3 4.6-36.4 12.4c-27.4-17-62.1-27.7-100-29.1l0-.2c0-25.4 18.9-46.5 43.4-49.9l0 0c4.4 18.8 21.3 32.8 41.5 32.8zM177.1 246.9c16.7 0 29.5 17.6 28.5 39.3s-13.5 29.6-30.3 29.6s-31.4-8.8-30.4-30.5s15.4-38.3 32.1-38.3zm190.1 38.3c1 21.7-13.7 30.5-30.4 30.5s-29.3-7.9-30.3-29.6c-1-21.7 11.8-39.3 28.5-39.3s31.2 16.6 32.1 38.3zm-48.1 56.7c-10.3 24.6-34.6 41.9-63 41.9s-52.7-17.3-63-41.9c-1.2-2.9 .8-6.2 3.9-6.5c18.4-1.9 38.3-2.9 59.1-2.9s40.7 1 59.1 2.9c3.1 .3 5.1 3.6 3.9 6.5z"]
 };
 var faDiscord = {
   prefix: "fab",
@@ -2885,6 +823,11 @@ var faConfluence = {
   prefix: "fab",
   iconName: "confluence",
   icon: [512, 512, [], "f78d", "M2.3 412.2c-4.5 7.6-2.1 17.5 5.5 22.2l105.9 65.2c7.7 4.7 17.7 2.4 22.4-5.3 0-.1.1-.2.1-.2 67.1-112.2 80.5-95.9 280.9-.7 8.1 3.9 17.8.4 21.7-7.7.1-.1.1-.3.2-.4l50.4-114.1c3.6-8.1-.1-17.6-8.1-21.3-22.2-10.4-66.2-31.2-105.9-50.3C127.5 179 44.6 345.3 2.3 412.2zm507.4-312.1c4.5-7.6 2.1-17.5-5.5-22.2L398.4 12.8c-7.5-5-17.6-3.1-22.6 4.4-.2.3-.4.6-.6 1-67.3 112.6-81.1 95.6-280.6.9-8.1-3.9-17.8-.4-21.7 7.7-.1.1-.1.3-.2.4L22.2 141.3c-3.6 8.1.1 17.6 8.1 21.3 22.2 10.4 66.3 31.2 106 50.4 248 120 330.8-45.4 373.4-112.9z"]
+};
+var faShoelace = {
+  prefix: "fab",
+  iconName: "shoelace",
+  icon: [512, 512, [], "e60c", "M404.9 331c2.2-1.1 4.4-2.3 6.5-3.7l8.3-4.8c1.5-1.1 4.4-3.4 8.7-6.7l.5-.5c3.4-3.4 7.2-5 11.3-4.9c1.8 0 3.9 .5 6.4 1.5l31-27.5c.9-.7 1.7-1.3 2.6-1.8h.2c3.3-1.9 6-1.8 8.2 .4c3.9 2.1 4.2 5.6 .9 10.6L456.9 322c.2 .5 .4 1 .4 1.5c.5 2.2 .3 4.4-.5 6.6c-.7 1.5-1.8 2.9-3.1 4.2c-1.4 1.4-2.7 2.8-4.2 4.2l-18.8 13.7c-1.7 1.2-3.4 2.3-5.1 3.3c-2.1 1.3-4.3 2.5-6.6 3.6c-1 .4-1.9 .9-2.9 1.3c-5.9 2.5-11.9 4.2-18.2 5c-2.9 24.5-11.3 47.1-25.1 67.8c-17.5 25.7-41.4 45.4-71.8 58.8c-30.2 13.5-63 20.2-98.2 20.2c-48.6-.5-88-11.4-118.2-32.8C49.5 454.4 32 421.5 32 380.3v-5.6c1.2-28.1 9.5-54.6 24.8-79.8c15.1-24.9 37.1-41.7 66.1-50.5c14.9-4.4 29.9-6.6 45-6.6c15.5 0 31.6 2.9 48.1 8.6s35.2 15.5 55.9 29.5L326 312.2c15.1 9.8 28.8 16.5 41.2 20c-2.6-25.1-11.7-46.6-27.3-64.5c-15.7-18.1-35.6-31.3-59.9-39.7l-23.3-8c-21.4-7.5-37.3-14.9-47.7-22.2c-28.2-19.1-43.8-45.2-47-78.5l-.5-9.8c0-32.1 13-58.9 39-80.5C223.5 9.7 251.1 0 283 0c24 0 45.6 6.9 64.7 20.8c19.2 14 30.1 33.8 32.6 59.4l.5 10c0 18.6-4.8 34.5-14.4 47.7c-9.8 13.2-18.5 19.9-26 19.9c-1.6-.1-3.1-.3-4.5-.6l-34 32c-5.5 3-9.2 2.5-11.1-1.6c-1.9-2.2-1.8-4.9 .5-8.2l.2-.2c.5-.7 1.2-1.5 2-2.4l31.6-30c-.4-1.5-.6-3.1-.6-4.8c0-4.1 1.6-7.6 4.9-10.4c13.8-12.4 20.8-26.7 20.8-42.8c0-16-6.1-29.5-18.2-40.4s-28.7-16.5-49.7-16.8c-26.2 0-47.8 7.9-64.7 23.7S192.3 89.9 192.3 112c0 17.8 6.9 33.9 20.6 48.3c13.6 14.2 34.6 25.4 63 33.5c39.8 11.5 70.2 31 91.3 58.3c18.7 24.2 29.1 51.3 31.3 81.4c2.2-.7 4.3-1.5 6.5-2.6zM294.1 178.7c0 1.1 .6 1.6 1.8 1.6c.1 0 9.7-8.9 28.8-26.6c0-2.4-5.1 .9-15.3 10c-10.2 9.2-15.3 14.2-15.3 14.9zm8 6.4c0-1-.5-1.5-1.5-1.5c-1.1 0-2.1 .5-2.9 1.6c-1.9-.1-3.3 .1-4.2 .7c-.4 .2-.5 .5-.5 .7c0 .7 .5 1.3 1.5 1.6h3.3c2.9-1.1 4.4-2.2 4.4-3.3zm22.6-19.9c0-2.8-1.6-2.8-4.9 0c-1.6 1.5-3.6 3.5-6 6.2c-.8 .6-2.6 2.2-5.3 4.9c-2.8 2.9-4.2 4.7-4.2 5.3l.2 1.3c.7 .2 1.2 .4 1.5 .4c.1 0 3.3-2.9 9.5-8.7s9.3-8.9 9.3-9.3zm159.7 120l-30.6 27c1.8 1 3.2 2.4 4 4.2l30.2-27c.2-1.2 .1-2.2-.5-2.9c-.6-.5-1.6-.9-3.1-1.3zm-1.6-.9l-.7-.7-27 21.9 1.6 2 26-23.1zM366.6 363.9c-8-2.1-15.4-4.6-22.2-7.5c-15.3-6.2-34.3-17-57-32.4L250 298.7c-15.8-10.1-30.2-17.6-43.2-22.6c-13.1-4.9-26-7.3-38.6-7.3h-5.5c-32.2 1.7-57.2 13.8-75 36.2c-16.6 20.8-25 45.3-25 73.6c0 31.8 12.8 56.7 38.2 74.7c25.4 18.1 60.2 27.1 104.4 27.1c34.7 0 64-6.2 87.8-18.6c23.7-12.4 42.1-28.8 55.2-49.2c9.8-15.5 15.9-31.8 18.2-48.8z"]
 };
 var faMdb = {
   prefix: "fab",
@@ -2924,7 +867,7 @@ var faYarn = {
 var faSquareSteam = {
   prefix: "fab",
   iconName: "square-steam",
-  icon: [448, 512, ["steam-square"], "f1b7", "M185.2 356.5c7.7-18.5-1-39.7-19.6-47.4l-29.5-12.2c11.4-4.3 24.3-4.5 36.4.5 12.2 5.1 21.6 14.6 26.7 26.7 5 12.2 5 25.6-.1 37.7-10.5 25.1-39.4 37-64.6 26.5-11.6-4.8-20.4-13.6-25.4-24.2l28.5 11.8c18.6 7.8 39.9-.9 47.6-19.4zM400 32H48C21.5 32 0 53.5 0 80v160.7l116.6 48.1c12-8.2 26.2-12.1 40.7-11.3l55.4-80.2v-1.1c0-48.2 39.3-87.5 87.6-87.5s87.6 39.3 87.6 87.5c0 49.2-40.9 88.7-89.6 87.5l-79 56.3c1.6 38.5-29.1 68.8-65.7 68.8-31.8 0-58.5-22.7-64.5-52.7L0 319.2V432c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-99.7 222.5c-32.2 0-58.4-26.1-58.4-58.3s26.2-58.3 58.4-58.3 58.4 26.2 58.4 58.3-26.2 58.3-58.4 58.3zm.1-14.6c24.2 0 43.9-19.6 43.9-43.8 0-24.2-19.6-43.8-43.9-43.8-24.2 0-43.9 19.6-43.9 43.8 0 24.2 19.7 43.8 43.9 43.8z"]
+  icon: [448, 512, ["steam-square"], "f1b7", "M165.6 309.1c18.6 7.7 27.3 28.9 19.6 47.4s-29 27.2-47.6 19.4l-28.5-11.8c5 10.6 13.8 19.4 25.4 24.2c25.2 10.5 54.1-1.4 64.6-26.5c5.1-12.1 5.1-25.5 .1-37.7c-5.1-12.1-14.5-21.6-26.7-26.7c-12.1-5-25-4.8-36.4-.5l29.5 12.2zM448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V240.7l116.6 48.1c12-8.2 26.2-12.1 40.7-11.3l55.4-80.2v-1.1c0-48.2 39.3-87.5 87.6-87.5s87.6 39.3 87.6 87.5c0 49.2-40.9 88.7-89.6 87.5l-79 56.3c1.6 38.5-29.1 68.8-65.7 68.8c-31.8 0-58.5-22.7-64.5-52.7L0 319.2V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM241.9 196.2a58.4 58.4 0 1 0 116.8 0 58.4 58.4 0 1 0 -116.8 0zm14.6-.1a43.9 43.9 0 1 1 87.8 0 43.9 43.9 0 1 1 -87.8 0z"]
 };
 var faSteamSquare = faSquareSteam;
 var fa500px = {
@@ -2935,7 +878,7 @@ var fa500px = {
 var faSquareVimeo = {
   prefix: "fab",
   iconName: "square-vimeo",
-  icon: [448, 512, ["vimeo-square"], "f194", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-16.2 149.6c-1.4 31.1-23.2 73.8-65.3 127.9-43.5 56.5-80.3 84.8-110.4 84.8-18.7 0-34.4-17.2-47.3-51.6-25.2-92.3-35.9-146.4-56.7-146.4-2.4 0-10.8 5-25.1 15.1L64 192c36.9-32.4 72.1-68.4 94.1-70.4 24.9-2.4 40.2 14.6 46 51.1 20.5 129.6 29.6 149.2 66.8 90.5 13.4-21.2 20.6-37.2 21.5-48.3 3.4-32.8-25.6-30.6-45.2-22.2 15.7-51.5 45.8-76.5 90.1-75.1 32.9 1 48.4 22.4 46.5 64z"]
+  icon: [448, 512, ["vimeo-square"], "f194", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM318.5 309.5C275 366 238.2 394.3 208.1 394.3c-18.7 0-34.4-17.2-47.3-51.6c-3.8-13.9-7.3-26.9-10.5-39c-18.2-68.3-28.6-107.4-46.2-107.4c-2.4 0-10.8 5-25.1 15.1L64 192c7-6.1 13.9-12.4 20.6-18.5c29.1-26.3 55.6-50.3 73.5-51.9c24.9-2.4 40.2 14.6 46 51.1c20.5 129.6 29.6 149.2 66.8 90.5c13.4-21.2 20.6-37.2 21.5-48.3c3.4-32.8-25.6-30.6-45.2-22.2c15.7-51.5 45.8-76.5 90.1-75.1c32.9 1 48.4 22.4 46.5 64c-1.4 31.1-23.2 73.8-65.3 127.9z"]
 };
 var faVimeoSquare = faSquareVimeo;
 var faAsymmetrik = {
@@ -2946,7 +889,7 @@ var faAsymmetrik = {
 var faFontAwesome = {
   prefix: "fab",
   iconName: "font-awesome",
-  icon: [448, 512, [62501, 62694, "font-awesome-flag", "font-awesome-logo-full"], "f2b4", "M448 48V384C385 407 366 416 329 416C266 416 242 384 179 384C159 384 143 388 128 392V328C143 324 159 320 179 320C242 320 266 352 329 352C349 352 364 349 384 343V135C364 141 349 144 329 144C266 144 242 112 179 112C128 112 104 133 64 141V448C64 466 50 480 32 480S0 466 0 448V64C0 46 14 32 32 32S64 46 64 64V77C104 69 128 48 179 48C242 48 266 80 329 80C366 80 385 71 448 48Z"]
+  icon: [512, 512, [62501, 62694, "font-awesome-flag", "font-awesome-logo-full"], "f2b4", "M91.7 96C106.3 86.8 116 70.5 116 52C116 23.3 92.7 0 64 0S12 23.3 12 52c0 16.7 7.8 31.5 20 41l0 3 0 352 0 64 64 0 0-64 373.6 0c14.6 0 26.4-11.8 26.4-26.4c0-3.7-.8-7.3-2.3-10.7L432 272l61.7-138.9c1.5-3.4 2.3-7 2.3-10.7c0-14.6-11.8-26.4-26.4-26.4L91.7 96z"]
 };
 var faFontAwesomeFlag = faFontAwesome;
 var faFontAwesomeLogoFull = faFontAwesome;
@@ -2993,7 +936,7 @@ var faAmazonPay = {
 var faSquareGithub = {
   prefix: "fab",
   iconName: "square-github",
-  icon: [448, 512, ["github-square"], "f092", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM277.3 415.7c-8.4 1.5-11.5-3.7-11.5-8 0-5.4.2-33 .2-55.3 0-15.6-5.2-25.5-11.3-30.7 37-4.1 76-9.2 76-73.1 0-18.2-6.5-27.3-17.1-39 1.7-4.3 7.4-22-1.7-45-13.9-4.3-45.7 17.9-45.7 17.9-13.2-3.7-27.5-5.6-41.6-5.6-14.1 0-28.4 1.9-41.6 5.6 0 0-31.8-22.2-45.7-17.9-9.1 22.9-3.5 40.6-1.7 45-10.6 11.7-15.6 20.8-15.6 39 0 63.6 37.3 69 74.3 73.1-4.8 4.3-9.1 11.7-10.6 22.3-9.5 4.3-33.8 11.7-48.3-13.9-9.1-15.8-25.5-17.1-25.5-17.1-16.2-.2-1.1 10.2-1.1 10.2 10.8 5 18.4 24.2 18.4 24.2 9.7 29.7 56.1 19.7 56.1 19.7 0 13.9.2 36.5.2 40.6 0 4.3-3 9.5-11.5 8-66-22.1-112.2-84.9-112.2-158.3 0-91.8 70.2-161.5 162-161.5S388 165.6 388 257.4c.1 73.4-44.7 136.3-110.7 158.3zm-98.1-61.1c-1.9.4-3.7-.4-3.9-1.7-.2-1.5 1.1-2.8 3-3.2 1.9-.2 3.7.6 3.9 1.9.3 1.3-1 2.6-3 3zm-9.5-.9c0 1.3-1.5 2.4-3.5 2.4-2.2.2-3.7-.9-3.7-2.4 0-1.3 1.5-2.4 3.5-2.4 1.9-.2 3.7.9 3.7 2.4zm-13.7-1.1c-.4 1.3-2.4 1.9-4.1 1.3-1.9-.4-3.2-1.9-2.8-3.2.4-1.3 2.4-1.9 4.1-1.5 2 .6 3.3 2.1 2.8 3.4zm-12.3-5.4c-.9 1.1-2.8.9-4.3-.6-1.5-1.3-1.9-3.2-.9-4.1.9-1.1 2.8-.9 4.3.6 1.3 1.3 1.8 3.3.9 4.1zm-9.1-9.1c-.9.6-2.6 0-3.7-1.5s-1.1-3.2 0-3.9c1.1-.9 2.8-.2 3.7 1.3 1.1 1.5 1.1 3.3 0 4.1zm-6.5-9.7c-.9.9-2.4.4-3.5-.6-1.1-1.3-1.3-2.8-.4-3.5.9-.9 2.4-.4 3.5.6 1.1 1.3 1.3 2.8.4 3.5zm-6.7-7.4c-.4.9-1.7 1.1-2.8.4-1.3-.6-1.9-1.7-1.5-2.6.4-.6 1.5-.9 2.8-.4 1.3.7 1.9 1.8 1.5 2.6z"]
+  icon: [448, 512, ["github-square"], "f092", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM265.8 407.7c0-1.8 0-6 .1-11.6c.1-11.4 .1-28.8 .1-43.7c0-15.6-5.2-25.5-11.3-30.7c37-4.1 76-9.2 76-73.1c0-18.2-6.5-27.3-17.1-39c1.7-4.3 7.4-22-1.7-45c-13.9-4.3-45.7 17.9-45.7 17.9c-13.2-3.7-27.5-5.6-41.6-5.6s-28.4 1.9-41.6 5.6c0 0-31.8-22.2-45.7-17.9c-9.1 22.9-3.5 40.6-1.7 45c-10.6 11.7-15.6 20.8-15.6 39c0 63.6 37.3 69 74.3 73.1c-4.8 4.3-9.1 11.7-10.6 22.3c-9.5 4.3-33.8 11.7-48.3-13.9c-9.1-15.8-25.5-17.1-25.5-17.1c-16.2-.2-1.1 10.2-1.1 10.2c10.8 5 18.4 24.2 18.4 24.2c9.7 29.7 56.1 19.7 56.1 19.7c0 9 .1 21.7 .1 30.6c0 4.8 .1 8.6 .1 10c0 4.3-3 9.5-11.5 8C106 393.6 59.8 330.8 59.8 257.4c0-91.8 70.2-161.5 162-161.5s166.2 69.7 166.2 161.5c.1 73.4-44.7 136.3-110.7 158.3c-8.4 1.5-11.5-3.7-11.5-8zm-90.5-54.8c-.2-1.5 1.1-2.8 3-3.2c1.9-.2 3.7 .6 3.9 1.9c.3 1.3-1 2.6-3 3c-1.9 .4-3.7-.4-3.9-1.7zm-9.1 3.2c-2.2 .2-3.7-.9-3.7-2.4c0-1.3 1.5-2.4 3.5-2.4c1.9-.2 3.7 .9 3.7 2.4c0 1.3-1.5 2.4-3.5 2.4zm-14.3-2.2c-1.9-.4-3.2-1.9-2.8-3.2s2.4-1.9 4.1-1.5c2 .6 3.3 2.1 2.8 3.4c-.4 1.3-2.4 1.9-4.1 1.3zm-12.5-7.3c-1.5-1.3-1.9-3.2-.9-4.1c.9-1.1 2.8-.9 4.3 .6c1.3 1.3 1.8 3.3 .9 4.1c-.9 1.1-2.8 .9-4.3-.6zm-8.5-10c-1.1-1.5-1.1-3.2 0-3.9c1.1-.9 2.8-.2 3.7 1.3c1.1 1.5 1.1 3.3 0 4.1c-.9 .6-2.6 0-3.7-1.5zm-6.3-8.8c-1.1-1.3-1.3-2.8-.4-3.5c.9-.9 2.4-.4 3.5 .6c1.1 1.3 1.3 2.8 .4 3.5c-.9 .9-2.4 .4-3.5-.6zm-6-6.4c-1.3-.6-1.9-1.7-1.5-2.6c.4-.6 1.5-.9 2.8-.4c1.3 .7 1.9 1.8 1.5 2.6c-.4 .9-1.7 1.1-2.8 .4z"]
 };
 var faGithubSquare = faSquareGithub;
 var faStumbleupon = {
@@ -3071,10 +1014,15 @@ var faEnvira = {
   iconName: "envira",
   icon: [448, 512, [], "f299", "M0 32c477.6 0 366.6 317.3 367.1 366.3L448 480h-26l-70.4-71.2c-39 4.2-124.4 34.5-214.4-37C47 300.3 52 214.7 0 32zm79.7 46c-49.7-23.5-5.2 9.2-5.2 9.2 45.2 31.2 66 73.7 90.2 119.9 31.5 60.2 79 139.7 144.2 167.7 65 28 34.2 12.5 6-8.5-28.2-21.2-68.2-87-91-130.2-31.7-60-61-118.6-144.2-158.1z"]
 };
+var faGoogleScholar = {
+  prefix: "fab",
+  iconName: "google-scholar",
+  icon: [512, 512, [], "e63b", "M390.9 298.5c0 0 0 .1 .1 .1c9.2 19.4 14.4 41.1 14.4 64C405.3 445.1 338.5 512 256 512s-149.3-66.9-149.3-149.3c0-22.9 5.2-44.6 14.4-64h0c1.7-3.6 3.6-7.2 5.6-10.7c4.4-7.6 9.4-14.7 15-21.3c27.4-32.6 68.5-53.3 114.4-53.3c33.6 0 64.6 11.1 89.6 29.9c9.1 6.9 17.4 14.7 24.8 23.5c5.6 6.6 10.6 13.8 15 21.3c2 3.4 3.8 7 5.5 10.5zm26.4-18.8c-30.1-58.4-91-98.4-161.3-98.4s-131.2 40-161.3 98.4L0 202.7 256 0 512 202.7l-94.7 77.1z"]
+};
 var faSquareGitlab = {
   prefix: "fab",
   iconName: "square-gitlab",
-  icon: [448, 512, ["gitlab-square"], "e5ae", "M48 32H400C426.5 32 448 53.5 448 80V432C448 458.5 426.5 480 400 480H48C21.5 480 0 458.5 0 432V80C0 53.5 21.5 32 48 32zM382.1 224.9L337.5 108.5C336.6 106.2 334.9 104.2 332.9 102.9C331.3 101.9 329.5 101.3 327.7 101.1C325.9 100.9 324 101.2 322.3 101.8C320.6 102.5 319 103.5 317.8 104.9C316.6 106.3 315.7 107.9 315.2 109.7L285 201.9H162.1L132.9 109.7C132.4 107.9 131.4 106.3 130.2 104.9C128.1 103.6 127.4 102.5 125.7 101.9C123.1 101.2 122.1 100.1 120.3 101.1C118.5 101.3 116.7 101.9 115.1 102.9C113.1 104.2 111.5 106.2 110.6 108.5L65.94 224.9L65.47 226.1C59.05 242.9 58.26 261.3 63.22 278.6C68.18 295.9 78.62 311.1 92.97 321.9L93.14 322L93.52 322.3L161.4 373.2L215.6 414.1C217.1 415.1 220.9 416.9 223.9 416.9C226.9 416.9 229.9 415.1 232.3 414.1L286.4 373.2L354.8 322L355 321.9C369.4 311 379.8 295.8 384.8 278.6C389.7 261.3 388.1 242.9 382.5 226.1L382.1 224.9z"]
+  icon: [448, 512, ["gitlab-square"], "e5ae", "M0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96zm337.5 12.5l44.6 116.4 .4 1.2c5.6 16.8 7.2 35.2 2.3 52.5c-5 17.2-15.4 32.4-29.8 43.3l-.2 .1-68.4 51.2-54.1 40.9c-.5 .2-1.1 .5-1.7 .8c-2 1-4.4 2-6.7 2c-3 0-6.8-1.8-8.3-2.8l-54.2-40.9L93.5 322.3l-.4-.3-.2-.1c-14.3-10.8-24.8-26-29.7-43.3s-4.2-35.7 2.2-52.5l.5-1.2 44.7-116.4c.9-2.3 2.5-4.3 4.5-5.6c1.6-1 3.4-1.6 5.2-1.8c1.3-.7 2.1-.4 3.4 .1c.6 .2 1.2 .5 2 .7c1 .4 1.6 .9 2.4 1.5c.6 .4 1.2 1 2.1 1.5c1.2 1.4 2.2 3 2.7 4.8l29.2 92.2H285l30.2-92.2c.5-1.8 1.4-3.4 2.6-4.8s2.8-2.4 4.5-3.1c1.7-.6 3.6-.9 5.4-.7s3.6 .8 5.2 1.8c2 1.3 3.7 3.3 4.6 5.6z"]
 };
 var faGitlabSquare = faSquareGitlab;
 var faStudiovinari = {
@@ -3115,7 +1063,7 @@ var faGoodreads = {
 var faSquareOdnoklassniki = {
   prefix: "fab",
   iconName: "square-odnoklassniki",
-  icon: [448, 512, ["odnoklassniki-square"], "f264", "M184.2 177.1c0-22.1 17.9-40 39.8-40s39.8 17.9 39.8 40c0 22-17.9 39.8-39.8 39.8s-39.8-17.9-39.8-39.8zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-305.1 97.1c0 44.6 36.4 80.9 81.1 80.9s81.1-36.2 81.1-80.9c0-44.8-36.4-81.1-81.1-81.1s-81.1 36.2-81.1 81.1zm174.5 90.7c-4.6-9.1-17.3-16.8-34.1-3.6 0 0-22.7 18-59.3 18s-59.3-18-59.3-18c-16.8-13.2-29.5-5.5-34.1 3.6-7.9 16.1 1.1 23.7 21.4 37 17.3 11.1 41.2 15.2 56.6 16.8l-12.9 12.9c-18.2 18-35.5 35.5-47.7 47.7-17.6 17.6 10.7 45.8 28.4 28.6l47.7-47.9c18.2 18.2 35.7 35.7 47.7 47.9 17.6 17.2 46-10.7 28.6-28.6l-47.7-47.7-13-12.9c15.5-1.6 39.1-5.9 56.2-16.8 20.4-13.3 29.3-21 21.5-37z"]
+  icon: [448, 512, ["odnoklassniki-square"], "f264", "M224 137.1a39.9 39.9 0 1 0 0 79.7 39.9 39.9 0 1 0 0-79.7zM384 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zM224 95.9A81 81 0 1 1 224 258a81 81 0 1 1 0-162.1zm59.3 168.3c16.8-13.2 29.5-5.5 34.1 3.6c7.8 16-1.1 23.7-21.5 37c-17.1 10.9-40.7 15.2-56.2 16.8l13 12.9 47.7 47.7c17.4 17.9-11 45.8-28.6 28.6c-12-12.2-29.5-29.7-47.7-47.9l0 0-47.7 47.9c-17.7 17.2-46-11-28.4-28.6c3.7-3.7 7.9-7.9 12.5-12.5c10.4-10.4 22.6-22.7 35.2-35.2l12.9-12.9c-15.4-1.6-39.3-5.7-56.6-16.8c-20.3-13.3-29.3-20.9-21.4-37c4.6-9.1 17.3-16.8 34.1-3.6c0 0 22.7 18 59.3 18s59.3-18 59.3-18z"]
 };
 var faOdnoklassnikiSquare = faSquareOdnoklassniki;
 var faJsfiddle = {
@@ -3201,7 +1149,7 @@ var faGalacticSenate = {
 var faUbuntu = {
   prefix: "fab",
   iconName: "ubuntu",
-  icon: [496, 512, [], "f7df", "M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm52.7 93c8.8-15.2 28.3-20.5 43.5-11.7 15.3 8.8 20.5 28.3 11.7 43.6-8.8 15.2-28.3 20.5-43.5 11.7-15.3-8.9-20.5-28.4-11.7-43.6zM87.4 287.9c-17.6 0-31.9-14.3-31.9-31.9 0-17.6 14.3-31.9 31.9-31.9 17.6 0 31.9 14.3 31.9 31.9 0 17.6-14.3 31.9-31.9 31.9zm28.1 3.1c22.3-17.9 22.4-51.9 0-69.9 8.6-32.8 29.1-60.7 56.5-79.1l23.7 39.6c-51.5 36.3-51.5 112.5 0 148.8L172 370c-27.4-18.3-47.8-46.3-56.5-79zm228.7 131.7c-15.3 8.8-34.7 3.6-43.5-11.7-8.8-15.3-3.6-34.8 11.7-43.6 15.2-8.8 34.7-3.6 43.5 11.7 8.8 15.3 3.6 34.8-11.7 43.6zm.3-69.5c-26.7-10.3-56.1 6.6-60.5 35-5.2 1.4-48.9 14.3-96.7-9.4l22.5-40.3c57 26.5 123.4-11.7 128.9-74.4l46.1.7c-2.3 34.5-17.3 65.5-40.3 88.4zm-5.9-105.3c-5.4-62-71.3-101.2-128.9-74.4l-22.5-40.3c47.9-23.7 91.5-10.8 96.7-9.4 4.4 28.3 33.8 45.3 60.5 35 23.1 22.9 38 53.9 40.2 88.5l-46 .6z"]
+  icon: [576, 512, [], "f7df", "M469.2 75A75.6 75.6 0 1 0 317.9 75a75.6 75.6 0 1 0 151.2 0zM154.2 240.7A75.6 75.6 0 1 0 3 240.7a75.6 75.6 0 1 0 151.2 0zM57 346C75.6 392.9 108 433 150 461.1s91.5 42.6 142 41.7c-14.7-18.6-22.9-41.5-23.2-65.2c-6.8-.9-13.3-2.1-19.5-3.4c-26.8-5.7-51.9-17.3-73.6-34s-39.3-38.1-51.7-62.5c-20.9 9.9-44.5 12.8-67.1 8.2zm395.1 89.8a75.6 75.6 0 1 0 -151.2 0 75.6 75.6 0 1 0 151.2 0zM444 351.6c18.5 14.8 31.6 35.2 37.2 58.2c33.3-41.3 52.6-92.2 54.8-145.2s-12.5-105.4-42.2-149.4c-8.6 21.5-24 39.6-43.8 51.6c15.4 28.6 22.9 60.8 21.9 93.2s-10.7 64-28 91.6zM101.1 135.4c12.4 2.7 24.3 7.5 35.1 14.3c16.6-24.2 38.9-44.1 64.8-58S255.8 70.4 285.2 70c.2-5.9 .9-11.9 2-17.7c3.6-16.7 11.1-32.3 21.8-45.5c-47.7-3.8-95.4 6-137.6 28.5S94.3 91.7 70.8 133.4c2.7-.2 5.3-.3 8-.3c7.5 0 15 .8 22.4 2.3z"]
 };
 var faDraft2digital = {
   prefix: "fab",
@@ -3231,7 +1179,7 @@ var faDhl = {
 var faSquarePinterest = {
   prefix: "fab",
   iconName: "square-pinterest",
-  icon: [448, 512, ["pinterest-square"], "f0d3", "M448 80v352c0 26.5-21.5 48-48 48H154.4c9.8-16.4 22.4-40 27.4-59.3 3-11.5 15.3-58.4 15.3-58.4 8 15.3 31.4 28.2 56.3 28.2 74.1 0 127.4-68.1 127.4-152.7 0-81.1-66.2-141.8-151.4-141.8-106 0-162.2 71.1-162.2 148.6 0 36 19.2 80.8 49.8 95.1 4.7 2.2 7.1 1.2 8.2-3.3.8-3.4 5-20.1 6.8-27.8.6-2.5.3-4.6-1.7-7-10.1-12.3-18.3-34.9-18.3-56 0-54.2 41-106.6 110.9-106.6 60.3 0 102.6 41.1 102.6 99.9 0 66.4-33.5 112.4-77.2 112.4-24.1 0-42.1-19.9-36.4-44.4 6.9-29.2 20.3-60.7 20.3-81.8 0-53-75.5-45.7-75.5 25 0 21.7 7.3 36.5 7.3 36.5-31.4 132.8-36.1 134.5-29.6 192.6l2.2.8H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48z"]
+  icon: [448, 512, ["pinterest-square"], "f0d3", "M384 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64h72.6l-2.2-.8c-5.4-48.1-3.1-57.5 15.7-134.7c3.9-16 8.5-35 13.9-57.9c0 0-7.3-14.8-7.3-36.5c0-70.7 75.5-78 75.5-25c0 13.5-5.4 31.1-11.2 49.8c-3.3 10.6-6.6 21.5-9.1 32c-5.7 24.5 12.3 44.4 36.4 44.4c43.7 0 77.2-46 77.2-112.4c0-58.8-42.3-99.9-102.6-99.9C153 139 112 191.4 112 245.6c0 21.1 8.2 43.7 18.3 56c2 2.4 2.3 4.5 1.7 7c-1.1 4.7-3.1 12.9-4.7 19.2c-1 4-1.8 7.3-2.1 8.6c-1.1 4.5-3.5 5.5-8.2 3.3c-30.6-14.3-49.8-59.1-49.8-95.1C67.2 167.1 123.4 96 229.4 96c85.2 0 151.4 60.7 151.4 141.8c0 84.6-53.3 152.7-127.4 152.7c-24.9 0-48.3-12.9-56.3-28.2c0 0-12.3 46.9-15.3 58.4c-5 19.3-17.6 42.9-27.4 59.3H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64z"]
 };
 var faPinterestSquare = faSquarePinterest;
 var faXing = {
@@ -3279,6 +1227,11 @@ var faVine = {
   iconName: "vine",
   icon: [384, 512, [], "f1ca", "M384 254.7v52.1c-18.4 4.2-36.9 6.1-52.1 6.1-36.9 77.4-103 143.8-125.1 156.2-14 7.9-27.1 8.4-42.7-.8C137 452 34.2 367.7 0 102.7h74.5C93.2 261.8 139 343.4 189.3 404.5c27.9-27.9 54.8-65.1 75.6-106.9-49.8-25.3-80.1-80.9-80.1-145.6 0-65.6 37.7-115.1 102.2-115.1 114.9 0 106.2 127.9 81.6 181.5 0 0-46.4 9.2-63.5-20.5 3.4-11.3 8.2-30.8 8.2-48.5 0-31.3-11.3-46.6-28.4-46.6-18.2 0-30.8 17.1-30.8 50 .1 79.2 59.4 118.7 129.9 101.9z"]
 };
+var faSignalMessenger = {
+  prefix: "fab",
+  iconName: "signal-messenger",
+  icon: [512, 512, [], "e663", "M256 0c13.3 0 26.3 1 39.1 3l-3.7 23.7C279.9 24.9 268 24 256 24s-23.9 .9-35.4 2.7L216.9 3C229.7 1 242.7 0 256 0zm60.8 7.3l-5.7 23.3c23.4 5.7 45.4 14.9 65.4 27.1l12.5-20.5c-22.1-13.4-46.4-23.6-72.2-29.9zm90.5 42.2L393.1 68.8c19.1 14 36 30.9 50.1 50.1l19.4-14.2C447 83.6 428.4 65 407.3 49.5zm67.5 73.6l-20.5 12.5c12.2 20 21.4 42 27.1 65.4l23.3-5.7c-6.3-25.8-16.5-50.1-29.9-72.2zM509 216.9l-23.7 3.7c1.8 11.5 2.7 23.4 2.7 35.4s-.9 23.9-2.7 35.4l23.7 3.7c1.9-12.7 3-25.8 3-39.1s-1-26.3-3-39.1zM454.3 376.5c12.2-20 21.4-42 27.1-65.4l23.3 5.7c-6.3 25.8-16.5 50.1-29.9 72.2l-20.5-12.5zm-11.1 16.6l19.4 14.2c-15.5 21.1-34.1 39.8-55.2 55.2l-14.2-19.4c19.1-14 36-30.9 50.1-50.1zm-66.7 61.2l12.5 20.5c-22.1 13.4-46.4 23.6-72.2 29.9l-5.7-23.3c23.4-5.7 45.4-14.9 65.4-27.1zm-85.1 31l3.7 23.7c-12.7 1.9-25.8 3-39.1 3s-26.3-1-39.1-3l3.7-23.7c11.5 1.8 23.4 2.7 35.4 2.7s23.9-.9 35.4-2.7zm-90.5-3.9l-5.7 23.3c-19.4-4.7-37.9-11.6-55.3-20.5l-24.3 5.7-5.5-23.4 32.8-7.7 7.8 4c15.7 8 32.5 14.3 50.1 18.6zM90 471.3l5.5 23.4-41.6 9.7C26 510.8 1.2 486 7.6 458.2l9.7-41.6L40.7 422 31 463.7c-2.4 10.4 6.9 19.7 17.3 17.3L90 471.3zM45.5 401.8l-23.4-5.5L27.8 372C18.9 354.7 12 336.1 7.3 316.7l23.3-5.7c4.3 17.6 10.6 34.4 18.6 50.1l4 7.8-7.7 32.8zM26.7 291.4L3 295.1C1 282.3 0 269.3 0 256s1-26.3 3-39.1l23.7 3.7C24.9 232.1 24 244 24 256s.9 23.9 2.7 35.4zm3.9-90.5L7.3 195.2c6.3-25.8 16.5-50.1 29.9-72.2l20.5 12.5c-12.2 20-21.4 42-27.1 65.4zm38.3-82.1L49.5 104.7C65 83.6 83.6 65 104.7 49.5l14.2 19.4c-19.1 14-36 30.9-50.1 50.1zm66.7-61.2L123.1 37.2c22.1-13.4 46.4-23.6 72.2-29.9l5.7 23.3c-23.4 5.7-45.4 14.9-65.4 27.1zM464 256c0 114.9-93.1 208-208 208c-36.4 0-70.7-9.4-100.5-25.8c-2.9-1.6-6.2-2.1-9.4-1.4L53.6 458.4l21.6-92.5c.7-3.2 .2-6.5-1.4-9.4C57.4 326.7 48 292.4 48 256C48 141.1 141.1 48 256 48s208 93.1 208 208z"]
+};
 var faPaypal = {
   prefix: "fab",
   iconName: "paypal",
@@ -3297,7 +1250,7 @@ var faTypo3 = {
 var faRedditAlien = {
   prefix: "fab",
   iconName: "reddit-alien",
-  icon: [512, 512, [], "f281", "M440.3 203.5c-15 0-28.2 6.2-37.9 15.9-35.7-24.7-83.8-40.6-137.1-42.3L293 52.3l88.2 19.8c0 21.6 17.6 39.2 39.2 39.2 22 0 39.7-18.1 39.7-39.7s-17.6-39.7-39.7-39.7c-15.4 0-28.7 9.3-35.3 22l-97.4-21.6c-4.9-1.3-9.7 2.2-11 7.1L246.3 177c-52.9 2.2-100.5 18.1-136.3 42.8-9.7-10.1-23.4-16.3-38.4-16.3-55.6 0-73.8 74.6-22.9 100.1-1.8 7.9-2.6 16.3-2.6 24.7 0 83.8 94.4 151.7 210.3 151.7 116.4 0 210.8-67.9 210.8-151.7 0-8.4-.9-17.2-3.1-25.1 49.9-25.6 31.5-99.7-23.8-99.7zM129.4 308.9c0-22 17.6-39.7 39.7-39.7 21.6 0 39.2 17.6 39.2 39.7 0 21.6-17.6 39.2-39.2 39.2-22 .1-39.7-17.6-39.7-39.2zm214.3 93.5c-36.4 36.4-139.1 36.4-175.5 0-4-3.5-4-9.7 0-13.7 3.5-3.5 9.7-3.5 13.2 0 27.8 28.5 120 29 149 0 3.5-3.5 9.7-3.5 13.2 0 4.1 4 4.1 10.2.1 13.7zm-.8-54.2c-21.6 0-39.2-17.6-39.2-39.2 0-22 17.6-39.7 39.2-39.7 22 0 39.7 17.6 39.7 39.7-.1 21.5-17.7 39.2-39.7 39.2z"]
+  icon: [512, 512, [], "f281", "M373 138.6c-25.2 0-46.3-17.5-51.9-41l0 0c-30.6 4.3-54.2 30.7-54.2 62.4l0 .2c47.4 1.8 90.6 15.1 124.9 36.3c12.6-9.7 28.4-15.5 45.5-15.5c41.3 0 74.7 33.4 74.7 74.7c0 29.8-17.4 55.5-42.7 67.5c-2.4 86.8-97 156.6-213.2 156.6S45.5 410.1 43 323.4C17.6 311.5 0 285.7 0 255.7c0-41.3 33.4-74.7 74.7-74.7c17.2 0 33 5.8 45.7 15.6c34-21.1 76.8-34.4 123.7-36.4l0-.3c0-44.3 33.7-80.9 76.8-85.5C325.8 50.2 347.2 32 373 32c29.4 0 53.3 23.9 53.3 53.3s-23.9 53.3-53.3 53.3zM157.5 255.3c-20.9 0-38.9 20.8-40.2 47.9s17.1 38.1 38 38.1s36.6-9.8 37.8-36.9s-14.7-49.1-35.7-49.1zM395 303.1c-1.2-27.1-19.2-47.9-40.2-47.9s-36.9 22-35.7 49.1c1.2 27.1 16.9 36.9 37.8 36.9s39.3-11 38-38.1zm-60.1 70.8c1.5-3.6-1-7.7-4.9-8.1c-23-2.3-47.9-3.6-73.8-3.6s-50.8 1.3-73.8 3.6c-3.9 .4-6.4 4.5-4.9 8.1c12.9 30.8 43.3 52.4 78.7 52.4s65.8-21.6 78.7-52.4z"]
 };
 var faYahoo = {
   prefix: "fab",
@@ -3334,6 +1287,11 @@ var faNfcSymbol = {
   iconName: "nfc-symbol",
   icon: [576, 512, [], "e531", "M392.9 32.43C400.6 31.1 408.6 32.89 414.1 37.41C498.2 96.14 544 173.7 544 255.1C544 338.2 498.2 415.9 414.1 474.6C409.3 478.6 402.4 480.5 395.5 479.9C388.5 479.3 382 476.3 377.1 471.4L193.7 288.7C188.1 283.2 185 275.7 184.1 267.8C184.1 260 188.1 252.5 193.6 246.9C199.2 241.4 206.7 238.2 214.5 238.2C222.4 238.2 229.9 241.3 235.4 246.8L400.5 411.2C455.1 366.5 484.8 312 484.8 255.1C484.8 193.5 447.9 132.9 380.9 85.76C374.5 81.24 370.1 74.35 368.8 66.62C367.4 58.89 369.2 50.94 373.8 44.53C378.3 38.12 385.2 33.77 392.9 32.43V32.43zM186.9 479.6C179.2 480.9 171.3 479.1 164.8 474.6C81.67 415.9 35.84 338.2 35.84 255.1C35.84 173.7 81.67 96.14 164.8 37.41C170.5 33.4 177.4 31.53 184.4 32.12C191.3 32.71 197.8 35.72 202.7 40.63L386.1 223.3C391.7 228.8 394.8 236.3 394.8 244.2C394.9 251.1 391.8 259.5 386.2 265.1C380.7 270.6 373.2 273.8 365.3 273.8C357.5 273.8 349.1 270.7 344.4 265.2L179.3 100.7C124.7 145.9 95.03 199.9 95.03 255.1C95.03 318.5 131.9 379.1 198.1 426.2C205.4 430.8 209.7 437.6 211.1 445.4C212.4 453.1 210.6 461.1 206.1 467.5C201.6 473.9 194.7 478.2 186.9 479.6V479.6z"]
 };
+var faMintbit = {
+  prefix: "fab",
+  iconName: "mintbit",
+  icon: [512, 512, [], "e62f", "M73.2 512V438.9H365.7V365.7h73.2V219.4H512V0H292.6V73.1H146.3v73.2H73.2V438.9H0V512H73.2zm73.1-219.4h73.2v73.1H146.3V292.6zm73.2-73.1h73.1v73.1H219.4V219.4zm73.1 0V146.3h73.2v73.1H292.6zM365.7 73.1h73.2v73.2H365.7V73.1z"]
+};
 var faEthereum = {
   prefix: "fab",
   iconName: "ethereum",
@@ -3352,7 +1310,7 @@ var faCreativeCommonsNcEu = {
 var faPatreon = {
   prefix: "fab",
   iconName: "patreon",
-  icon: [512, 512, [], "f3d9", "M512 194.8c0 101.3-82.4 183.8-183.8 183.8-101.7 0-184.4-82.4-184.4-183.8 0-101.6 82.7-184.3 184.4-184.3C429.6 10.5 512 93.2 512 194.8zM0 501.5h90v-491H0v491z"]
+  icon: [512, 512, [], "f3d9", "M489.7 153.8c-.1-65.4-51-119-110.7-138.3C304.8-8.5 207-5 136.1 28.4C50.3 68.9 23.3 157.7 22.3 246.2C21.5 319 28.7 510.6 136.9 512c80.3 1 92.3-102.5 129.5-152.3c26.4-35.5 60.5-45.5 102.4-55.9c72-17.8 121.1-74.7 121-150z"]
 };
 var faAvianex = {
   prefix: "fab",
@@ -3374,17 +1332,27 @@ var faBimobject = {
   iconName: "bimobject",
   icon: [448, 512, [], "f378", "M416 32H32C14.4 32 0 46.4 0 64v384c0 17.6 14.4 32 32 32h384c17.6 0 32-14.4 32-32V64c0-17.6-14.4-32-32-32zm-64 257.4c0 49.4-11.4 82.6-103.8 82.6h-16.9c-44.1 0-62.4-14.9-70.4-38.8h-.9V368H96V136h64v74.7h1.1c4.6-30.5 39.7-38.8 69.7-38.8h17.3c92.4 0 103.8 33.1 103.8 82.5v35zm-64-28.9v22.9c0 21.7-3.4 33.8-38.4 33.8h-45.3c-28.9 0-44.1-6.5-44.1-35.7v-19c0-29.3 15.2-35.7 44.1-35.7h45.3c35-.2 38.4 12 38.4 33.7z"]
 };
+var faBraveReverse = {
+  prefix: "fab",
+  iconName: "brave-reverse",
+  icon: [448, 512, [], "e63d", "M298 0c3 0 5.8 1.3 7.8 3.6l38.1 44c.5-.1 1-.2 1.5-.3c9.2-1.6 18.6-2.2 27.7-1.2c11.6 1.4 21.5 5.4 28.9 12.9c7.7 7.8 15.4 15.8 22.6 23.6c2.5 2.7 4.9 5.2 6.9 7.4c.7 .8 1.4 1.5 1.9 2c3.4 3.7 4.2 8.1 2.7 11.9l-9.8 24.6 13.1 38.1c.7 2 .8 4.1 .2 6.2c-.1 .4-.1 .4-.5 2.1c-.6 2.3-.6 2.3-1.5 5.8c-1.6 6.3-3.5 13.3-5.4 20.9c-5.6 21.6-11.2 43.2-16.4 63.4c-12.9 49.9-21.4 82.7-23.4 90.9c-11.1 44.5-19.9 60-48.3 80.3c-24.9 17.8-76.8 53.6-86.8 60c-1 .6-2 1.3-3.4 2.3c-.5 .4-3.2 2.2-3.9 2.7c-4.9 3.3-8.3 5.5-12.1 7.3c-4.7 2.2-9.3 3.5-13.9 3.5s-9.1-1.2-13.9-3.5c-3.7-1.8-7.2-3.9-12.1-7.3c-.8-.5-3.4-2.4-3.9-2.7c-1.4-1-2.5-1.7-3.4-2.3c-10-6.4-61.9-42.1-86.8-60c-28.4-20.4-37.2-35.8-48.3-80.3c-2-8.2-10.5-41-23.3-90.5c-5.3-20.6-10.9-42.2-16.5-63.8c-2-7.6-3.8-14.6-5.4-20.9c-.9-3.5-.9-3.5-1.5-5.8c-.4-1.7-.4-1.7-.5-2.1c-.5-2-.4-4.2 .2-6.2l13.1-38.1L11.8 104c-1.5-3.8-.7-8.2 2-11.2c1.2-1.3 1.8-2 2.6-2.8c2-2.2 4.4-4.7 6.9-7.4C30.6 74.9 38.3 66.9 46 59.1c7.4-7.5 17.3-11.6 28.9-12.9c9.1-1.1 18.5-.5 27.7 1.2c.5 .1 1 .2 1.5 .3l38.1-44C144.2 1.3 147 0 150 0H298zm-4.7 21.1H154.7L115.6 66.2c-2.6 3-6.7 4.3-10.6 3.2c-.2-.1-.7-.2-1.5-.4c-1.3-.3-2.9-.6-4.5-.9c-7.4-1.3-14.9-1.8-21.7-1C70 68 64.3 70.3 60.7 74c-7.6 7.7-15.2 15.6-22.3 23.3c-1.7 1.8-3.3 3.5-4.8 5.1l8.8 22c1 2.4 1 5 .2 7.5L29.2 170.6c.4 1.4 .5 1.9 1.2 4.8c1.6 6.3 3.5 13.3 5.4 20.9c5.6 21.6 11.2 43.2 16.4 63.4c12.9 50 21.4 82.8 23.4 91C85.7 390.8 92 402 115.8 419c24.6 17.6 76.3 53.2 85.9 59.3c1.2 .8 2.5 1.6 4 2.7c.6 .4 3.2 2.2 3.9 2.7c4 2.8 6.7 4.4 9.2 5.6c2.2 1 3.9 1.5 5.1 1.5s2.9-.5 5.1-1.5c2.5-1.2 5.2-2.8 9.2-5.6c.7-.5 3.3-2.3 3.9-2.7c1.6-1.1 2.8-1.9 4-2.7c9.6-6.1 61.3-41.7 85.9-59.3c23.8-17.1 30.2-28.2 40.1-68.3c2.1-8.3 10.5-41.1 23.3-90.7c5.3-20.6 10.9-42.2 16.5-63.8c2-7.6 3.8-14.6 5.4-20.9c.7-2.9 .9-3.4 1.2-4.8l-13.3-38.8c-.8-2.4-.8-5.1 .2-7.5l8.8-22c-1.5-1.6-3.1-3.3-4.8-5.1c-7.2-7.6-14.7-15.5-22.3-23.3c-3.7-3.7-9.3-6-16.6-6.9c-6.8-.8-14.4-.3-21.7 1c-1.7 .3-3.2 .6-4.5 .9c-.8 .2-1.3 .3-1.5 .4c-3.8 1.1-7.9-.2-10.6-3.2L293.3 21.1zM224 316c2.8 0 20.9 6.5 35.4 14.1s25 13 28.3 15.2s1.3 6.2-1.7 8.4s-44.1 34.6-48.1 38.2s-9.8 9.5-13.8 9.5s-9.8-5.9-13.8-9.5s-45.1-36-48.1-38.2s-5.1-6.2-1.7-8.4s13.9-7.5 28.3-15.2s32.5-14.1 35.4-14.1zm.1-230.7c.7 0 8.8 .2 20.5 4.2c12.3 4.2 25.7 9.4 31.9 9.4s51.9-8.9 51.9-8.9s54.2 66.7 54.2 81s-6.8 18-13.7 25.4s-36.8 39.8-40.7 43.9s-11.9 10.5-7.1 21.8s11.7 25.8 3.9 40.4s-21 24.4-29.4 22.8s-28.4-12.2-35.7-17.1s-30.5-24.3-30.5-31.8s24-20.8 28.4-23.9s24.7-14.8 25.1-19.4s.3-6-5.7-17.4s-16.7-26.7-14.9-36.8s19.1-15.4 31.5-20.2s36.2-13.7 39.2-15.1s2.2-2.7-6.8-3.6s-34.6-4.3-46.1-1.1s-31.2 8.2-32.8 10.9s-3 2.7-1.4 11.8s10.1 52.8 10.9 60.6s2.4 12.9-5.8 14.8s-22.1 5.2-26.8 5.2s-18.6-3.3-26.8-5.2s-6.6-7-5.8-14.8s9.3-51.5 10.9-60.6s.2-9.2-1.4-11.8s-21.3-7.6-32.8-10.9s-37.1 .2-46.1 1.1s-9.8 2.2-6.8 3.6s26.8 10.4 39.2 15.1s29.7 10 31.5 20.2s-9 25.4-14.9 36.8s-6.1 12.8-5.7 17.4s20.6 16.4 25.1 19.4s28.4 16.4 28.4 23.9s-23.2 27-30.5 31.8s-27.2 15.4-35.7 17.1s-21.7-8.2-29.4-22.8s-.8-29.1 3.9-40.4s-3.3-17.7-7.1-21.8s-33.8-36.5-40.7-43.9s-13.7-11.2-13.7-25.4s54.2-81 54.2-81s45.8 8.9 51.9 8.9s19.5-5.2 31.9-9.4s20.6-4.2 20.6-4.2l.1 0z"]
+};
 var faFacebookF = {
   prefix: "fab",
   iconName: "facebook-f",
-  icon: [320, 512, [], "f39e", "M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"]
+  icon: [320, 512, [], "f39e", "M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"]
 };
 var faSquareGooglePlus = {
   prefix: "fab",
   iconName: "square-google-plus",
-  icon: [448, 512, ["google-plus-square"], "f0d4", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM164 356c-55.3 0-100-44.7-100-100s44.7-100 100-100c27 0 49.5 9.8 67 26.2l-27.1 26.1c-7.4-7.1-20.3-15.4-39.8-15.4-34.1 0-61.9 28.2-61.9 63.2 0 34.9 27.8 63.2 61.9 63.2 39.6 0 54.4-28.5 56.8-43.1H164v-34.4h94.4c1 5 1.6 10.1 1.6 16.6 0 57.1-38.3 97.6-96 97.6zm220-81.8h-29v29h-29.2v-29h-29V245h29v-29H355v29h29v29.2z"]
+  icon: [448, 512, ["google-plus-square"], "f0d4", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM64 256c0-55.3 44.7-100 100-100c27 0 49.5 9.8 67 26.2l-27.1 26.1c-7.4-7.1-20.3-15.4-39.8-15.4c-34.1 0-61.9 28.2-61.9 63.2c0 34.9 27.8 63.2 61.9 63.2c39.6 0 54.4-28.5 56.8-43.1H164V241.8h94.4c1 5 1.6 10.1 1.6 16.6c0 57.1-38.3 97.6-96 97.6c-55.3 0-100-44.7-100-100zm291 18.2v29H325.8v-29h-29V245h29V216H355v29h29v29.2H355z"]
 };
 var faGooglePlusSquare = faSquareGooglePlus;
+var faWebAwesome = {
+  prefix: "fab",
+  iconName: "web-awesome",
+  icon: [640, 512, [], "e682", "M372.2 52c0 20.9-12.4 39-30.2 47.2L448 192l104.4-20.9c-5.3-7.7-8.4-17.1-8.4-27.1c0-26.5 21.5-48 48-48s48 21.5 48 48c0 26-20.6 47.1-46.4 48L481 442.3c-10.3 23-33.2 37.7-58.4 37.7l-205.2 0c-25.2 0-48-14.8-58.4-37.7L46.4 192C20.6 191.1 0 170 0 144c0-26.5 21.5-48 48-48s48 21.5 48 48c0 10.1-3.1 19.4-8.4 27.1L192 192 298.1 99.1c-17.7-8.3-30-26.3-30-47.1c0-28.7 23.3-52 52-52s52 23.3 52 52z"]
+};
 var faMandalorian = {
   prefix: "fab",
   iconName: "mandalorian",
@@ -3443,7 +1411,7 @@ var faSchlix = {
 var faSquareXing = {
   prefix: "fab",
   iconName: "square-xing",
-  icon: [448, 512, ["xing-square"], "f169", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM140.4 320.2H93.8c-5.5 0-8.7-5.3-6-10.3l49.3-86.7c.1 0 .1-.1 0-.2l-31.4-54c-3-5.6.2-10.1 6-10.1h46.6c5.2 0 9.5 2.9 12.9 8.7l31.9 55.3c-1.3 2.3-18 31.7-50.1 88.2-3.5 6.2-7.7 9.1-12.6 9.1zm219.7-214.1L257.3 286.8v.2l65.5 119c2.8 5.1.1 10.1-6 10.1h-46.6c-5.5 0-9.7-2.9-12.9-8.7l-66-120.3c2.3-4.1 36.8-64.9 103.4-182.3 3.3-5.8 7.4-8.7 12.5-8.7h46.9c5.7-.1 8.8 4.7 6 10z"]
+  icon: [448, 512, ["xing-square"], "f169", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM93.8 320.2c-5.5 0-8.7-5.3-6-10.3l49.3-86.7c.1 0 .1-.1 0-.2l-31.4-54c-3-5.6 .2-10.1 6-10.1h46.6c5.2 0 9.5 2.9 12.9 8.7l31.9 55.3c-1.3 2.3-18 31.7-50.1 88.2c-3.5 6.2-7.7 9.1-12.6 9.1H93.8zm163.5-33.4v.2l65.5 119c2.8 5.1 .1 10.1-6 10.1H270.2c-5.5 0-9.7-2.9-12.9-8.7l-66-120.3c1.8-3.2 22.9-40.4 63.3-111.6c11.7-20.7 25.1-44.3 40.1-70.8c3.3-5.8 7.4-8.7 12.5-8.7h46.9c5.7-.1 8.8 4.7 6 10L257.3 286.8z"]
 };
 var faXingSquare = faSquareXing;
 var faBandcamp = {
@@ -3491,6 +1459,11 @@ var faFly = {
   iconName: "fly",
   icon: [384, 512, [], "f417", "M197.8 427.8c12.9 11.7 33.7 33.3 33.2 50.7 0 .8-.1 1.6-.1 2.5-1.8 19.8-18.8 31.1-39.1 31-25-.1-39.9-16.8-38.7-35.8 1-16.2 20.5-36.7 32.4-47.6 2.3-2.1 2.7-2.7 5.6-3.6 3.4 0 3.9.3 6.7 2.8zM331.9 67.3c-16.3-25.7-38.6-40.6-63.3-52.1C243.1 4.5 214-.2 192 0c-44.1 0-71.2 13.2-81.1 17.3C57.3 45.2 26.5 87.2 28 158.6c7.1 82.2 97 176 155.8 233.8 1.7 1.6 4.5 4.5 6.2 5.1l3.3.1c2.1-.7 1.8-.5 3.5-2.1 52.3-49.2 140.7-145.8 155.9-215.7 7-39.2 3.1-72.5-20.8-112.5zM186.8 351.9c-28-51.1-65.2-130.7-69.3-189-3.4-47.5 11.4-131.2 69.3-136.7v325.7zM328.7 180c-16.4 56.8-77.3 128-118.9 170.3C237.6 298.4 275 217 277 158.4c1.6-45.9-9.8-105.8-48-131.4 88.8 18.3 115.5 98.1 99.7 153z"]
 };
+var faSquareBluesky = {
+  prefix: "fab",
+  iconName: "square-bluesky",
+  icon: [448, 512, [], "e6a3", "M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM224 247.4c14.5-30 54-85.8 90.7-113.3c26.5-19.9 69.3-35.2 69.3 13.7c0 9.8-5.6 82.1-8.9 93.8c-11.4 40.8-53 51.2-90 44.9c64.7 11 81.2 47.5 45.6 84c-67.5 69.3-97-17.4-104.6-39.6c0 0 0 0 0 0l-.3-.9c-.9-2.6-1.4-4.1-1.8-4.1s-.9 1.5-1.8 4.1c-.1 .3-.2 .6-.3 .9c0 0 0 0 0 0c-7.6 22.2-37.1 108.8-104.6 39.6c-35.5-36.5-19.1-73 45.6-84c-37 6.3-78.6-4.1-90-44.9c-3.3-11.7-8.9-84-8.9-93.8c0-48.9 42.9-33.5 69.3-13.7c36.7 27.5 76.2 83.4 90.7 113.3z"]
+};
 var faAviato = {
   prefix: "fab",
   iconName: "aviato",
@@ -3524,7 +1497,7 @@ var faViber = {
 var faSoundcloud = {
   prefix: "fab",
   iconName: "soundcloud",
-  icon: [640, 512, [], "f1be", "M111.4 256.3l5.8 65-5.8 68.3c-.3 2.5-2.2 4.4-4.4 4.4s-4.2-1.9-4.2-4.4l-5.6-68.3 5.6-65c0-2.2 1.9-4.2 4.2-4.2 2.2 0 4.1 2 4.4 4.2zm21.4-45.6c-2.8 0-4.7 2.2-5 5l-5 105.6 5 68.3c.3 2.8 2.2 5 5 5 2.5 0 4.7-2.2 4.7-5l5.8-68.3-5.8-105.6c0-2.8-2.2-5-4.7-5zm25.5-24.1c-3.1 0-5.3 2.2-5.6 5.3l-4.4 130 4.4 67.8c.3 3.1 2.5 5.3 5.6 5.3 2.8 0 5.3-2.2 5.3-5.3l5.3-67.8-5.3-130c0-3.1-2.5-5.3-5.3-5.3zM7.2 283.2c-1.4 0-2.2 1.1-2.5 2.5L0 321.3l4.7 35c.3 1.4 1.1 2.5 2.5 2.5s2.2-1.1 2.5-2.5l5.6-35-5.6-35.6c-.3-1.4-1.1-2.5-2.5-2.5zm23.6-21.9c-1.4 0-2.5 1.1-2.5 2.5l-6.4 57.5 6.4 56.1c0 1.7 1.1 2.8 2.5 2.8s2.5-1.1 2.8-2.5l7.2-56.4-7.2-57.5c-.3-1.4-1.4-2.5-2.8-2.5zm25.3-11.4c-1.7 0-3.1 1.4-3.3 3.3L47 321.3l5.8 65.8c.3 1.7 1.7 3.1 3.3 3.1 1.7 0 3.1-1.4 3.1-3.1l6.9-65.8-6.9-68.1c0-1.9-1.4-3.3-3.1-3.3zm25.3-2.2c-1.9 0-3.6 1.4-3.6 3.6l-5.8 70 5.8 67.8c0 2.2 1.7 3.6 3.6 3.6s3.6-1.4 3.9-3.6l6.4-67.8-6.4-70c-.3-2.2-2-3.6-3.9-3.6zm241.4-110.9c-1.1-.8-2.8-1.4-4.2-1.4-2.2 0-4.2.8-5.6 1.9-1.9 1.7-3.1 4.2-3.3 6.7v.8l-3.3 176.7 1.7 32.5 1.7 31.7c.3 4.7 4.2 8.6 8.9 8.6s8.6-3.9 8.6-8.6l3.9-64.2-3.9-177.5c-.4-3-2-5.8-4.5-7.2zm-26.7 15.3c-1.4-.8-2.8-1.4-4.4-1.4s-3.1.6-4.4 1.4c-2.2 1.4-3.6 3.9-3.6 6.7l-.3 1.7-2.8 160.8s0 .3 3.1 65.6v.3c0 1.7.6 3.3 1.7 4.7 1.7 1.9 3.9 3.1 6.4 3.1 2.2 0 4.2-1.1 5.6-2.5 1.7-1.4 2.5-3.3 2.5-5.6l.3-6.7 3.1-58.6-3.3-162.8c-.3-2.8-1.7-5.3-3.9-6.7zm-111.4 22.5c-3.1 0-5.8 2.8-5.8 6.1l-4.4 140.6 4.4 67.2c.3 3.3 2.8 5.8 5.8 5.8 3.3 0 5.8-2.5 6.1-5.8l5-67.2-5-140.6c-.2-3.3-2.7-6.1-6.1-6.1zm376.7 62.8c-10.8 0-21.1 2.2-30.6 6.1-6.4-70.8-65.8-126.4-138.3-126.4-17.8 0-35 3.3-50.3 9.4-6.1 2.2-7.8 4.4-7.8 9.2v249.7c0 5 3.9 8.6 8.6 9.2h218.3c43.3 0 78.6-35 78.6-78.3.1-43.6-35.2-78.9-78.5-78.9zm-296.7-60.3c-4.2 0-7.5 3.3-7.8 7.8l-3.3 136.7 3.3 65.6c.3 4.2 3.6 7.5 7.8 7.5 4.2 0 7.5-3.3 7.5-7.5l3.9-65.6-3.9-136.7c-.3-4.5-3.3-7.8-7.5-7.8zm-53.6-7.8c-3.3 0-6.4 3.1-6.4 6.7l-3.9 145.3 3.9 66.9c.3 3.6 3.1 6.4 6.4 6.4 3.6 0 6.4-2.8 6.7-6.4l4.4-66.9-4.4-145.3c-.3-3.6-3.1-6.7-6.7-6.7zm26.7 3.4c-3.9 0-6.9 3.1-6.9 6.9L227 321.3l3.9 66.4c.3 3.9 3.1 6.9 6.9 6.9s6.9-3.1 6.9-6.9l4.2-66.4-4.2-141.7c0-3.9-3-6.9-6.9-6.9z"]
+  icon: [640, 512, [], "f1be", "M639.8 298.6c-1.3 23.1-11.5 44.8-28.4 60.5s-39.2 24.4-62.3 24.1h-218c-4.8 0-9.4-2-12.8-5.4s-5.3-8-5.3-12.8V130.2c-.2-4 .9-8 3.1-11.4s5.3-6.1 9-7.7c0 0 20.1-13.9 62.3-13.9c25.8 0 51.1 6.9 73.3 20.1c17.3 10.2 32.3 23.8 44.1 40.1s20 34.8 24.2 54.4c7.5-2.1 15.3-3.2 23.1-3.2c11.7-.1 23.3 2.2 34.2 6.7S606.8 226.6 615 235s14.6 18.3 18.9 29.3s6.3 22.6 5.9 34.3zm-354-153.5c.1-1 0-2-.3-2.9s-.8-1.8-1.5-2.6s-1.5-1.3-2.4-1.7s-1.9-.6-2.9-.6s-2 .2-2.9 .6s-1.7 1-2.4 1.7s-1.2 1.6-1.5 2.6s-.4 1.9-.3 2.9c-6 78.9-10.6 152.9 0 231.6c.2 1.7 1 3.3 2.3 4.5s3 1.8 4.7 1.8s3.4-.6 4.7-1.8s2.1-2.8 2.3-4.5c11.3-79.4 6.6-152 0-231.6zm-44 27.3c-.2-1.8-1.1-3.5-2.4-4.7s-3.1-1.9-5-1.9s-3.6 .7-5 1.9s-2.2 2.9-2.4 4.7c-7.9 67.9-7.9 136.5 0 204.4c.3 1.8 1.2 3.4 2.5 4.5s3.1 1.8 4.8 1.8s3.5-.6 4.8-1.8s2.2-2.8 2.5-4.5c8.8-67.8 8.8-136.5 .1-204.4zm-44.3-6.9c-.2-1.8-1-3.4-2.3-4.6s-3-1.8-4.8-1.8s-3.5 .7-4.8 1.8s-2.1 2.8-2.3 4.6c-6.7 72-10.2 139.3 0 211.1c0 1.9 .7 3.7 2.1 5s3.1 2.1 5 2.1s3.7-.7 5-2.1s2.1-3.1 2.1-5c10.5-72.8 7.3-138.2 .1-211.1zm-44 20.6c0-1.9-.8-3.8-2.1-5.2s-3.2-2.1-5.2-2.1s-3.8 .8-5.2 2.1s-2.1 3.2-2.1 5.2c-8.1 63.3-8.1 127.5 0 190.8c.2 1.8 1 3.4 2.4 4.6s3.1 1.9 4.8 1.9s3.5-.7 4.8-1.9s2.2-2.8 2.4-4.6c8.8-63.3 8.9-127.5 .3-190.8zM109 233.7c0-1.9-.8-3.8-2.1-5.1s-3.2-2.1-5.1-2.1s-3.8 .8-5.1 2.1s-2.1 3.2-2.1 5.1c-10.5 49.2-5.5 93.9 .4 143.6c.3 1.6 1.1 3.1 2.3 4.2s2.8 1.7 4.5 1.7s3.2-.6 4.5-1.7s2.1-2.5 2.3-4.2c6.6-50.4 11.6-94.1 .4-143.6zm-44.1-7.5c-.2-1.8-1.1-3.5-2.4-4.8s-3.2-1.9-5-1.9s-3.6 .7-5 1.9s-2.2 2.9-2.4 4.8c-9.3 50.2-6.2 94.4 .3 144.5c.7 7.6 13.6 7.5 14.4 0c7.2-50.9 10.5-93.8 .3-144.5zM20.3 250.8c-.2-1.8-1.1-3.5-2.4-4.8s-3.2-1.9-5-1.9s-3.6 .7-5 1.9s-2.3 2.9-2.4 4.8c-8.5 33.7-5.9 61.6 .6 95.4c.2 1.7 1 3.3 2.3 4.4s2.9 1.8 4.7 1.8s3.4-.6 4.7-1.8s2.1-2.7 2.3-4.4c7.5-34.5 11.2-61.8 .4-95.4z"]
 };
 var faDigg = {
   prefix: "fab",
@@ -3535,6 +1508,11 @@ var faTencentWeibo = {
   prefix: "fab",
   iconName: "tencent-weibo",
   icon: [384, 512, [], "f1d5", "M72.3 495.8c1.4 19.9-27.6 22.2-29.7 2.9C31 368.8 73.7 259.2 144 185.5c-15.6-34 9.2-77.1 50.6-77.1 30.3 0 55.1 24.6 55.1 55.1 0 44-49.5 70.8-86.9 45.1-65.7 71.3-101.4 169.8-90.5 287.2zM192 .1C66.1.1-12.3 134.3 43.7 242.4 52.4 259.8 79 246.9 70 229 23.7 136.4 91 29.8 192 29.8c75.4 0 136.9 61.4 136.9 136.9 0 90.8-86.9 153.9-167.7 133.1-19.1-4.1-25.6 24.4-6.6 29.1 110.7 23.2 204-60 204-162.3C358.6 74.7 284 .1 192 .1z"]
+};
+var faLetterboxd = {
+  prefix: "fab",
+  iconName: "letterboxd",
+  icon: [640, 512, [], "e62d", "M521.3 128C586.9 128 640 181.1 640 246.6s-53.1 118.6-118.7 118.6c-42.5 0-79.7-22.3-100.7-55.8c11.4-18.2 18-39.7 18-62.8s-6.6-44.6-18-62.8l0 0 .8-1.2c20.8-32.3 56.8-53.9 97.9-54.6l2 0zM320 128c42.5 0 79.7 22.3 100.7 55.8c-11.4 18.2-18 39.7-18 62.8s6.6 44.6 18 62.8l0 0-.8 1.2c-20.8 32.3-56.8 53.9-97.9 54.6l-2 0c-42.5 0-79.7-22.3-100.7-55.8c11.4-18.2 18-39.7 18-62.8s-6.6-44.6-18-62.8l0 0 .8-1.2c20.8-32.3 56.8-53.9 97.9-54.6l2 0zm-201.3 0c42.5 0 79.7 22.3 100.7 55.8c-11.4 18.2-18 39.7-18 62.8s6.6 44.6 18 62.8l0 0-.8 1.2c-20.8 32.3-56.8 53.9-97.9 54.6l-2 0C53.1 365.1 0 312.1 0 246.6S53.1 128 118.7 128z"]
 };
 var faSymfony = {
   prefix: "fab",
@@ -3638,6 +1616,11 @@ var faXbox = {
   iconName: "xbox",
   icon: [512, 512, [], "f412", "M369.9 318.2c44.3 54.3 64.7 98.8 54.4 118.7-7.9 15.1-56.7 44.6-92.6 55.9-29.6 9.3-68.4 13.3-100.4 10.2-38.2-3.7-76.9-17.4-110.1-39C93.3 445.8 87 438.3 87 423.4c0-29.9 32.9-82.3 89.2-142.1 32-33.9 76.5-73.7 81.4-72.6 9.4 2.1 84.3 75.1 112.3 109.5zM188.6 143.8c-29.7-26.9-58.1-53.9-86.4-63.4-15.2-5.1-16.3-4.8-28.7 8.1-29.2 30.4-53.5 79.7-60.3 122.4-5.4 34.2-6.1 43.8-4.2 60.5 5.6 50.5 17.3 85.4 40.5 120.9 9.5 14.6 12.1 17.3 9.3 9.9-4.2-11-.3-37.5 9.5-64 14.3-39 53.9-112.9 120.3-194.4zm311.6 63.5C483.3 127.3 432.7 77 425.6 77c-7.3 0-24.2 6.5-36 13.9-23.3 14.5-41 31.4-64.3 52.8C367.7 197 427.5 283.1 448.2 346c6.8 20.7 9.7 41.1 7.4 52.3-1.7 8.5-1.7 8.5 1.4 4.6 6.1-7.7 19.9-31.3 25.4-43.5 7.4-16.2 15-40.2 18.6-58.7 4.3-22.5 3.9-70.8-.8-93.4zM141.3 43C189 40.5 251 77.5 255.6 78.4c.7.1 10.4-4.2 21.6-9.7 63.9-31.1 94-25.8 107.4-25.2-63.9-39.3-152.7-50-233.9-11.7-23.4 11.1-24 11.9-9.4 11.2z"]
 };
+var faSquareWebAwesomeStroke = {
+  prefix: "fab",
+  iconName: "square-web-awesome-stroke",
+  icon: [448, 512, [], "e684", "M64 64C46.3 64 32 78.3 32 96l0 320c0 17.7 14.3 32 32 32l320 0c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L64 64zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zm235 81.6L288 224l52.2-10.4c-2.6-3.9-4.2-8.5-4.2-13.6c0-13.3 10.7-24 24-24s24 10.7 24 24c0 13-10.3 23.6-23.2 24L304.5 349.1c-5.2 11.5-16.6 18.9-29.2 18.9l-102.6 0c-12.6 0-24-7.4-29.2-18.9L87.2 224C74.3 223.6 64 213 64 200c0-13.3 10.7-24 24-24s24 10.7 24 24c0 5-1.5 9.7-4.2 13.6L160 224l53.1-46.4c-8.9-4.1-15-13.1-15-23.6c0-14.4 11.6-26 26-26s26 11.6 26 26c0 10.5-6.2 19.5-15.1 23.6z"]
+};
 var faSearchengin = {
   prefix: "fab",
   iconName: "searchengin",
@@ -3651,7 +1634,7 @@ var faTiktok = {
 var faSquareFacebook = {
   prefix: "fab",
   iconName: "square-facebook",
-  icon: [448, 512, ["facebook-square"], "f082", "M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"]
+  icon: [448, 512, ["facebook-square"], "f082", "M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64h98.2V334.2H109.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H255V480H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"]
 };
 var faFacebookSquare = faSquareFacebook;
 var faRenren = {
@@ -3689,6 +1672,11 @@ var faTwitch = {
   iconName: "twitch",
   icon: [512, 512, [], "f1e8", "M391.17,103.47H352.54v109.7h38.63ZM285,103H246.37V212.75H285ZM120.83,0,24.31,91.42V420.58H140.14V512l96.53-91.42h77.25L487.69,256V0ZM449.07,237.75l-77.22,73.12H294.61l-67.6,64v-64H140.14V36.58H449.07Z"]
 };
+var faFlutter = {
+  prefix: "fab",
+  iconName: "flutter",
+  icon: [448, 512, [], "e694", "M429.5 236.3L291.7 374.1 429.5 512H272l-59.1-59.1-78.8-78.8L272 236.3H429.5zM272 0L16 256l78.8 78.8L429.5 0H272z"]
+};
 var faRavelry = {
   prefix: "fab",
   iconName: "ravelry",
@@ -3702,7 +1690,7 @@ var faMixer = {
 var faSquareLastfm = {
   prefix: "fab",
   iconName: "square-lastfm",
-  icon: [448, 512, ["lastfm-square"], "f203", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-92.2 312.9c-63.4 0-85.4-28.6-97.1-64.1-16.3-51-21.5-84.3-63-84.3-22.4 0-45.1 16.1-45.1 61.2 0 35.2 18 57.2 43.3 57.2 28.6 0 47.6-21.3 47.6-21.3l11.7 31.9s-19.8 19.4-61.2 19.4c-51.3 0-79.9-30.1-79.9-85.8 0-57.9 28.6-92 82.5-92 73.5 0 80.8 41.4 100.8 101.9 8.8 26.8 24.2 46.2 61.2 46.2 24.9 0 38.1-5.5 38.1-19.1 0-19.9-21.8-22-49.9-28.6-30.4-7.3-42.5-23.1-42.5-48 0-40 32.3-52.4 65.2-52.4 37.4 0 60.1 13.6 63 46.6l-36.7 4.4c-1.5-15.8-11-22.4-28.6-22.4-16.1 0-26 7.3-26 19.8 0 11 4.8 17.6 20.9 21.3 32.7 7.1 71.8 12 71.8 57.5.1 36.7-30.7 50.6-76.1 50.6z"]
+  icon: [448, 512, ["lastfm-square"], "f203", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM210.7 280.8c-1.8-5.5-3.4-10.8-5-15.9c-12.9-41.9-21-68.4-58-68.4c-22.4 0-45.1 16.1-45.1 61.2c0 35.2 18 57.2 43.3 57.2c28.6 0 47.6-21.3 47.6-21.3l11.7 31.9s-19.8 19.4-61.2 19.4c-51.3 0-79.9-30.1-79.9-85.8c0-57.9 28.6-92 82.5-92c67.9 0 79.3 35.3 96.4 88.4c1.4 4.4 2.9 8.9 4.4 13.5c8.8 26.8 24.2 46.2 61.2 46.2c24.9 0 38.1-5.5 38.1-19.1c0-17.5-16.9-21.2-40-26.4c-3.2-.7-6.5-1.4-9.9-2.2c-30.4-7.3-42.5-23.1-42.5-48c0-40 32.3-52.4 65.2-52.4c37.4 0 60.1 13.6 63 46.6l-36.7 4.4c-1.5-15.8-11-22.4-28.6-22.4c-16.1 0-26 7.3-26 19.8c0 11 4.8 17.6 20.9 21.3c2.2 .5 4.5 1 6.7 1.4c31.1 6.5 65.1 13.7 65.1 56.1c.1 36.7-30.7 50.6-76.1 50.6c-63.4 0-85.4-28.6-97.1-64.1z"]
 };
 var faLastfmSquare = faSquareLastfm;
 var faVimeo = {
@@ -3750,10 +1738,15 @@ var faCmplid = {
   iconName: "cmplid",
   icon: [640, 512, [], "e360", "M226.119,388.165a3.816,3.816,0,0,0-2.294-3.5,3.946,3.946,0,0,0-1.629-.385L72.6,384.3a19.243,19.243,0,0,1-17.924-26.025L81.585,255.692a35.72,35.72,0,0,1,32.373-26H262.525a7.07,7.07,0,0,0,6.392-5.194l10.769-41.131a3.849,3.849,0,0,0-2.237-4.937,3.755,3.755,0,0,0-1.377-.261c-.063,0-.126,0-.189.005H127.38a106.8,106.8,0,0,0-96.99,77.1L3.483,358.824A57.469,57.469,0,0,0,57.314,436q1.43,0,2.86-.072H208.742a7.131,7.131,0,0,0,6.391-5.193L225.839,389.6A3.82,3.82,0,0,0,226.119,388.165ZM306.658,81.2a3.861,3.861,0,0,0,.251-1.367A3.813,3.813,0,0,0,303.079,76c-.064,0-.128,0-.192,0h-41A7.034,7.034,0,0,0,255.5,81.2l-21.347,80.915h51.131ZM180.364,368.249H231.5L263.452,245.69H212.321ZM511.853,79.723a3.809,3.809,0,0,0-3.8-3.661c-.058,0-.137,0-.23.007h-41a7.1,7.1,0,0,0-6.584,5.129L368.91,430.634a3.54,3.54,0,0,0-.262,1.335,3.873,3.873,0,0,0,3.864,3.863c.056,0,.112,0,.169,0h41a7.068,7.068,0,0,0,6.392-5.193L511.533,81.2A3.624,3.624,0,0,0,511.853,79.723ZM324.649,384.47h-41a7.2,7.2,0,0,0-6.392,5.194L266.52,430.8a3.662,3.662,0,0,0-.268,1.374A3.783,3.783,0,0,0,270.023,436c.06,0,.166,0,.3-.012h40.905a7.036,7.036,0,0,0,6.391-5.193l10.769-41.131a3.75,3.75,0,0,0-3.445-5.208c-.108,0-.217,0-.326.014Zm311.324-308.4h-41a7.066,7.066,0,0,0-6.392,5.129l-91.46,349.436a4.073,4.073,0,0,0-.229,1.347,3.872,3.872,0,0,0,3.863,3.851c.056,0,.112,0,.169,0h40.968a7.1,7.1,0,0,0,6.392-5.193L639.68,81.2a3.624,3.624,0,0,0,.32-1.475,3.841,3.841,0,0,0-3.821-3.564c-.068,0-.137,0-.206.006ZM371.562,225.236l10.8-41.1a4.369,4.369,0,0,0,.227-1.388,3.869,3.869,0,0,0-3.861-3.842c-.057,0-.113,0-.169,0h-41.1a7.292,7.292,0,0,0-6.391,5.226l-10.834,41.1a4.417,4.417,0,0,0-.26,1.493c0,.069,0,.138,0,.206a3.776,3.776,0,0,0,3.757,3.507c.076,0,.18,0,.3-.012h41.129A7.034,7.034,0,0,0,371.562,225.236Z"]
 };
+var faUpwork = {
+  prefix: "fab",
+  iconName: "upwork",
+  icon: [641, 512, [], "e641", "M494.7 295.6c-50.3 0-83.5-38.9-92.8-53.9c11.9-95.3 46.8-125.4 92.8-125.4c45.5 0 80.9 36.4 80.9 89.7s-35.4 89.7-80.9 89.7zm0-237.8c-81.9 0-127.8 53.4-141 108.4c-14.9-28-25.9-65.5-34.5-100.3H206v141c0 51.1-23.3 89-68.8 89s-71.6-37.8-71.6-89l.5-141H.8v141c0 41.1 13.3 78.4 37.6 105.1c25 27.5 59.2 41.8 98.8 41.8c78.8 0 133.8-60.4 133.8-146.9V112.1c8.2 31.2 27.8 91.1 65.3 143.6l-35 199.4h66.4l23.1-141.3c7.6 6.3 15.7 12 24.2 17c22.2 14 47.7 21.9 73.9 22.8c0 0 4 .2 6.1 .2c81.2 0 145.9-62.9 145.9-147.8s-64.8-148.1-146-148.1z"]
+};
 var faFacebook = {
   prefix: "fab",
   iconName: "facebook",
-  icon: [512, 512, [62e3], "f09a", "M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"]
+  icon: [512, 512, [62e3], "f09a", "M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"]
 };
 var faGripfire = {
   prefix: "fab",
@@ -3804,6 +1797,11 @@ var faWhatsapp = {
   prefix: "fab",
   iconName: "whatsapp",
   icon: [448, 512, [], "f232", "M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"]
+};
+var faSquareUpwork = {
+  prefix: "fab",
+  iconName: "square-upwork",
+  icon: [448, 512, [], "e67c", "M56 32l336 0c30.9 0 56 25.1 56 56l0 336c0 30.9-25.1 56-56 56L56 480c-30.9 0-56-25.1-56-56L0 88C0 57.1 25.1 32 56 32zM270.9 274.2c6.6-52.9 25.9-69.5 51.4-69.5c25.3 0 44.9 20.2 44.9 49.7s-19.7 49.7-44.9 49.7c-27.9 0-46.3-21.5-51.4-29.9zm-26.7-41.8c-8.2-15.5-14.3-36.3-19.2-55.6l-29.7 0-33.2 0 0 78.1c0 28.4-12.9 49.4-38.2 49.4s-39.8-20.9-39.8-49.3l.3-78.1-36.2 0 0 78.1c0 22.8 7.4 43.5 20.9 58.2c13.9 15.2 32.8 23.2 54.8 23.2c43.7 0 74.2-33.5 74.2-81.5l0-52.5c4.6 17.3 15.4 50.5 36.2 79.7L215 392.6l36.8 0 12.8-78.4c4.2 3.5 8.7 6.6 13.4 9.4c12.3 7.8 26.4 12.2 40.9 12.6l.1 0c.5 0 1.1 0 1.6 0c.6 0 1.1 0 1.7 0c45.1 0 80.9-34.9 80.9-81.9s-35.9-82.2-80.9-82.2c-45.4 0-70.9 29.7-78.1 60.1z"]
 };
 var faSlideshare = {
   prefix: "fab",
@@ -3913,7 +1911,7 @@ var faPiedPiperHat = {
 var faKickstarterK = {
   prefix: "fab",
   iconName: "kickstarter-k",
-  icon: [384, 512, [], "f3bc", "M147.3 114.4c0-56.2-32.5-82.4-73.4-82.4C26.2 32 0 68.2 0 113.4v283c0 47.3 25.3 83.4 74.9 83.4 39.8 0 72.4-25.6 72.4-83.4v-76.5l112.1 138.3c22.7 27.2 72.1 30.7 103.2 0 27-27.6 27.3-67.4 7.4-92.2l-90.8-114.8 74.9-107.4c17.4-24.7 17.5-63.1-10.4-89.8-30.3-29-82.4-31.6-113.6 12.8L147.3 185v-70.6z"]
+  icon: [448, 512, [], "f3bc", "M356.6 256.2l40.8-40.5c42.2-41.9 42.2-110.3 0-152.1s-111-41.9-153.2 0L229.3 78.4C209.6 50.3 177.1 32 140.2 32C80.5 32 32 80.2 32 139.5V372.5C32 431.9 80.5 480 140.2 480c37.1 0 69.3-18.3 89-46.4l14.9 14.7c42.2 41.9 111 41.9 153.2 0s42.2-110.3 0-152.1l-40.8-40z"]
 };
 var faYandex = {
   prefix: "fab",
@@ -3934,6 +1932,11 @@ var faSellsy = {
   prefix: "fab",
   iconName: "sellsy",
   icon: [640, 512, [], "f213", "M539.71 237.308c3.064-12.257 4.29-24.821 4.29-37.384C544 107.382 468.618 32 376.076 32c-77.22 0-144.634 53.012-163.02 127.781-15.322-13.176-34.934-20.53-55.157-20.53-46.271 0-83.962 37.69-83.962 83.961 0 7.354.92 15.015 3.065 22.369-42.9 20.225-70.785 63.738-70.785 111.234C6.216 424.843 61.68 480 129.401 480h381.198c67.72 0 123.184-55.157 123.184-123.184.001-56.384-38.916-106.025-94.073-119.508zM199.88 401.554c0 8.274-7.048 15.321-15.321 15.321H153.61c-8.274 0-15.321-7.048-15.321-15.321V290.626c0-8.273 7.048-15.321 15.321-15.321h30.949c8.274 0 15.321 7.048 15.321 15.321v110.928zm89.477 0c0 8.274-7.048 15.321-15.322 15.321h-30.949c-8.274 0-15.321-7.048-15.321-15.321V270.096c0-8.274 7.048-15.321 15.321-15.321h30.949c8.274 0 15.322 7.048 15.322 15.321v131.458zm89.477 0c0 8.274-7.047 15.321-15.321 15.321h-30.949c-8.274 0-15.322-7.048-15.322-15.321V238.84c0-8.274 7.048-15.321 15.322-15.321h30.949c8.274 0 15.321 7.048 15.321 15.321v162.714zm87.027 0c0 8.274-7.048 15.321-15.322 15.321h-28.497c-8.274 0-15.321-7.048-15.321-15.321V176.941c0-8.579 7.047-15.628 15.321-15.628h28.497c8.274 0 15.322 7.048 15.322 15.628v224.613z"]
+};
+var faSquareWebAwesome = {
+  prefix: "fab",
+  iconName: "square-web-awesome",
+  icon: [448, 512, [], "e683", "M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM235 177.6L288 224l52.2-10.4c-2.6-3.9-4.2-8.5-4.2-13.6c0-13.3 10.7-24 24-24s24 10.7 24 24c0 13-10.3 23.6-23.2 24L304.5 349.1c-5.2 11.5-16.6 18.9-29.2 18.9l-102.6 0c-12.6 0-24-7.4-29.2-18.9L87.2 224C74.3 223.6 64 213 64 200c0-13.3 10.7-24 24-24s24 10.7 24 24c0 5-1.5 9.7-4.2 13.6L160 224l53.1-46.4c-8.9-4.1-15-13.1-15-23.6c0-14.4 11.6-26 26-26s26 11.6 26 26c0 10.5-6.2 19.5-15.1 23.6z"]
 };
 var faSass = {
   prefix: "fab",
@@ -3991,6 +1994,11 @@ var faWaze = {
   iconName: "waze",
   icon: [512, 512, [], "f83f", "M502.17 201.67C516.69 287.53 471.23 369.59 389 409.8c13 34.1-12.4 70.2-48.32 70.2a51.68 51.68 0 0 1-51.57-49c-6.44.19-64.2 0-76.33-.64A51.69 51.69 0 0 1 159 479.92c-33.86-1.36-57.95-34.84-47-67.92-37.21-13.11-72.54-34.87-99.62-70.8-13-17.28-.48-41.8 20.84-41.8 46.31 0 32.22-54.17 43.15-110.26C94.8 95.2 193.12 32 288.09 32c102.48 0 197.15 70.67 214.08 169.67zM373.51 388.28c42-19.18 81.33-56.71 96.29-102.14 40.48-123.09-64.15-228-181.71-228-83.45 0-170.32 55.42-186.07 136-9.53 48.91 5 131.35-68.75 131.35C58.21 358.6 91.6 378.11 127 389.54c24.66-21.8 63.87-15.47 79.83 14.34 14.22 1 79.19 1.18 87.9.82a51.69 51.69 0 0 1 78.78-16.42zM205.12 187.13c0-34.74 50.84-34.75 50.84 0s-50.84 34.74-50.84 0zm116.57 0c0-34.74 50.86-34.75 50.86 0s-50.86 34.75-50.86 0zm-122.61 70.69c-3.44-16.94 22.18-22.18 25.62-5.21l.06.28c4.14 21.42 29.85 44 64.12 43.07 35.68-.94 59.25-22.21 64.11-42.77 4.46-16.05 28.6-10.36 25.47 6-5.23 22.18-31.21 62-91.46 62.9-42.55 0-80.88-27.84-87.9-64.25z"]
 };
+var faBluesky = {
+  prefix: "fab",
+  iconName: "bluesky",
+  icon: [512, 512, [], "e671", "M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2c42.1-31.6 110.3-56 110.3 21.8c0 15.5-8.9 130.5-14.1 149.2C478.2 298 412 314.6 353.1 304.5c102.9 17.5 129.1 75.5 72.5 133.5c-107.4 110.2-154.3-27.6-166.3-62.9l0 0c-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8l0 0c-12 35.3-59 173.1-166.3 62.9c-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1C10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"]
+};
 var faCcJcb = {
   prefix: "fab",
   iconName: "cc-jcb",
@@ -4020,13 +2028,18 @@ var faWix = {
 var faSquareBehance = {
   prefix: "fab",
   iconName: "square-behance",
-  icon: [448, 512, ["behance-square"], "f1b5", "M186.5 293c0 19.3-14 25.4-31.2 25.4h-45.1v-52.9h46c18.6.1 30.3 7.8 30.3 27.5zm-7.7-82.3c0-17.7-13.7-21.9-28.9-21.9h-39.6v44.8H153c15.1 0 25.8-6.6 25.8-22.9zm132.3 23.2c-18.3 0-30.5 11.4-31.7 29.7h62.2c-1.7-18.5-11.3-29.7-30.5-29.7zM448 80v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zM271.7 185h77.8v-18.9h-77.8V185zm-43 110.3c0-24.1-11.4-44.9-35-51.6 17.2-8.2 26.2-17.7 26.2-37 0-38.2-28.5-47.5-61.4-47.5H68v192h93.1c34.9-.2 67.6-16.9 67.6-55.9zM380 280.5c0-41.1-24.1-75.4-67.6-75.4-42.4 0-71.1 31.8-71.1 73.6 0 43.3 27.3 73 71.1 73 33.2 0 54.7-14.9 65.1-46.8h-33.7c-3.7 11.9-18.6 18.1-30.2 18.1-22.4 0-34.1-13.1-34.1-35.3h100.2c.1-2.3.3-4.8.3-7.2z"]
+  icon: [448, 512, ["behance-square"], "f1b5", "M155.3 318.4c17.2 0 31.2-6.1 31.2-25.4c0-19.7-11.7-27.4-30.3-27.5h-46v52.9h45.1zm-5.4-129.6H110.3v44.8H153c15.1 0 25.8-6.6 25.8-22.9c0-17.7-13.7-21.9-28.9-21.9zm129.5 74.8h62.2c-1.7-18.5-11.3-29.7-30.5-29.7c-18.3 0-30.5 11.4-31.7 29.7zM384 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zM349.5 185H271.7V166.1h77.8V185zM193.7 243.7c23.6 6.7 35 27.5 35 51.6c0 39-32.7 55.7-67.6 55.9H68v-192h90.5c32.9 0 61.4 9.3 61.4 47.5c0 19.3-9 28.8-26.2 37zm118.7-38.6c43.5 0 67.6 34.3 67.6 75.4c0 1.6-.1 3.3-.2 5c0 .8-.1 1.5-.1 2.2H279.5c0 22.2 11.7 35.3 34.1 35.3c11.6 0 26.5-6.2 30.2-18.1h33.7c-10.4 31.9-31.9 46.8-65.1 46.8c-43.8 0-71.1-29.7-71.1-73c0-41.8 28.7-73.6 71.1-73.6z"]
 };
 var faBehanceSquare = faSquareBehance;
 var faSupple = {
   prefix: "fab",
   iconName: "supple",
   icon: [640, 512, [], "f3f9", "M640 262.5c0 64.1-109 116.1-243.5 116.1-24.8 0-48.6-1.8-71.1-5 7.7.4 15.5.6 23.4.6 134.5 0 243.5-56.9 243.5-127.1 0-29.4-19.1-56.4-51.2-78 60 21.1 98.9 55.1 98.9 93.4zM47.7 227.9c-.1-70.2 108.8-127.3 243.3-127.6 7.9 0 15.6.2 23.3.5-22.5-3.2-46.3-4.9-71-4.9C108.8 96.3-.1 148.5 0 212.6c.1 38.3 39.1 72.3 99.3 93.3-32.3-21.5-51.5-48.6-51.6-78zm60.2 39.9s10.5 13.2 29.3 13.2c17.9 0 28.4-11.5 28.4-25.1 0-28-40.2-25.1-40.2-39.7 0-5.4 5.3-9.1 12.5-9.1 5.7 0 11.3 2.6 11.3 6.6v3.9h14.2v-7.9c0-12.1-15.4-16.8-25.4-16.8-16.5 0-28.5 10.2-28.5 24.1 0 26.6 40.2 25.4 40.2 39.9 0 6.6-5.8 10.1-12.3 10.1-11.9 0-20.7-10.1-20.7-10.1l-8.8 10.9zm120.8-73.6v54.4c0 11.3-7.1 17.8-17.8 17.8-10.7 0-17.8-6.5-17.8-17.7v-54.5h-15.8v55c0 18.9 13.4 31.9 33.7 31.9 20.1 0 33.4-13 33.4-31.9v-55h-15.7zm34.4 85.4h15.8v-29.5h15.5c16 0 27.2-11.5 27.2-28.1s-11.2-27.8-27.2-27.8h-39.1v13.4h7.8v72zm15.8-43v-29.1h12.9c8.7 0 13.7 5.7 13.7 14.4 0 8.9-5.1 14.7-14 14.7h-12.6zm57 43h15.8v-29.5h15.5c16 0 27.2-11.5 27.2-28.1s-11.2-27.8-27.2-27.8h-39.1v13.4h7.8v72zm15.7-43v-29.1h12.9c8.7 0 13.7 5.7 13.7 14.4 0 8.9-5 14.7-14 14.7h-12.6zm57.1 34.8c0 5.8 2.4 8.2 8.2 8.2h37.6c5.8 0 8.2-2.4 8.2-8.2v-13h-14.3v5.2c0 1.7-1 2.6-2.6 2.6h-18.6c-1.7 0-2.6-1-2.6-2.6v-61.2c0-5.7-2.4-8.2-8.2-8.2H401v13.4h5.2c1.7 0 2.6 1 2.6 2.6v61.2zm63.4 0c0 5.8 2.4 8.2 8.2 8.2H519c5.7 0 8.2-2.4 8.2-8.2v-13h-14.3v5.2c0 1.7-1 2.6-2.6 2.6h-19.7c-1.7 0-2.6-1-2.6-2.6v-20.3h27.7v-13.4H488v-22.4h19.2c1.7 0 2.6 1 2.6 2.6v5.2H524v-13c0-5.7-2.5-8.2-8.2-8.2h-51.6v13.4h7.8v63.9zm58.9-76v5.9h1.6v-5.9h2.7v-1.2h-7v1.2h2.7zm5.7-1.2v7.1h1.5v-5.7l2.3 5.7h1.3l2.3-5.7v5.7h1.5v-7.1h-2.3l-2.1 5.1-2.1-5.1h-2.4z"]
+};
+var faWebflow = {
+  prefix: "fab",
+  iconName: "webflow",
+  icon: [640, 512, [], "e65c", "M640 64L435.8 463.2H244l85.5-165.5h-3.8C255.1 389.3 149.9 449.5 0 463.2V300.1s95.9-5.7 152.3-64.9H0V64H171.1V204.8l3.8 0L244.9 64H374.3V203.9l3.8 0L450.7 64H640z"]
 };
 var faRebel = {
   prefix: "fab",
@@ -4071,13 +2084,13 @@ var faGoodreadsG = {
 var faSquareGit = {
   prefix: "fab",
   iconName: "square-git",
-  icon: [448, 512, ["git-square"], "f1d2", "M100.59 334.24c48.57 3.31 58.95 2.11 58.95 11.94 0 20-65.55 20.06-65.55 1.52.01-5.09 3.29-9.4 6.6-13.46zm27.95-116.64c-32.29 0-33.75 44.47-.75 44.47 32.51 0 31.71-44.47.75-44.47zM448 80v352a48 48 0 0 1-48 48H48a48 48 0 0 1-48-48V80a48 48 0 0 1 48-48h352a48 48 0 0 1 48 48zm-227 69.31c0 14.49 8.38 22.88 22.86 22.88 14.74 0 23.13-8.39 23.13-22.88S258.62 127 243.88 127c-14.48 0-22.88 7.84-22.88 22.31zM199.18 195h-49.55c-25-6.55-81.56-4.85-81.56 46.75 0 18.8 9.4 32 21.85 38.11C74.23 294.23 66.8 301 66.8 310.6c0 6.87 2.79 13.22 11.18 16.76-8.9 8.4-14 14.48-14 25.92C64 373.35 81.53 385 127.52 385c44.22 0 69.87-16.51 69.87-45.73 0-36.67-28.23-35.32-94.77-39.38l8.38-13.43c17 4.74 74.19 6.23 74.19-42.43 0-11.69-4.83-19.82-9.4-25.67l23.38-1.78zm84.34 109.84l-13-1.78c-3.82-.51-4.07-1-4.07-5.09V192.52h-52.6l-2.79 20.57c15.75 5.55 17 4.86 17 10.17V298c0 5.62-.31 4.58-17 6.87v20.06h72.42zM384 315l-6.87-22.37c-40.93 15.37-37.85-12.41-37.85-16.73v-60.72h37.85v-25.41h-35.82c-2.87 0-2 2.52-2-38.63h-24.18c-2.79 27.7-11.68 38.88-34 41.42v22.62c20.47 0 19.82-.85 19.82 2.54v66.57c0 28.72 11.43 40.91 41.67 40.91 14.45 0 30.45-4.83 41.38-10.2z"]
+  icon: [448, 512, ["git-square"], "f1d2", "M120.8 335.5c-5.9-.4-12.6-.8-20.2-1.3c-3.3 4.1-6.6 8.4-6.6 13.5c0 18.5 65.5 18.5 65.5-1.5c0-8.3-7.4-8.7-38.8-10.7zm7.8-117.9c-32.3 0-33.7 44.5-.7 44.5c32.5 0 31.7-44.5 .7-44.5zM384 32H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zM243.9 172.2c-14.5 0-22.9-8.4-22.9-22.9c0-14.5 8.4-22.3 22.9-22.3c14.7 0 23.1 7.8 23.1 22.3s-8.4 22.9-23.1 22.9zM149.6 195h49.5l0 21.6-23.4 1.8c4.6 5.8 9.4 14 9.4 25.7c0 48.7-57.2 47.2-74.2 42.4l-8.4 13.4c5 .3 9.8 .6 14.3 .8c56.3 3.2 80.5 4.6 80.5 38.5c0 29.2-25.7 45.7-69.9 45.7c-46 0-63.5-11.6-63.5-31.7c0-11.4 5.1-17.5 14-25.9c-8.4-3.5-11.2-9.9-11.2-16.8c0-9.6 7.4-16.3 23-30.6l.2-.2c-12.4-6.1-21.8-19.3-21.8-38.1c0-51.6 56.6-53.3 81.6-46.8zM270.5 303.1l13 1.8 0 20.1H211.1V304.9c2.7-.4 5-.7 6.9-.9c9.9-1.2 10.1-1.3 10.1-6V223.3c0-4.4-.9-4.7-10.1-7.8c-1.9-.7-4.2-1.4-6.9-2.4l2.8-20.6h52.6V298c0 4.1 .2 4.6 4.1 5.1zm106.6-10.4L384 315c-10.9 5.4-26.9 10.2-41.4 10.2c-30.2 0-41.7-12.2-41.7-40.9V217.7c0-.8 0-1.4-.2-1.8c-.8-1.2-4.2-.7-19.6-.7V192.6c22.3-2.5 31.2-13.7 34-41.4h24.2c0 33.3-.6 38 .7 38.6c.3 .1 .7 0 1.3 0h35.8v25.4H339.3v60.7c0 .2 0 .5 0 .9c-.2 6.3-.9 30.4 37.9 15.9z"]
 };
 var faGitSquare = faSquareGit;
 var faSquareTumblr = {
   prefix: "fab",
   iconName: "square-tumblr",
-  icon: [448, 512, ["tumblr-square"], "f174", "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-82.3 364.2c-8.5 9.1-31.2 19.8-60.9 19.8-75.5 0-91.9-55.5-91.9-87.9v-90h-29.7c-3.4 0-6.2-2.8-6.2-6.2v-42.5c0-4.5 2.8-8.5 7.1-10 38.8-13.7 50.9-47.5 52.7-73.2.5-6.9 4.1-10.2 10-10.2h44.3c3.4 0 6.2 2.8 6.2 6.2v72h51.9c3.4 0 6.2 2.8 6.2 6.2v51.1c0 3.4-2.8 6.2-6.2 6.2h-52.1V321c0 21.4 14.8 33.5 42.5 22.4 3-1.2 5.6-2 8-1.4 2.2.5 3.6 2.1 4.6 4.9l13.8 40.2c1 3.2 2 6.7-.3 9.1z"]
+  icon: [448, 512, ["tumblr-square"], "f174", "M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM256.8 416c-75.5 0-91.9-55.5-91.9-87.9v-90H135.2c-3.4 0-6.2-2.8-6.2-6.2V189.4c0-4.5 2.8-8.5 7.1-10c38.8-13.7 50.9-47.5 52.7-73.2c.5-6.9 4.1-10.2 10-10.2h44.3c3.4 0 6.2 2.8 6.2 6.2v72h51.9c3.4 0 6.2 2.8 6.2 6.2v51.1c0 3.4-2.8 6.2-6.2 6.2H249.1V321c0 21.4 14.8 33.5 42.5 22.4c3-1.2 5.6-2 8-1.4c2.2 .5 3.6 2.1 4.6 4.9L318 387.1c1 3.2 2 6.7-.3 9.1c-8.5 9.1-31.2 19.8-60.9 19.8z"]
 };
 var faTumblrSquare = faSquareTumblr;
 var faTrello = {
@@ -4188,7 +2201,7 @@ var faYandexInternational = {
 var faCcAmex = {
   prefix: "fab",
   iconName: "cc-amex",
-  icon: [576, 512, [], "f1f3", "M48 480C21.49 480 0 458.5 0 432V80C0 53.49 21.49 32 48 32H528C554.5 32 576 53.49 576 80V82.43H500.5L483.5 130L466.6 82.43H369.4V145.6L341.3 82.43H262.7L181 267.1H246.8V430.9H450.5L482.4 395.8L514.3 430.9H576V432C576 458.5 554.5 480 528 480H48zM482.6 364L440.4 410.3H390.5L458 338.6L390.5 266.1H441.9L483.4 312.8L525.4 266.1H576L508 338.2L576 410.3H524.6L482.6 364zM576 296.9V380.2L536.7 338.3L576 296.9zM307.6 377.1H390.6V410.3H268.6V267.1H390.6V300.2H307.6V322.6H388.5V354.9H307.6V377.2V377.1zM537.3 145.7L500.4 246.3H466L429.2 146V246.3H390.5V103H451.7L483.6 192.3L515.8 103H576V246.3H537.3V145.7zM334.5 217.6H268.6L256.7 246.3H213.7L276.1 103H327.3L390.6 246.3H346.5L334.5 217.6zM301.5 138.5L282 185.4H320.9L301.5 138.5z"]
+  icon: [576, 512, [], "f1f3", "M0 432c0 26.5 21.5 48 48 48H528c26.5 0 48-21.5 48-48v-1.1H514.3l-31.9-35.1-31.9 35.1H246.8V267.1H181L262.7 82.4h78.6l28.1 63.2V82.4h97.2L483.5 130l17-47.6H576V80c0-26.5-21.5-48-48-48H48C21.5 32 0 53.5 0 80V432zm440.4-21.7L482.6 364l42 46.3H576l-68-72.1 68-72.1H525.4l-42 46.7-41.5-46.7H390.5L458 338.6l-67.4 71.6V377.1h-83V354.9h80.9V322.6H307.6V300.2h83V267.1h-122V410.3H440.4zm96.3-72L576 380.2V296.9l-39.3 41.4zm-36.3-92l36.9-100.6V246.3H576V103H515.8l-32.2 89.3L451.7 103H390.5V246.1L327.3 103H276.1L213.7 246.3h43l11.9-28.7h65.9l12 28.7h82.7V146L466 246.3h34.4zM282 185.4l19.5-46.9 19.4 46.9H282z"]
 };
 var faUber = {
   prefix: "fab",
@@ -4233,7 +2246,7 @@ var faReplyd = {
 var faSuse = {
   prefix: "fab",
   iconName: "suse",
-  icon: [640, 512, [], "f7d6", "M471.08 102.66s-.3 18.3-.3 20.3c-9.1-3-74.4-24.1-135.7-26.3-51.9-1.8-122.8-4.3-223 57.3-19.4 12.4-73.9 46.1-99.6 109.7C7 277-.12 307 7 335.06a111 111 0 0 0 16.5 35.7c17.4 25 46.6 41.6 78.1 44.4 44.4 3.9 78.1-16 90-53.3 8.2-25.8 0-63.6-31.5-82.9-25.6-15.7-53.3-12.1-69.2-1.6-13.9 9.2-21.8 23.5-21.6 39.2.3 27.8 24.3 42.6 41.5 42.6a49 49 0 0 0 15.8-2.7c6.5-1.8 13.3-6.5 13.3-14.9 0-12.1-11.6-14.8-16.8-13.9-2.9.5-4.5 2-11.8 2.4-2-.2-12-3.1-12-14V316c.2-12.3 13.2-18 25.5-16.9 32.3 2.8 47.7 40.7 28.5 65.7-18.3 23.7-76.6 23.2-99.7-20.4-26-49.2 12.7-111.2 87-98.4 33.2 5.7 83.6 35.5 102.4 104.3h45.9c-5.7-17.6-8.9-68.3 42.7-68.3 56.7 0 63.9 39.9 79.8 68.3H460c-12.8-18.3-21.7-38.7-18.9-55.8 5.6-33.8 39.7-18.4 82.4-17.4 66.5.4 102.1-27 103.1-28 3.7-3.1 6.5-15.8 7-17.7 1.3-5.1-3.2-2.4-3.2-2.4-8.7 5.2-30.5 15.2-50.9 15.6-25.3.5-76.2-25.4-81.6-28.2-.3-.4.1 1.2-11-25.5 88.4 58.3 118.3 40.5 145.2 21.7.8-.6 4.3-2.9 3.6-5.7-13.8-48.1-22.4-62.7-34.5-69.6-37-21.6-125-34.7-129.2-35.3.1-.1-.9-.3-.9.7zm60.4 72.8a37.54 37.54 0 0 1 38.9-36.3c33.4 1.2 48.8 42.3 24.4 65.2-24.2 22.7-64.4 4.6-63.3-28.9zm38.6-25.3a26.27 26.27 0 1 0 25.4 27.2 26.19 26.19 0 0 0-25.4-27.2zm4.3 28.8c-15.4 0-15.4-15.6 0-15.6s15.4 15.64 0 15.64z"]
+  icon: [640, 512, [], "f7d6", "M593.1 192.6A10.4 10.4 0 1 1 604.5 210a10.4 10.4 0 1 1 -11.4-17.4zm-47.1 12.2a38.5 38.5 0 1 1 75-17.6 38.5 38.5 0 1 1 -75 17.6zM433.7 336.7c3.2 4.6 5.8 9 7.3 13.4c1 3.1 2.4 7.3 5.5 8.9c.2 .1 .3 .2 .5 .2c5.7 2.1 20.3 1.7 20.3 1.7h26.8c2.3 0 22.4 0 21.9-2.3c-2.4-10.8-14.9-12.7-24.4-18.3c-8.7-5.2-17-11.1-20.8-21.3c-2-5.2-.8-17.4 2.6-21.8c2.5-3.2 6.1-5.3 10-6.2c4.3-.9 8.8-.1 13.1 .3c5.3 .5 10.6 1.5 15.9 2.2c10.3 1.3 20.6 1.9 31 1.6c17.1-.5 34.2-3.2 50.4-8.7c11.3-3.8 22.4-8.9 32-16.1c10.9-8.1 8.1-7.4-3-6.2c-13.3 1.4-26.6 1.6-39.9 .8c-12.4-.7-24.7-2.2-35.9-7.9c-8.8-4.6-16.4-9.1-23.4-16.2c-1-1.1-1.7-4.2 .2-6.2c1.9-1.9 5.8-.8 7 .2c12.2 10.2 30.5 18.6 49.3 19.5c10.2 .5 20.1 .7 30.4 .3c5.1-.2 12.8-.2 17.9-.3c2.6 0 9.8 .7 11.2-2.1c.4-.8 .4-1.8 .3-2.7c-1.5-40.9-4.5-86.9-47.3-106.5c-31.9-14.6-79.7-37.2-99.9-46.6c-4.7-2.2-10.2 1.3-10.2 6.5c0 13.6 .7 33.3 .7 51.1c-9.7-9.9-26-16.1-38.4-21.8c-14.1-6.5-28.7-12-43.5-16.6c-29.8-9.2-60.7-14.9-91.7-18c-35.2-3.5-71-1.8-105.7 5.3C147 115.1 90.8 142.6 48.2 182.7C22.1 207.3 1.6 242.4 .2 277.9c-2 50.3 12.1 77.3 38 105.2c41.3 44.4 130.2 50.6 166.2-2c16.2-23.7 19.7-55.8 8-82c-11.8-26.2-38.8-45.1-67.4-46c-22.2-.7-45.9 10.6-54.5 31.1c-6.5 15.7-2.8 35.1 9 47.3c4.6 4.8 10.9 8.7 17.7 7.1c4-.9 7.4-3.9 8-8c.9-6-4.4-9.9-7.6-14.5c-5.8-8.3-4.7-20.9 2.7-27.9c6.2-6 15.3-7.8 23.9-7.7c8 0 16.2 1.4 23.1 5.5c9.7 5.7 16.2 16.2 18.4 27.2c6.7 33-20.2 59.9-56.6 62c-18.6 1.1-37.6-3.8-52.1-15.5C40.1 329.9 31.1 269.4 73.2 237c40-30.7 90.4-22.8 120.2-6.8c23.8 12.8 41.5 33.6 55 56.7c6.7 11.6 12.5 23.7 17.8 36.1c5.1 11.8 9.9 23.8 20.2 32.5c6.8 5.8 15.2 5.6 24.1 5.6h50.8c6.9 0 5.2-4.6 2.2-7.7c-6.7-6.9-16.4-8.4-25.4-10.9c-20.5-5.6-18.4-32.8-12.7-32.8c18.3 0 18.9 .6 34.9 .3c23.2-.3 30.2-1.7 48.3 5c9.7 3.6 19 13.1 25.1 21.7z"]
 };
 var faJenkins = {
   prefix: "fab",
@@ -4314,7 +2327,7 @@ var faOdysee = {
 var faSquareWhatsapp = {
   prefix: "fab",
   iconName: "square-whatsapp",
-  icon: [448, 512, ["whatsapp-square"], "f40c", "M224 122.8c-72.7 0-131.8 59.1-131.9 131.8 0 24.9 7 49.2 20.2 70.1l3.1 5-13.3 48.6 49.9-13.1 4.8 2.9c20.2 12 43.4 18.4 67.1 18.4h.1c72.6 0 133.3-59.1 133.3-131.8 0-35.2-15.2-68.3-40.1-93.2-25-25-58-38.7-93.2-38.7zm77.5 188.4c-3.3 9.3-19.1 17.7-26.7 18.8-12.6 1.9-22.4.9-47.5-9.9-39.7-17.2-65.7-57.2-67.7-59.8-2-2.6-16.2-21.5-16.2-41s10.2-29.1 13.9-33.1c3.6-4 7.9-5 10.6-5 2.6 0 5.3 0 7.6.1 2.4.1 5.7-.9 8.9 6.8 3.3 7.9 11.2 27.4 12.2 29.4s1.7 4.3.3 6.9c-7.6 15.2-15.7 14.6-11.6 21.6 15.3 26.3 30.6 35.4 53.9 47.1 4 2 6.3 1.7 8.6-1 2.3-2.6 9.9-11.6 12.5-15.5 2.6-4 5.3-3.3 8.9-2 3.6 1.3 23.1 10.9 27.1 12.9s6.6 3 7.6 4.6c.9 1.9.9 9.9-2.4 19.1zM400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM223.9 413.2c-26.6 0-52.7-6.7-75.8-19.3L64 416l22.5-82.2c-13.9-24-21.2-51.3-21.2-79.3C65.4 167.1 136.5 96 223.9 96c42.4 0 82.2 16.5 112.2 46.5 29.9 30 47.9 69.8 47.9 112.2 0 87.4-72.7 158.5-160.1 158.5z"]
+  icon: [448, 512, ["whatsapp-square"], "f40c", "M92.1 254.6c0 24.9 7 49.2 20.2 70.1l3.1 5-13.3 48.6L152 365.2l4.8 2.9c20.2 12 43.4 18.4 67.1 18.4h.1c72.6 0 133.3-59.1 133.3-131.8c0-35.2-15.2-68.3-40.1-93.2c-25-25-58-38.7-93.2-38.7c-72.7 0-131.8 59.1-131.9 131.8zM274.8 330c-12.6 1.9-22.4 .9-47.5-9.9c-36.8-15.9-61.8-51.5-66.9-58.7c-.4-.6-.7-.9-.8-1.1c-2-2.6-16.2-21.5-16.2-41c0-18.4 9-27.9 13.2-32.3c.3-.3 .5-.5 .7-.8c3.6-4 7.9-5 10.6-5c2.6 0 5.3 0 7.6 .1c.3 0 .5 0 .8 0c2.3 0 5.2 0 8.1 6.8c1.2 2.9 3 7.3 4.9 11.8c3.3 8 6.7 16.3 7.3 17.6c1 2 1.7 4.3 .3 6.9c-3.4 6.8-6.9 10.4-9.3 13c-3.1 3.2-4.5 4.7-2.3 8.6c15.3 26.3 30.6 35.4 53.9 47.1c4 2 6.3 1.7 8.6-1c2.3-2.6 9.9-11.6 12.5-15.5c2.6-4 5.3-3.3 8.9-2s23.1 10.9 27.1 12.9c.8 .4 1.5 .7 2.1 1c2.8 1.4 4.7 2.3 5.5 3.6c.9 1.9 .9 9.9-2.4 19.1c-3.3 9.3-19.1 17.7-26.7 18.8zM448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM148.1 393.9L64 416l22.5-82.2c-13.9-24-21.2-51.3-21.2-79.3C65.4 167.1 136.5 96 223.9 96c42.4 0 82.2 16.5 112.2 46.5c29.9 30 47.9 69.8 47.9 112.2c0 87.4-72.7 158.5-160.1 158.5c-26.6 0-52.7-6.7-75.8-19.3z"]
 };
 var faWhatsappSquare = faSquareWhatsapp;
 var faNodeJs = {
@@ -4527,6 +2540,7 @@ var icons = {
   faYoast,
   faCloudflare,
   faUps,
+  faPixiv,
   faWpexplorer,
   faDyalog,
   faBity,
@@ -4547,6 +2561,8 @@ var icons = {
   faCentercode,
   faGlideG,
   faDrupal,
+  faJxl,
+  faDartLang,
   faHireAHelper,
   faCreativeCommonsBy,
   faUnity,
@@ -4562,6 +2578,7 @@ var icons = {
   faContao,
   faSquareFontAwesome,
   faDeskpro,
+  faBrave,
   faSistrix,
   faSquareInstagram,
   faInstagramSquare,
@@ -4618,6 +2635,7 @@ var icons = {
   faCentos,
   faAdn,
   faCloudsmith,
+  faOpensuse,
   faPiedPiperAlt,
   faSquareDribbble,
   faDribbbleSquare,
@@ -4630,6 +2648,7 @@ var icons = {
   faDebian,
   faOpenid,
   faInstalod,
+  faFilesPinwheel,
   faExpeditedssl,
   faSellcast,
   faSquareTwitter,
@@ -4646,6 +2665,7 @@ var icons = {
   faItunesNote,
   faGolang,
   faKickstarter,
+  faSquareKickstarter,
   faGrav,
   faWeibo,
   faUncharted,
@@ -4666,9 +2686,11 @@ var icons = {
   faLaravel,
   faHotjar,
   faBluetoothB,
+  faSquareLetterboxd,
   faStickerMule,
   faCreativeCommonsZero,
   faHips,
+  faCss,
   faBehance,
   faReddit,
   faDiscord,
@@ -4677,6 +2699,7 @@ var icons = {
   faCcDiscover,
   faWpbeginner,
   faConfluence,
+  faShoelace,
   faMdb,
   faDochub,
   faAccessibleIcon,
@@ -4718,6 +2741,7 @@ var icons = {
   faYCombinator,
   faEmpire,
   faEnvira,
+  faGoogleScholar,
   faSquareGitlab,
   faGitlabSquare,
   faStudiovinari,
@@ -4762,6 +2786,7 @@ var icons = {
   faBloggerB,
   faOpencart,
   faVine,
+  faSignalMessenger,
   faPaypal,
   faGitlab,
   faTypo3,
@@ -4773,6 +2798,7 @@ var icons = {
   faBootstrap,
   faOdnoklassniki,
   faNfcSymbol,
+  faMintbit,
   faEthereum,
   faSpeakerDeck,
   faCreativeCommonsNcEu,
@@ -4781,9 +2807,11 @@ var icons = {
   faEllo,
   faGofore,
   faBimobject,
+  faBraveReverse,
   faFacebookF,
   faSquareGooglePlus,
   faGooglePlusSquare,
+  faWebAwesome,
   faMandalorian,
   faFirstOrderAlt,
   faOsi,
@@ -4806,6 +2834,7 @@ var icons = {
   faSpotify,
   faOptinMonster,
   faFly,
+  faSquareBluesky,
   faAviato,
   faItunes,
   faCuttlefish,
@@ -4815,6 +2844,7 @@ var icons = {
   faSoundcloud,
   faDigg,
   faTencentWeibo,
+  faLetterboxd,
   faSymfony,
   faMaxcdn,
   faEtsy,
@@ -4837,6 +2867,7 @@ var icons = {
   faSuperpowers,
   faResolving,
   faXbox,
+  faSquareWebAwesomeStroke,
   faSearchengin,
   faTiktok,
   faSquareFacebook,
@@ -4848,6 +2879,7 @@ var icons = {
   faHubspot,
   faDeploydog,
   faTwitch,
+  faFlutter,
   faRavelry,
   faMixer,
   faSquareLastfm,
@@ -4861,6 +2893,7 @@ var icons = {
   faDropbox,
   faInstagram,
   faCmplid,
+  faUpwork,
   faFacebook,
   faGripfire,
   faJediOrder,
@@ -4872,6 +2905,7 @@ var icons = {
   faTradeFederation,
   faAutoprefixer,
   faWhatsapp,
+  faSquareUpwork,
   faSlideshare,
   faGooglePlay,
   faViadeo,
@@ -4898,6 +2932,7 @@ var icons = {
   faReadme,
   faHtml5,
   faSellsy,
+  faSquareWebAwesome,
   faSass,
   faWirsindhandwerk,
   faWsh,
@@ -4910,6 +2945,7 @@ var icons = {
   faApper,
   faFortAwesome,
   faWaze,
+  faBluesky,
   faCcJcb,
   faSnapchat,
   faSnapchatGhost,
@@ -4919,6 +2955,7 @@ var icons = {
   faSquareBehance,
   faBehanceSquare,
   faSupple,
+  faWebflow,
   faRebel,
   faCss3,
   faStaylinked,
@@ -5066,10 +3103,13 @@ export {
   faBlackberry,
   faBlogger,
   faBloggerB,
+  faBluesky,
   faBluetooth,
   faBluetoothB,
   faBootstrap,
   faBots,
+  faBrave,
+  faBraveReverse,
   faBtc,
   faBuffer,
   faBuromobelexperte,
@@ -5117,12 +3157,14 @@ export {
   faCreativeCommonsShare,
   faCreativeCommonsZero,
   faCriticalRole,
+  faCss,
   faCss3,
   faCss3Alt,
   faCuttlefish,
   faDAndD,
   faDAndDBeyond,
   faDailymotion,
+  faDartLang,
   faDashcube,
   faDebian,
   faDeezer,
@@ -5167,6 +3209,7 @@ export {
   faFedex,
   faFedora,
   faFigma,
+  faFilesPinwheel,
   faFirefox,
   faFirefoxBrowser,
   faFirstOrder,
@@ -5174,6 +3217,7 @@ export {
   faFirstdraft,
   faFlickr,
   faFlipboard,
+  faFlutter,
   faFly,
   faFontAwesome,
   faFontAwesomeAlt,
@@ -5216,6 +3260,7 @@ export {
   faGooglePlus,
   faGooglePlusG,
   faGooglePlusSquare,
+  faGoogleScholar,
   faGoogleWallet,
   faGratipay,
   faGrav,
@@ -5258,6 +3303,7 @@ export {
   faJs,
   faJsSquare,
   faJsfiddle,
+  faJxl,
   faKaggle,
   faKeybase,
   faKeycdn,
@@ -5269,6 +3315,7 @@ export {
   faLastfmSquare,
   faLeanpub,
   faLess,
+  faLetterboxd,
   faLine,
   faLinkedin,
   faLinkedinIn,
@@ -5292,6 +3339,7 @@ export {
   faMeta,
   faMicroblog,
   faMicrosoft,
+  faMintbit,
   faMix,
   faMixcloud,
   faMixer,
@@ -5315,6 +3363,7 @@ export {
   faOldRepublic,
   faOpencart,
   faOpenid,
+  faOpensuse,
   faOpera,
   faOptinMonster,
   faOrcid,
@@ -5340,6 +3389,7 @@ export {
   faPinterestP,
   faPinterestSquare,
   faPix,
+  faPixiv,
   faPlaystation,
   faProductHunt,
   faPushed,
@@ -5379,8 +3429,10 @@ export {
   faSellsy,
   faServicestack,
   faShirtsinbulk,
+  faShoelace,
   faShopify,
   faShopware,
+  faSignalMessenger,
   faSimplybuilt,
   faSistrix,
   faSith,
@@ -5401,6 +3453,7 @@ export {
   faSpeakerDeck,
   faSpotify,
   faSquareBehance,
+  faSquareBluesky,
   faSquareDribbble,
   faSquareFacebook,
   faSquareFontAwesome,
@@ -5412,7 +3465,9 @@ export {
   faSquareHackerNews,
   faSquareInstagram,
   faSquareJs,
+  faSquareKickstarter,
   faSquareLastfm,
+  faSquareLetterboxd,
   faSquareOdnoklassniki,
   faSquarePiedPiper,
   faSquarePinterest,
@@ -5422,8 +3477,11 @@ export {
   faSquareThreads,
   faSquareTumblr,
   faSquareTwitter,
+  faSquareUpwork,
   faSquareViadeo,
   faSquareVimeo,
+  faSquareWebAwesome,
+  faSquareWebAwesomeStroke,
   faSquareWhatsapp,
   faSquareXTwitter,
   faSquareXing,
@@ -5477,6 +3535,7 @@ export {
   faUnsplash,
   faUntappd,
   faUps,
+  faUpwork,
   faUsb,
   faUsps,
   faUssunnah,
@@ -5494,6 +3553,8 @@ export {
   faVuejs,
   faWatchmanMonitoring,
   faWaze,
+  faWebAwesome,
+  faWebflow,
   faWeebly,
   faWeibo,
   faWeixin,
@@ -5532,4 +3593,13 @@ export {
   icons as fab,
   prefix
 };
+/*! Bundled license information:
+
+@fortawesome/free-brands-svg-icons/index.mjs:
+  (*!
+   * Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com
+   * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+   * Copyright 2024 Fonticons, Inc.
+   *)
+*/
 //# sourceMappingURL=@fortawesome_free-brands-svg-icons.js.map

@@ -4,7 +4,7 @@
       </div>
       <div class="col-8 text-style-extra-light">
         <div class="flex text-center justify-content-center">
-          <p class="mt-1 mb-0 margin-bottom-3px text-3xl">Yaadata (<span class="text-style-extra-light-italic">Yadi</span>) Abdalhalim</p>
+          <p class="mt-1 mb-0 margin-bottom-1px text-3xl">Yaadata (<span class="text-style-extra-light-italic">Yadi</span>) Abdalhalim</p>
         </div>
         <div class="block">
           <div class="card flex text-center justify-content-center text-3xs">
@@ -30,38 +30,38 @@
 
 <script setup>
 import Divider from 'primevue/divider';
-import { QRCode } from 'easyqrcodejs';
-import {ref, onMounted} from 'vue';
+// import { QRCode } from 'easyqrcodejs';
+// import {ref, onMounted} from 'vue';
 
-const linkedinQRCode = ref(null);
-const githubQRCode = ref(null);
-onMounted(()=>{
-  let linkedinOpts = {
-    text: "https://tinyurl.com/yv7j9kc8",
-    width: 60,
-    height: 60,
-    correctLevel: QRCode.CorrectLevel.M,
-    logo: 'linkedin.png',
-    logoBackgroundTransparent: true,
-    logoWidth: 25,
-    logoHeight: 25,
-    drawer: 'svg'
-  };
+// const linkedinQRCode = ref(null);
+// const githubQRCode = ref(null);
+// onMounted(()=>{
+//   let linkedinOpts = {
+//     text: "https://tinyurl.com/yv7j9kc8",
+//     width: 60,
+//     height: 60,
+//     correctLevel: QRCode.CorrectLevel.M,
+//     logo: 'linkedin.png',
+//     logoBackgroundTransparent: true,
+//     logoWidth: 25,
+//     logoHeight: 25,
+//     drawer: 'svg'
+//   };
 
-  let githubOpts = {
-    text: "https://tinyurl.com/ybzhfara",
-    width: 60,
-    height: 60,
-    correctLevel: QRCode.CorrectLevel.M,
-    logo: 'github.png',
-    logoBackgroundTransparent: true,
-    logoWidth: 30,
-    logoHeight: 30,
-    drawer: 'svg'
-  }
+//   let githubOpts = {
+//     text: "https://tinyurl.com/ybzhfara",
+//     width: 60,
+//     height: 60,
+//     correctLevel: QRCode.CorrectLevel.M,
+//     logo: 'github.png',
+//     logoBackgroundTransparent: true,
+//     logoWidth: 30,
+//     logoHeight: 30,
+//     drawer: 'svg'
+//   }
 
-  new QRCode(linkedinQRCode.value, linkedinOpts);
-  new QRCode(githubQRCode.value, githubOpts);
-})
+//   new QRCode(linkedinQRCode.value, linkedinOpts);
+//   new QRCode(githubQRCode.value, githubOpts);
+// })
 
 </script>

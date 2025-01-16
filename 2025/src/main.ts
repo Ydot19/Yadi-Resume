@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
-import "primevue/resources/themes/mdc-light-indigo/theme.css"; //theme
-import "primevue/resources/primevue.min.css"; //core css
+import Aura from '@primevue/themes/aura';
 import './style.css'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -22,5 +21,17 @@ library.add(faGlobe);
 
 createApp(App)
     .component('font-awesome-icon', FontAwesomeIcon)
-    .use(PrimeVue)
+    .use(PrimeVue, {
+        theme: {
+            preset: Aura,
+            options: {
+                darkModeSelector: '.fake-dark-selector', // trying to also force a non-usage of the dark mode
+                cssLayer: {
+                    name: 'primevue',
+                    // Enable PrimeVue CSS layer and configure the tailwind styles to have higher specificity with layering
+                    order: 'tailwind-base, primevue, tailwind-utilities',
+                },
+            },
+        }
+    })
     .mount("#app");
