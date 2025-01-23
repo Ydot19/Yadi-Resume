@@ -52,7 +52,7 @@
   </div>
   <br>
   
-  <div class="text-4xs text-style-medium text-left">
+  <div class="text-2xs text-style-medium text-left">
     <p class="text-xl mt-2 mb-1">
       Education
     </p>

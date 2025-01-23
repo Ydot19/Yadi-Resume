@@ -120,8 +120,7 @@
             </ul>
           </li>
           <li class="pb-0">
-            Launced the company's first PCI-DSS certified storage and retrieval service for sensitive payment data. 
-
+            Launched the company's first PCI-DSS certified storage and retrieval service for sensitive payment data.
             <ul class="text-style-extra-light text-4xs pl-3">
               <li>
                 Designed multi-tier secure architecture with AWS account isolation, strict ingress/egress controls, and automated access management. Precautions reduced security risk and certified the service for PCI-DSS compliance.
@@ -154,7 +153,7 @@
           <p class="mt-0 pt-0 ml-1">Feb. 2021 - Sept. 2021</p>
         </div>
       </div>
-      <div class="col-12 text-style-medium text-2xs pt-0 mt-0">
+      <div class="col-12 text-style-extra-light text-2xs pt-0 mt-0">
         <ul class="mt-0 pt-0 pl-3" style="list-style: square">
           <li>
             Led the design and implementation of a mission-critical payment reversal service within Capital One's modernized Commercial Enterprise ACH Platform, processing over $5B in payment reversals annually.
@@ -179,7 +178,7 @@
           <p class="mt-0 pt-0 ml-1">Aug. 2019 - Jan. 2021</p>
         </div>
       </div>
-      <div class="col-12 text-style-medium text-2xs pt-0 mt-0 pb-0 mb-0">
+      <div class="col-12 text-style-extra-light text-2xs pt-0 mt-0 pb-0 mb-0">
         <ul class="mt-0 pt-0 pl-3" style="list-style: square">
           <li>
             Architected and optimized a high-performance Node.js API on AWS Lambda that processed queries across 50M+ businesses with sub-second P99 latency through strategic Elasticsearch index optimization and field-level search refinement.
